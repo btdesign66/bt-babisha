@@ -2914,6 +2914,35 @@ function displayFabrics() {
         const fabricCard = createFabricCard(fabric);
         if (fabricCard) {
             fabricGrid.appendChild(fabricCard);
+            
+            // Add image error handling after card is added to DOM
+            const img = fabricCard.querySelector('img');
+            if (img) {
+                // Log image source for debugging
+                console.log('Setting image source:', fabric.image, 'Full path:', img.src);
+                
+                img.addEventListener('error', function() {
+                    console.error('Image failed to load:', this.src);
+                    console.error('Original path:', fabric.image);
+                    // Try alternative paths
+                    const originalPath = fabric.image;
+                    if (!originalPath.startsWith('/') && !originalPath.startsWith('http')) {
+                        // Try with leading slash
+                        this.src = '/' + originalPath;
+                        console.log('Trying with leading slash:', this.src);
+                    } else if (originalPath.startsWith('images/')) {
+                        // Try without images/ prefix
+                        this.src = '/' + originalPath;
+                        console.log('Trying absolute path:', this.src);
+                    }
+                });
+                
+                img.addEventListener('load', function() {
+                    console.log('✓ Image loaded successfully:', this.src);
+                });
+            } else {
+                console.error('Image element not found in fabric card for:', fabric.name);
+            }
         } else {
             console.error('Failed to create fabric card for:', fabric);
         }
@@ -2936,7 +2965,7 @@ function createFabricCard(fabric) {
         <div class="fabric-card h-100">
             <div class="fabric-image position-relative">
                 ${savingsText}
-                <img src="${fabric.image}" alt="${fabric.name}" class="img-fluid">
+                <img src="${fabric.image}" alt="${fabric.name}" class="img-fluid" loading="lazy">
                 <div class="product-overlay">
                     <div class="quick-actions">
                         <button class="btn btn-light btn-sm" onclick="viewFabricDetails(${fabric.id})">
