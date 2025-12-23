@@ -17,12 +17,24 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <!-- Discount Banner -->
+    <div class="discount-banner">
+        <div class="discount-banner-content">
+            🎉 Special Offer: Get 25% OFF on all Lehengas! | 🎁 Free Shipping on orders above ₹5000 | ⭐ New Collection Launching Soon! | 💎 Exclusive Discounts for First-Time Customers!
+        </div>
+    </div>
+
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top shadow-sm">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top shadow-sm" style="margin-top: 40px;">
         <div class="container">
-            <a class="navbar-brand" href="index.html">
-                <img src="logo.png" alt="BABISHA Logo" height="60" class="d-inline-block align-text-top">
-            </a>
+            <div class="d-flex align-items-center">
+                <a class="navbar-brand" href="index.html">
+                    <img src="logo.png" alt="BABISHA Logo" height="60" class="d-inline-block align-text-top">
+                </a>
+                <div class="bt-designers-text d-none d-lg-block">
+                    <small class="text-muted">Babisha is a brand under BT Designers</small>
+                </div>
+            </div>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -165,7 +177,7 @@
                 <div class="hero-overlay"></div>
                 <div class="container h-100">
                     <div class="row h-100 align-items-center">
-                        <div class="col-lg-8">
+                        <div class="col-lg-7">
                             <div class="hero-content text-white">
                                 <h1 class="display-4 fw-bold mb-4 animate-fade-in">
                                     Elegant Collections, <span class="text-warning">Timeless Style</span>
@@ -175,7 +187,7 @@
                                     find your perfect style with our curated fabric collections.
                                 </p>
                                 <div class="hero-buttons animate-fade-in-delay-2">
-                                    <a href="products.html" class="btn btn-warning btn-lg me-3">
+                                    <a href="products.html" class="btn btn-warning btn-lg">
                                         <i class="fas fa-search me-2"></i>Explore Collections
                                     </a>
                                     <a href="https://wa.me/919624113555?text=Hi! I'm interested in your fabric collection. Please tell me more about your products and ordering process." class="btn btn-outline-light btn-lg" target="_blank">
@@ -279,77 +291,6 @@
         </div>
     </section>
 
-    <!-- Our Clients / Video Gallery Section -->
-    <section class="py-5">
-        <div class="container">
-            <div class="row text-center mb-5">
-                <div class="col-lg-8 mx-auto">
-                    <h2 class="section-title">Our Clients</h2>
-                    <p class="text-muted">See what our satisfied customers have to say about our products and services</p>
-                </div>
-            </div>
-            <div class="row g-4">
-                <!-- Video 1 -->
-                <div class="col-lg-4 col-md-6">
-                    <div class="video-card">
-                        <div class="video-wrapper">
-                            <iframe 
-                                src="https://www.youtube.com/embed/dQw4w9WgXcQ" 
-                                title="Client Testimonial 1" 
-                                frameborder="0" 
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                                allowfullscreen
-                                class="video-iframe">
-                            </iframe>
-                        </div>
-                        <div class="video-info p-3">
-                            <h5 class="mb-2">Client Testimonial 1</h5>
-                            <p class="text-muted small mb-0">Hear from our satisfied customers</p>
-                        </div>
-                    </div>
-                </div>
-                <!-- Video 2 -->
-                <div class="col-lg-4 col-md-6">
-                    <div class="video-card">
-                        <div class="video-wrapper">
-                            <iframe 
-                                src="https://www.youtube.com/embed/dQw4w9WgXcQ" 
-                                title="Client Testimonial 2" 
-                                frameborder="0" 
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                                allowfullscreen
-                                class="video-iframe">
-                            </iframe>
-                        </div>
-                        <div class="video-info p-3">
-                            <h5 class="mb-2">Client Testimonial 2</h5>
-                            <p class="text-muted small mb-0">Real experiences from our clients</p>
-                        </div>
-                    </div>
-                </div>
-                <!-- Video 3 -->
-                <div class="col-lg-4 col-md-6">
-                    <div class="video-card">
-                        <div class="video-wrapper">
-                            <iframe 
-                                src="https://www.youtube.com/embed/dQw4w9WgXcQ" 
-                                title="Client Testimonial 3" 
-                                frameborder="0" 
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                                allowfullscreen
-                                class="video-iframe">
-                            </iframe>
-                        </div>
-                        <div class="video-info p-3">
-                            <h5 class="mb-2">Client Testimonial 3</h5>
-                            <p class="text-muted small mb-0">Success stories from our community</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- Why Choose BABISHA Section -->
     <section class="py-5 bg-light">
         <div class="container">
@@ -425,6 +366,89 @@
                         </div>
                         <h5>Expert Guidance</h5>
                         <p class="text-muted">Professional advice on fabric selection, care instructions, and styling tips</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Customer Reviews Section -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row text-center mb-5">
+                <div class="col-lg-8 mx-auto">
+                    <h2 class="section-title">Customer Reviews & Testimonials</h2>
+                    <p class="text-muted">Hear from our satisfied customers</p>
+                </div>
+            </div>
+            <div class="row g-4 mb-5">
+                <div class="col-lg-4 col-md-6">
+                    <div class="review-card">
+                        <div class="review-header">
+                            <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100&h=100&fit=crop" alt="Customer" class="review-avatar">
+                            <div class="review-author">
+                                <div class="review-author-name">Priya Sharma</div>
+                                <div class="review-author-location">Mumbai, Maharashtra</div>
+                            </div>
+                        </div>
+                        <div class="stars mb-3">
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                        </div>
+                        <p class="mb-3">"Absolutely stunning lehenga! The quality is exceptional and the embroidery work is beautiful. Fast delivery and great customer service. Highly recommended!"</p>
+                        <div class="review-image mb-2">
+                            <img src="images/lehengas/02__RANI_TAARANI-A1.jpeg" alt="Review" class="img-fluid rounded">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="review-card">
+                        <div class="review-header">
+                            <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop" alt="Customer" class="review-avatar">
+                            <div class="review-author">
+                                <div class="review-author-name">Anjali Patel</div>
+                                <div class="review-author-location">Ahmedabad, Gujarat</div>
+                            </div>
+                        </div>
+                        <div class="stars mb-3">
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                        </div>
+                        <p class="mb-3">"Best purchase ever! The fabric quality exceeded my expectations. The colors are vibrant and the fit is perfect. Will definitely shop again from BABISHA."</p>
+                        <div class="review-image mb-2">
+                            <img src="images/lehengas/03__RANIKA_TAARANI-B1.jpeg" alt="Review" class="img-fluid rounded">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="review-card">
+                        <div class="review-header">
+                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop" alt="Customer" class="review-avatar">
+                            <div class="review-author">
+                                <div class="review-author-name">Kavya Reddy</div>
+                                <div class="review-author-location">Hyderabad, Telangana</div>
+                            </div>
+                        </div>
+                        <div class="stars mb-3">
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                        </div>
+                        <p class="mb-3">"Amazing collection and excellent service! The team helped me choose the perfect lehenga for my wedding. The packaging was secure and delivery was on time."</p>
+                        <div class="review-video">
+                            <div style="background: #f0f0f0; padding: 2rem; text-align: center; border-radius: 10px;">
+                                <i class="fas fa-play-circle" style="font-size: 3rem; color: var(--primary-color);"></i>
+                                <p class="mt-2 mb-0">Video Testimonial</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -630,6 +654,26 @@
         </div>
     </section>
 
+    <!-- Subscribe Section -->
+    <section class="subscribe-section">
+        <div class="container text-center">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <h2 class="mb-3 text-white">Subscribe to Our Newsletter</h2>
+                    <p class="lead mb-4 text-white-50">Get updates on new product launches, exclusive discounts, and special offers delivered to your inbox</p>
+                    <form class="subscribe-form" id="subscribeForm">
+                        <input type="email" class="subscribe-input" placeholder="Enter your email address" required>
+                        <input type="tel" class="subscribe-input" placeholder="Enter your mobile number" required>
+                        <button type="submit" class="subscribe-btn">
+                            <i class="fas fa-paper-plane me-2"></i>Subscribe
+                        </button>
+                    </form>
+                    <p class="text-white-50 mt-3 small">By subscribing, you agree to receive marketing emails and messages from BABISHA</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- CTA Section -->
     <section class="py-5 bg-primary text-white">
         <div class="container text-center">
@@ -689,14 +733,41 @@
                         <li><i class="fas fa-phone me-2"></i>+91 9624113555</li>
                         <li><i class="fas fa-envelope me-2"></i>btdesigners555@gmail.com</li>
                         <li><i class="fab fa-whatsapp me-2"></i>WhatsApp: +91 9624113555</li>
-                        <li><i class="fas fa-map-marker-alt me-2"></i>India</li>
+                        <li><i class="fas fa-map-marker-alt me-2"></i>507, Aggarwal Millennium Tower 1, Netaji Subhash Palace, Pitampura, Delhi - 110034</li>
                     </ul>
                 </div>
             </div>
+            
+            <!-- Payment Partners -->
+            <div class="payment-partners">
+                <span class="text-muted me-3">We Accept:</span>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="VISA" class="payment-partner-logo" style="height: 30px;">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="MasterCard" class="payment-partner-logo" style="height: 30px;">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a4/PayPal_2014_logo.png" alt="PayPal" class="payment-partner-logo" style="height: 30px;">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Discover_Card_logo.svg" alt="Discover" class="payment-partner-logo" style="height: 30px;">
+                <span class="badge bg-success ms-3">Online/Pre-Payment Only</span>
+            </div>
+            
+            <hr class="my-4">
+            
+            <!-- Policies Section -->
+            <div class="policies-section">
+                <h6 class="text-center mb-4">Policies & Information</h6>
+                <div class="policy-links">
+                    <a href="#" class="policy-link">Refund Policy</a>
+                    <a href="#" class="policy-link">Privacy Policy</a>
+                    <a href="#" class="policy-link">Terms & Conditions</a>
+                    <a href="#" class="policy-link">Shipping Policy</a>
+                    <a href="#" class="policy-link">Exchange Policy</a>
+                    <a href="#" class="policy-link">Cancellation Policy</a>
+                    <a href="#" class="policy-link">Return Policy</a>
+                </div>
+            </div>
+            
             <hr class="my-4">
             <div class="row align-items-center">
                 <div class="col-md-6">
-                    <p class="mb-0 text-muted">&copy; 2024 BABISHA. All rights reserved.</p>
+                    <p class="mb-0 text-muted">&copy; 2024 BABISHA - A Brand under BT Designers. All rights reserved.</p>
                 </div>
                 <div class="col-md-6 text-md-end">
                     <a href="#" class="text-muted text-decoration-none me-3">Privacy Policy</a>
@@ -705,6 +776,16 @@
             </div>
         </div>
     </footer>
+    
+    <!-- Notification Toast -->
+    <div id="notificationToast" class="notification-toast">
+        <div class="notification-icon"></div>
+        <div class="notification-content">
+            <div class="notification-title"></div>
+            <div class="notification-message"></div>
+        </div>
+        <div class="notification-close" onclick="closeNotification()">&times;</div>
+    </div>
 
     <!-- Login Modal -->
     <div class="modal fade" id="loginModal" tabindex="-1">

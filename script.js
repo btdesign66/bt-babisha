@@ -3422,6 +3422,12 @@ function initializeModals() {
     if (inquiryForm) {
         inquiryForm.addEventListener('submit', handleInquiry);
     }
+    
+    // Subscribe form
+    const subscribeForm = document.getElementById('subscribeForm');
+    if (subscribeForm) {
+        subscribeForm.addEventListener('submit', handleSubscribe);
+    }
 }
 
 // Modal Functions
@@ -3440,19 +3446,125 @@ function openInquiryModal() {
     modal.show();
 }
 
+// Notification Functions
+function showNotification(type, title, message) {
+    const toast = document.getElementById('notificationToast');
+    if (!toast) return;
+    
+    const icon = toast.querySelector('.notification-icon');
+    const titleEl = toast.querySelector('.notification-title');
+    const messageEl = toast.querySelector('.notification-message');
+    
+    // Remove all type classes
+    toast.classList.remove('success', 'error', 'warning', 'info');
+    
+    // Set icon based on type
+    let iconClass = 'fas fa-info-circle';
+    let iconColor = 'var(--primary-color)';
+    
+    switch(type) {
+        case 'success':
+            iconClass = 'fas fa-check-circle';
+            iconColor = '#28a745';
+            toast.classList.add('success');
+            break;
+        case 'error':
+            iconClass = 'fas fa-times-circle';
+            iconColor = 'var(--accent-color)';
+            toast.classList.add('error');
+            break;
+        case 'warning':
+            iconClass = 'fas fa-exclamation-circle';
+            iconColor = 'var(--gold-accent)';
+            toast.classList.add('warning');
+            break;
+        default:
+            toast.classList.add('info');
+    }
+    
+    if (icon) {
+        icon.className = 'notification-icon ' + iconClass;
+        icon.style.color = iconColor;
+    }
+    
+    if (titleEl) titleEl.textContent = title;
+    if (messageEl) messageEl.textContent = message;
+    
+    // Show notification
+    toast.classList.add('show');
+    
+    // Auto-hide after 5 seconds
+    setTimeout(() => {
+        closeNotification();
+    }, 5000);
+}
+
+function closeNotification() {
+    const toast = document.getElementById('notificationToast');
+    if (toast) {
+        toast.classList.remove('show');
+    }
+}
+
 // Form Handlers
 function handleLogin(e) {
     e.preventDefault();
-    // Handle login logic
-    console.log('Login form submitted');
-    bootstrap.Modal.getInstance(document.getElementById('loginModal')).hide();
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
+    
+    // Simulate login validation (replace with actual API call)
+    // For demo purposes, we'll show success/warning based on simple check
+    if (email && password) {
+        // Simulate API call delay
+        setTimeout(() => {
+            bootstrap.Modal.getInstance(document.getElementById('loginModal')).hide();
+            showNotification('success', 'Welcome!', 'You have successfully logged in to your account.');
+            
+            // Update UI to show logged in state (optional)
+            const loginBtn = document.querySelector('button[onclick="openLoginModal()"]');
+            if (loginBtn) {
+                loginBtn.textContent = 'Logout';
+                loginBtn.setAttribute('onclick', 'handleLogout()');
+            }
+        }, 500);
+    } else {
+        showNotification('error', 'Login Failed', 'Wrong password or user ID. Please try again.');
+    }
 }
 
 function handleRegister(e) {
     e.preventDefault();
-    // Handle registration logic
-    console.log('Register form submitted');
-    bootstrap.Modal.getInstance(document.getElementById('registerModal')).hide();
+    const name = document.getElementById('registerName').value;
+    const email = document.getElementById('registerEmail').value;
+    const password = document.getElementById('registerPassword').value;
+    const confirmPassword = document.getElementById('registerConfirmPassword').value;
+    
+    // Basic validation
+    if (password !== confirmPassword) {
+        showNotification('error', 'Registration Failed', 'Passwords do not match. Please try again.');
+        return;
+    }
+    
+    if (name && email && password) {
+        // Simulate API call delay
+        setTimeout(() => {
+            bootstrap.Modal.getInstance(document.getElementById('registerModal')).hide();
+            showNotification('success', 'Account Created Successfully', 'Welcome to BABISHA! Your account has been created successfully.');
+        }, 500);
+    } else {
+        showNotification('error', 'Registration Failed', 'Please fill in all required fields.');
+    }
+}
+
+function handleLogout() {
+    showNotification('success', 'Logged Out Successfully', 'You have been logged out of your account.');
+    
+    // Update UI to show logged out state
+    const loginBtn = document.querySelector('button[onclick="handleLogout()"]');
+    if (loginBtn) {
+        loginBtn.textContent = 'Login';
+        loginBtn.setAttribute('onclick', 'openLoginModal()');
+    }
 }
 
 function handleInquiry(e) {
@@ -3460,6 +3572,23 @@ function handleInquiry(e) {
     // Handle inquiry logic
     console.log('Inquiry form submitted');
     bootstrap.Modal.getInstance(document.getElementById('inquiryModal')).hide();
+}
+
+function handleSubscribe(e) {
+    e.preventDefault();
+    const form = e.target;
+    const email = form.querySelector('input[type="email"]').value;
+    const phone = form.querySelector('input[type="tel"]').value;
+    
+    if (email && phone) {
+        // Simulate API call delay
+        setTimeout(() => {
+            showNotification('success', 'Subscribed Successfully!', 'Thank you for subscribing. You will receive updates about new products, discounts, and special offers.');
+            form.reset();
+        }, 500);
+    } else {
+        showNotification('error', 'Subscription Failed', 'Please fill in all required fields.');
+    }
 }
 
 // WhatsApp Order Function
@@ -3686,6 +3815,9 @@ window.updateShowingRange = updateShowingRange;
 
 window.openRegisterModal = openRegisterModal;
 window.openInquiryModal = openInquiryModal;
+window.closeNotification = closeNotification;
+window.showNotification = showNotification;
+window.handleLogout = handleLogout;
 
 // Hero Carousel Functionality
 let currentHeroSlide = 0;
