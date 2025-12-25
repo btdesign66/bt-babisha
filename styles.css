@@ -230,6 +230,18 @@ h1, h2, h3, h4, h5, h6 {
     color: var(--primary-color);
 }
 
+/* Instagram icon special styling */
+.navbar-nav .nav-link[href*="instagram"] i {
+    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.navbar-nav .nav-link[href*="instagram"]:hover i {
+    transform: scale(1.15);
+}
+
 /* Navigation alignment improvements */
 .navbar .container {
     display: flex;
