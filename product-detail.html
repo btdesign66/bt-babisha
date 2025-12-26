@@ -17,12 +17,19 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <!-- Discount Banner -->
+    <div class="discount-banner">
+        <div class="discount-banner-content">
+            🎉 Special Offer: Get 25% OFF on all Lehengas! | 🎁 Free Shipping on orders above ₹5000 | ⭐ New Collection Launching Soon! | 💎 Exclusive Discounts for First-Time Customers!
+        </div>
+    </div>
+
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top shadow-sm">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top shadow-sm" style="margin-top: 20px;">
         <div class="container">
             <div class="d-flex align-items-center">
                 <a class="navbar-brand" href="index.html">
-                    <img src="logo.png" alt="BABISHA Logo" height="60" class="d-inline-block align-text-top">
+                    <img src="babishatmlogo.png" alt="BABISHA Logo" height="140" class="d-inline-block align-text-top">
                 </a>
                 <div class="bt-designers-text d-none d-lg-block">
                     <small class="text-muted">Babisha is a brand under BT Designers</small>
@@ -32,26 +39,108 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
+                <ul class="navbar-nav me-auto">
                     <li class="nav-item">
                         <a class="nav-link" href="index.html">Home</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="products.html">Products</a>
+                    
+                    <!-- Women Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="womenDropdown" role="button" data-bs-toggle="dropdown">
+                            Women
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="products.html?category=sarees">Sarees</a></li>
+                            <li><a class="dropdown-item" href="products.html?category=lehengas">Lehengas</a></li>
+                            <li><a class="dropdown-item" href="products.html?category=suits">Suits</a></li>
+                            <li><a class="dropdown-item" href="products.html?category=indo-western">Indo-Western</a></li>
+                        </ul>
                     </li>
+                    
+                    <!-- Kids Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="kidsDropdown" role="button" data-bs-toggle="dropdown">
+                            Kids
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="products.html?category=childwear">Childwear</a></li>
+                            <li><a class="dropdown-item" href="products.html?category=kids-lehengas">Kids Lehengas</a></li>
+                            <li><a class="dropdown-item" href="products.html?category=kids-suits">Kids Suits</a></li>
+                            <li><a class="dropdown-item" href="products.html?category=kids-traditional">Traditional Wear</a></li>
+                            <li><a class="dropdown-item" href="products.html?category=kids-casual">Casual Wear</a></li>
+                        </ul>
+                    </li>
+                    
+                    <!-- Collections Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="collectionsDropdown" role="button" data-bs-toggle="dropdown">
+                            Collections
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="products.html?collection=summer-25">Summer '25</a></li>
+                            <li><a class="dropdown-item" href="products.html?collection=festive">Festive Wear</a></li>
+                            <li><a class="dropdown-item" href="products.html?collection=bridal">Bridal Couture</a></li>
+                            <li><a class="dropdown-item" href="products.html?collection=handloom">Handloom Special</a></li>
+                            <li><a class="dropdown-item" href="products.html?collection=luxury">Luxury Fabrics</a></li>
+                        </ul>
+                    </li>
+                    
+                    <!-- Occasions Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="occasionsDropdown" role="button" data-bs-toggle="dropdown">
+                            Occasions
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="products.html?occasion=wedding">Wedding</a></li>
+                            <li><a class="dropdown-item" href="products.html?occasion=reception">Reception</a></li>
+                            <li><a class="dropdown-item" href="products.html?occasion=party">Party</a></li>
+                            <li><a class="dropdown-item" href="products.html?occasion=office">Office/Formal</a></li>
+                            <li><a class="dropdown-item" href="products.html?occasion=casual">Casual Wear</a></li>
+                        </ul>
+                    </li>
+                    
+                    <!-- Fabrics Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="fabricsDropdown" role="button" data-bs-toggle="dropdown">
+                            Fabrics
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="products.html?fabric=cotton">Cotton</a></li>
+                            <li><a class="dropdown-item" href="products.html?fabric=silk">Silk</a></li>
+                            <li><a class="dropdown-item" href="products.html?fabric=linen">Linen</a></li>
+                            <li><a class="dropdown-item" href="products.html?fabric=organza">Organza</a></li>
+                            <li><a class="dropdown-item" href="products.html?fabric=velvet">Velvet</a></li>
+                            <li><a class="dropdown-item" href="products.html?fabric=chiffon">Chiffon</a></li>
+                        </ul>
+                    </li>
+                    
                     <li class="nav-item">
                         <a class="nav-link" href="about.html">About Us</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="contact.html">Contact</a>
+                        <a class="nav-link" href="contact.html">Contact Us</a>
                     </li>
+                </ul>
+                
+                <!-- Right side items -->
+                <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="https://www.instagram.com/babisha_official/" target="_blank" title="Follow us on Instagram">
+                        <a class="nav-link" href="https://www.instagram.com/babisha.by.btdesigners?igsh=dzg0cWFleDQ4anlj" target="_blank" title="Follow us on Instagram">
                             <i class="fab fa-instagram"></i>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <button class="btn btn-outline-primary ms-2" onclick="openLoginModal()">Login</button>
+                        <a class="nav-link" href="#" onclick="openWishlist(); return false;">
+                            <i class="fas fa-heart"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="openCart(); return false;">
+                            <i class="fas fa-shopping-cart"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-primary ms-2" onclick="openLoginModal()">Login</button>
                     </li>
                 </ul>
             </div>
@@ -59,13 +148,13 @@
     </nav>
 
     <!-- Breadcrumb -->
-    <section class="py-3 bg-light" style="margin-top: 80px;">
+    <section class="py-3 bg-light" style="margin-top: 120px;">
         <div class="container">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0">
-                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                    <li class="breadcrumb-item"><a href="products.html">Products</a></li>
-                    <li class="breadcrumb-item active" id="breadcrumbProduct">Product Details</li>
+                    <li class="breadcrumb-item"><a href="index.html" class="text-decoration-none">Home</a></li>
+                    <li class="breadcrumb-item"><a href="products.html" class="text-decoration-none">Products</a></li>
+                    <li class="breadcrumb-item active" id="breadcrumbProduct" aria-current="page">Product Details</li>
                 </ol>
             </nav>
         </div>
@@ -79,11 +168,18 @@
                     <div class="product-detail-image">
                         <img id="productImage" src="" alt="Product Image" class="img-fluid">
                     </div>
+                    <!-- Specifications below image -->
+                    <div class="specifications mt-3">
+                        <h4>Specifications</h4>
+                        <div id="specifications">
+                            <!-- Specifications will be loaded by JavaScript -->
+                        </div>
+                    </div>
                 </div>
                 <div class="col-lg-6">
                     <div class="product-detail-info">
                         <h1 id="productTitle" class="product-detail-title">Product Name</h1>
-                        <div id="productPrice" class="product-detail-price">$0.00/yard</div>
+                        <div id="productPrice" class="product-detail-price">$0.00/piece</div>
                         
                         <div class="product-rating mb-3">
                             <div class="stars" id="productStars">
@@ -96,87 +192,17 @@
                             Product description will be loaded here.
                         </p>
                         
-                        <div class="specifications">
-                            <h4>Specifications</h4>
-                            <div id="specifications">
-                                <!-- Specifications will be loaded by JavaScript -->
-                            </div>
-                        </div>
-                        
-                        <div class="supplier-info mb-4" id="supplierInfo">
+                        <!-- Supplier Info -->
+                        <div class="supplier-info mt-3" id="supplierInfo">
                             <!-- Supplier information will be loaded by JavaScript -->
                         </div>
                         
-                        <div class="action-buttons">
-                            <button class="btn btn-warning btn-lg me-3" onclick="openInquiryModal()">
-                                <i class="fas fa-envelope me-2"></i>Enquire Now
+                        <div class="action-buttons mt-4">
+                            <button class="btn btn-warning btn-lg me-3" id="orderNowBtn" onclick="orderNowFromDetailPage()">
+                                <i class="fab fa-whatsapp me-2"></i>Order Now
                             </button>
                             <button class="btn btn-outline-primary btn-lg" onclick="addToFavorites()">
                                 <i class="fas fa-heart me-2"></i>Add to Favorites
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Additional Information -->
-    <section class="py-5 bg-light">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="mb-0">Additional Information</h5>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <h6>Care Instructions</h6>
-                                    <ul class="list-unstyled">
-                                        <li><i class="fas fa-check text-success me-2"></i>Machine wash cold</li>
-                                        <li><i class="fas fa-check text-success me-2"></i>Tumble dry low</li>
-                                        <li><i class="fas fa-check text-success me-2"></i>Iron on low heat</li>
-                                        <li><i class="fas fa-check text-success me-2"></i>Do not bleach</li>
-                                    </ul>
-                                </div>
-                                <div class="col-md-6">
-                                    <h6>Shipping Information</h6>
-                                    <ul class="list-unstyled">
-                                        <li><i class="fas fa-shipping-fast text-primary me-2"></i>Free shipping on orders over $100</li>
-                                        <li><i class="fas fa-clock text-primary me-2"></i>Standard delivery: 3-5 business days</li>
-                                        <li><i class="fas fa-truck text-primary me-2"></i>Express delivery: 1-2 business days</li>
-                                        <li><i class="fas fa-globe text-primary me-2"></i>International shipping available</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="mb-0">Quick Contact</h5>
-                        </div>
-                        <div class="card-body">
-                            <p class="text-muted">Need more information about this fabric?</p>
-                            <div class="contact-info">
-                                <div class="d-flex align-items-center mb-2">
-                                    <i class="fas fa-phone text-primary me-2"></i>
-                                    <span>+1 (555) 123-4567</span>
-                                </div>
-                                <div class="d-flex align-items-center mb-2">
-                                    <i class="fas fa-envelope text-primary me-2"></i>
-                                    <span>info@babisha.com</span>
-                                </div>
-                                <div class="d-flex align-items-center mb-3">
-                                    <i class="fas fa-clock text-primary me-2"></i>
-                                    <span>Mon-Fri: 9AM-6PM</span>
-                                </div>
-                            </div>
-                            <button class="btn btn-primary w-100" onclick="openInquiryModal()">
-                                <i class="fas fa-comments me-2"></i>Chat with Expert
                             </button>
                         </div>
                     </div>
@@ -210,9 +236,9 @@
                     </h5>
                     <p class="text-muted">Your premier destination for quality fabrics from trusted suppliers worldwide.</p>
                     <div class="social-links">
-                        <a href="#" class="text-muted me-3"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://www.facebook.com/profile.php?id=61585423109557" target="_blank" class="text-muted me-3" title="Follow us on Facebook"><i class="fab fa-facebook-f"></i></a>
                         <a href="#" class="text-muted me-3"><i class="fab fa-twitter"></i></a>
-                        <a href="https://www.instagram.com/babisha_official/" target="_blank" class="text-muted me-3" title="Follow us on Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.instagram.com/babisha.by.btdesigners?igsh=dzg0cWFleDQ4anlj" target="_blank" class="text-muted me-3" title="Follow us on Instagram"><i class="fab fa-instagram"></i></a>
                         <a href="#" class="text-muted me-3"><i class="fab fa-linkedin-in"></i></a>
                     </div>
                 </div>
@@ -398,6 +424,6 @@
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Custom JS -->
-    <script src="script.js?v=2"></script>
+    <script src="script.js?v=34"></script>
 </body>
 </html>

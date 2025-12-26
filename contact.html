@@ -17,12 +17,19 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <!-- Discount Banner -->
+    <div class="discount-banner">
+        <div class="discount-banner-content">
+            🎉 Special Offer: Get 25% OFF on all Lehengas! | 🎁 Free Shipping on orders above ₹5000 | ⭐ New Collection Launching Soon! | 💎 Exclusive Discounts for First-Time Customers!
+        </div>
+    </div>
+
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top shadow-sm" style="margin-top: 0;">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top shadow-sm" style="margin-top: 20px;">
         <div class="container">
             <div class="d-flex align-items-center">
                 <a class="navbar-brand" href="index.html">
-                    <img src="logo.png" alt="BABISHA Logo" height="60" class="d-inline-block align-text-top">
+                    <img src="babishatmlogo.png" alt="BABISHA Logo" height="140" class="d-inline-block align-text-top">
                 </a>
                 <div class="bt-designers-text d-none d-lg-block">
                     <small class="text-muted">Babisha is a brand under BT Designers</small>
@@ -32,26 +39,108 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
+                <ul class="navbar-nav me-auto">
                     <li class="nav-item">
                         <a class="nav-link" href="index.html">Home</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="products.html">Products</a>
+                    
+                    <!-- Women Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="womenDropdown" role="button" data-bs-toggle="dropdown">
+                            Women
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="products.html?category=sarees">Sarees</a></li>
+                            <li><a class="dropdown-item" href="products.html?category=lehengas">Lehengas</a></li>
+                            <li><a class="dropdown-item" href="products.html?category=suits">Suits</a></li>
+                            <li><a class="dropdown-item" href="products.html?category=indo-western">Indo-Western</a></li>
+                        </ul>
                     </li>
+                    
+                    <!-- Kids Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="kidsDropdown" role="button" data-bs-toggle="dropdown">
+                            Kids
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="products.html?category=childwear">Childwear</a></li>
+                            <li><a class="dropdown-item" href="products.html?category=kids-lehengas">Kids Lehengas</a></li>
+                            <li><a class="dropdown-item" href="products.html?category=kids-suits">Kids Suits</a></li>
+                            <li><a class="dropdown-item" href="products.html?category=kids-traditional">Traditional Wear</a></li>
+                            <li><a class="dropdown-item" href="products.html?category=kids-casual">Casual Wear</a></li>
+                        </ul>
+                    </li>
+                    
+                    <!-- Collections Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="collectionsDropdown" role="button" data-bs-toggle="dropdown">
+                            Collections
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="products.html?collection=summer-25">Summer '25</a></li>
+                            <li><a class="dropdown-item" href="products.html?collection=festive">Festive Wear</a></li>
+                            <li><a class="dropdown-item" href="products.html?collection=bridal">Bridal Couture</a></li>
+                            <li><a class="dropdown-item" href="products.html?collection=handloom">Handloom Special</a></li>
+                            <li><a class="dropdown-item" href="products.html?collection=luxury">Luxury Fabrics</a></li>
+                        </ul>
+                    </li>
+                    
+                    <!-- Occasions Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="occasionsDropdown" role="button" data-bs-toggle="dropdown">
+                            Occasions
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="products.html?occasion=wedding">Wedding</a></li>
+                            <li><a class="dropdown-item" href="products.html?occasion=reception">Reception</a></li>
+                            <li><a class="dropdown-item" href="products.html?occasion=party">Party</a></li>
+                            <li><a class="dropdown-item" href="products.html?occasion=office">Office/Formal</a></li>
+                            <li><a class="dropdown-item" href="products.html?occasion=casual">Casual Wear</a></li>
+                        </ul>
+                    </li>
+                    
+                    <!-- Fabrics Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="fabricsDropdown" role="button" data-bs-toggle="dropdown">
+                            Fabrics
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="products.html?fabric=cotton">Cotton</a></li>
+                            <li><a class="dropdown-item" href="products.html?fabric=silk">Silk</a></li>
+                            <li><a class="dropdown-item" href="products.html?fabric=linen">Linen</a></li>
+                            <li><a class="dropdown-item" href="products.html?fabric=organza">Organza</a></li>
+                            <li><a class="dropdown-item" href="products.html?fabric=velvet">Velvet</a></li>
+                            <li><a class="dropdown-item" href="products.html?fabric=chiffon">Chiffon</a></li>
+                        </ul>
+                    </li>
+                    
                     <li class="nav-item">
                         <a class="nav-link" href="about.html">About Us</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="contact.html">Contact</a>
+                        <a class="nav-link active" href="contact.html">Contact Us</a>
                     </li>
+                </ul>
+                
+                <!-- Right side items -->
+                <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="https://www.instagram.com/babisha_official/" target="_blank" title="Follow us on Instagram">
+                        <a class="nav-link" href="https://www.instagram.com/babisha.by.btdesigners?igsh=dzg0cWFleDQ4anlj" target="_blank" title="Follow us on Instagram">
                             <i class="fab fa-instagram"></i>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <button class="btn btn-outline-primary ms-2" onclick="openLoginModal()">Login</button>
+                        <a class="nav-link" href="#" onclick="openWishlist(); return false;">
+                            <i class="fas fa-heart"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="openCart(); return false;">
+                            <i class="fas fa-shopping-cart"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-primary ms-2" onclick="openLoginModal()">Login</button>
                     </li>
                 </ul>
             </div>
@@ -59,7 +148,7 @@
     </nav>
 
     <!-- Contact Hero Section -->
-    <section class="py-5 bg-light" style="margin-top: 70px;">
+    <section class="py-5 bg-light" style="margin-top: 120px;">
         <div class="container">
             <div class="row text-center">
                 <div class="col-lg-8 mx-auto">
@@ -76,60 +165,34 @@
             <div class="row">
                 <div class="col-lg-8">
                     <div class="contact-form">
-                        <h3 class="mb-4">Send us a Message</h3>
+                        <h3 class="mb-3">We'd Love to Hear From You! / हम आपसे सुनना पसंद करेंगे!</h3>
+                        <p class="text-muted mb-4">Have a question or want to know more about our fabrics? Drop us a message and we'll get back to you right away. Your inquiry is important to us!<br>
+                        <span style="font-size: 0.95em;">क्या आपके कोई सवाल हैं या हमारे कपड़ों के बारे में अधिक जानना चाहते हैं? हमें एक संदेश भेजें और हम तुरंत आपको जवाब देंगे। आपकी जांच हमारे लिए महत्वपूर्ण है!</span></p>
                         <form id="contactForm">
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label for="contactName" class="form-label">Name *</label>
-                                        <input type="text" class="form-control" id="contactName" name="name" required>
+                                        <label for="contactName" class="form-label">Your Name / आपका नाम *</label>
+                                        <input type="text" class="form-control" id="contactName" name="name" required placeholder="Enter your name / अपना नाम दर्ज करें">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label for="contactEmail" class="form-label">Email *</label>
-                                        <input type="email" class="form-control" id="contactEmail" name="email" required>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label for="contactPhone" class="form-label">Phone</label>
-                                        <input type="tel" class="form-control" id="contactPhone" name="phone">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label for="contactCompany" class="form-label">Company</label>
-                                        <input type="text" class="form-control" id="contactCompany" name="company">
+                                        <label for="contactEmail" class="form-label">Your Email / आपका ईमेल *</label>
+                                        <input type="email" class="form-control" id="contactEmail" name="email" required placeholder="your.email@example.com">
                                     </div>
                                 </div>
                             </div>
                             <div class="mb-3">
-                                <label for="contactSubject" class="form-label">Subject *</label>
-                                <select class="form-control" id="contactSubject" name="subject" required>
-                                    <option value="">Select a subject</option>
-                                    <option value="general">General Inquiry</option>
-                                    <option value="product">Product Information</option>
-                                    <option value="pricing">Pricing & Quotes</option>
-                                    <option value="partnership">Partnership Opportunity</option>
-                                    <option value="support">Customer Support</option>
-                                    <option value="other">Other</option>
-                                </select>
+                                <label for="contactPhone" class="form-label">Your Phone Number / आपका फोन नंबर</label>
+                                <input type="tel" class="form-control" id="contactPhone" name="phone" placeholder="+91 1234567890">
                             </div>
                             <div class="mb-3">
-                                <label for="contactMessage" class="form-label">Message *</label>
-                                <textarea class="form-control" id="contactMessage" name="message" rows="5" required></textarea>
+                                <label for="contactMessage" class="form-label">Your Message / आपका संदेश *</label>
+                                <textarea class="form-control" id="contactMessage" name="message" rows="5" required placeholder="Tell us how we can help you... / बताएं कि हम आपकी कैसे मदद कर सकते हैं..."></textarea>
                             </div>
-                            <div class="mb-3 form-check">
-                                <input type="checkbox" class="form-check-input" id="contactNewsletter">
-                                <label class="form-check-label" for="contactNewsletter">
-                                    Subscribe to our newsletter for fabric updates and special offers
-                                </label>
-                            </div>
-                            <button type="submit" class="btn btn-primary btn-lg">
-                                <i class="fas fa-paper-plane me-2"></i>Send Message
+                            <button type="submit" class="btn btn-primary btn-lg w-100">
+                                <i class="fab fa-whatsapp me-2"></i>Send via WhatsApp / WhatsApp पर भेजें
                             </button>
                         </form>
                     </div>
@@ -222,17 +285,11 @@
                         
                         <div class="social-links mt-4">
                             <h6 class="mb-3">Follow Us</h6>
-                            <a href="#" class="btn btn-outline-primary me-2 mb-2">
+                            <a href="https://www.facebook.com/profile.php?id=61585423109557" target="_blank" class="btn btn-outline-primary me-2 mb-2" title="Follow us on Facebook">
                                 <i class="fab fa-facebook-f"></i>
                             </a>
-                            <a href="#" class="btn btn-outline-primary me-2 mb-2">
-                                <i class="fab fa-twitter"></i>
-                            </a>
-                            <a href="https://www.instagram.com/babisha_official/" target="_blank" class="btn btn-outline-primary me-2 mb-2" title="Follow us on Instagram">
+                            <a href="https://www.instagram.com/babisha.by.btdesigners?igsh=dzg0cWFleDQ4anlj" target="_blank" class="btn btn-outline-primary me-2 mb-2" title="Follow us on Instagram">
                                 <i class="fab fa-instagram"></i>
-                            </a>
-                            <a href="#" class="btn btn-outline-primary me-2 mb-2">
-                                <i class="fab fa-linkedin-in"></i>
                             </a>
                         </div>
                     </div>
@@ -377,10 +434,8 @@
                     </h5>
                     <p class="text-muted">Your premier destination for quality fabrics from trusted suppliers worldwide.</p>
                     <div class="social-links">
-                        <a href="#" class="text-muted me-3"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="text-muted me-3"><i class="fab fa-twitter"></i></a>
-                        <a href="https://www.instagram.com/babisha_official/" target="_blank" class="text-muted me-3" title="Follow us on Instagram"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="text-muted me-3"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="https://www.facebook.com/profile.php?id=61585423109557" target="_blank" class="text-muted me-3" title="Follow us on Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://www.instagram.com/babisha.by.btdesigners?igsh=dzg0cWFleDQ4anlj" target="_blank" class="text-muted me-3" title="Follow us on Instagram"><i class="fab fa-instagram"></i></a>
                     </div>
                 </div>
                 <div class="col-lg-2">
@@ -533,5 +588,48 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Custom JS -->
     <script src="script.js?v=2"></script>
+    
+    <!-- Contact Form WhatsApp Handler -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const contactForm = document.getElementById('contactForm');
+            
+            if (contactForm) {
+                contactForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    // Get form values
+                    const name = document.getElementById('contactName').value.trim();
+                    const email = document.getElementById('contactEmail').value.trim();
+                    const phone = document.getElementById('contactPhone').value.trim();
+                    const message = document.getElementById('contactMessage').value.trim();
+                    
+                    // Validate required fields
+                    if (!name || !email || !message) {
+                        alert('Please fill in all required fields (Name, Email, and Message).');
+                        return;
+                    }
+                    
+                    // Create WhatsApp message
+                    let whatsappMessage = `Hello! I'm interested in getting in touch with BABISHA.\n\n`;
+                    whatsappMessage += `*My Details:*\n`;
+                    whatsappMessage += `Name: ${name}\n`;
+                    whatsappMessage += `Email: ${email}\n`;
+                    if (phone) {
+                        whatsappMessage += `Phone: ${phone}\n`;
+                    }
+                    whatsappMessage += `\n*My Message:*\n${message}\n\n`;
+                    whatsappMessage += `Looking forward to hearing from you!`;
+                    
+                    // WhatsApp number
+                    const whatsappNumber = '919624113555';
+                    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
+                    
+                    // Open WhatsApp
+                    window.open(whatsappUrl, '_blank');
+                });
+            }
+        });
+    </script>
 </body>
 </html>
