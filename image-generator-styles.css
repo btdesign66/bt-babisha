@@ -3,6 +3,7 @@
 .image-generator-main {
     min-height: calc(100vh - 200px);
     background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    margin-top: 42px; /* Account for discount banner */
 }
 
 .generator-card {

@@ -409,6 +409,7 @@ h1, h2, h3, h4, h5, h6 {
     height: 100vh;
     position: relative;
     overflow: hidden;
+    margin-top: 42px; /* Account for discount banner */
 }
 
 .hero-carousel {
@@ -1513,7 +1514,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Breadcrumb Section */
 section.py-3.bg-light {
-    margin-top: 120px !important;
+    margin-top: 102px !important; /* 60px navbar + 42px banner */
     padding: 1rem 0 !important;
 }
 
@@ -3174,24 +3175,30 @@ footer ul.list-unstyled li i {
     width: 100%;
     background: linear-gradient(135deg, var(--accent-color) 0%, #E63946 50%, var(--secondary-color) 100%);
     color: white;
-    padding: 10px 0;
+    padding: 12px 0;
     z-index: 9999;
     overflow: hidden;
     box-shadow: 0 4px 15px rgba(220, 20, 60, 0.2);
     text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 42px;
 }
 
 .discount-banner-content {
-    display: block;
+    display: inline-block;
     white-space: nowrap;
     animation: scrollBanner 30s linear infinite;
     font-weight: 600;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     text-transform: uppercase;
     letter-spacing: 1px;
     color: #ffffff;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-    padding: 0 20px;
+    padding: 0;
+    line-height: 1.4;
+    vertical-align: middle;
 }
 
 @keyframes scrollBanner {
