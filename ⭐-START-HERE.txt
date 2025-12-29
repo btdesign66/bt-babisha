@@ -1,0 +1,52 @@
+╔══════════════════════════════════════════════════════════════╗
+║                                                              ║
+║     🚀 HOW TO FIX "Cannot connect to server" ERROR          ║
+║                                                              ║
+╚══════════════════════════════════════════════════════════════╝
+
+STEP 1: Double-click this file to start the server:
+        👉 SIMPLE-START.bat
+
+STEP 2: A black window will open. You should see:
+        "🚀 BABISHA Virtual Try-On API running on http://localhost:3000"
+
+STEP 3: KEEP THAT WINDOW OPEN! Don't close it.
+
+STEP 4: Go back to your browser and refresh the Virtual Try-On page.
+
+STEP 5: Try the feature again - it should work now!
+
+
+═══════════════════════════════════════════════════════════════
+
+IF THE SERVER WINDOW SHOWS ERRORS:
+
+1. Make sure you're in the right folder:
+   C:\Users\nitin\Desktop\BABISHA
+
+2. Try running this command:
+   npm install
+
+3. Then try SIMPLE-START.bat again
+
+
+═══════════════════════════════════════════════════════════════
+
+WHY IS THIS NEEDED?
+
+The Virtual Try-On feature needs TWO things running:
+1. Frontend (your website) - Already running on port 8000
+2. Backend (API server) - Must be started manually on port 3000
+
+The backend processes your images and generates the try-on results.
+
+
+═══════════════════════════════════════════════════════════════
+
+NEED MORE HELP?
+
+Check these files:
+- README-START-SERVER.md
+- HOW-TO-FIX.md
+- QUICK-START.md
+
