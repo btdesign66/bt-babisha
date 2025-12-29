@@ -3174,35 +3174,32 @@ footer ul.list-unstyled li i {
     width: 100%;
     background: linear-gradient(135deg, var(--accent-color) 0%, #E63946 50%, var(--secondary-color) 100%);
     color: white;
-    padding: 14px 0;
+    padding: 10px 0;
     z-index: 9999;
     overflow: hidden;
     box-shadow: 0 4px 15px rgba(220, 20, 60, 0.2);
-    min-height: 45px;
-    display: flex;
-    align-items: center;
+    text-align: center;
 }
 
 .discount-banner-content {
-    display: inline-block;
+    display: block;
     white-space: nowrap;
-    animation: scrollBanner 40s linear infinite;
-    font-weight: 700;
-    font-size: 1rem;
+    animation: scrollBanner 30s linear infinite;
+    font-weight: 600;
+    font-size: 0.9rem;
     text-transform: uppercase;
-    letter-spacing: 1.5px;
-    padding-left: 100%;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    letter-spacing: 1px;
     color: #ffffff;
-    line-height: 1.2;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    padding: 0 20px;
 }
 
 @keyframes scrollBanner {
     0% { 
-        transform: translateX(0); 
+        transform: translateX(100%); 
     }
     100% { 
-        transform: translateX(calc(-100% - 100vw)); 
+        transform: translateX(-100%); 
     }
 }
 
@@ -3514,13 +3511,13 @@ footer ul.list-unstyled li i {
     }
     
     .discount-banner {
-        padding: 12px 0;
-        min-height: 40px;
+        padding: 8px 0;
     }
     
     .discount-banner-content {
-        font-size: 0.85rem;
-        letter-spacing: 1px;
-        animation-duration: 35s;
+        font-size: 0.75rem;
+        letter-spacing: 0.5px;
+        animation-duration: 25s;
+        padding: 0 15px;
     }
 }
