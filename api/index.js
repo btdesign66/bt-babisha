@@ -3,15 +3,14 @@
  * This wraps the Express app for Vercel deployment
  */
 
-// Set Vercel environment
+// Set Vercel environment before requiring server
 process.env.VERCEL = '1';
+process.env.VERCEL_ENV = process.env.VERCEL_ENV || 'production';
 
+// Import the Express app
 const app = require('../server');
 
-// Export handler for Vercel serverless functions
-module.exports = (req, res) => {
-    // Vercel serverless function handler
-    return app(req, res);
-};
+// Export the Express app directly - Vercel will handle it
+module.exports = app;
 
 
