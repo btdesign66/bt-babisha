@@ -1,13 +1,19 @@
 {
   "version": 2,
+  "buildCommand": "echo 'No build required'",
+  "outputDirectory": ".",
   "routes": [
     {
       "src": "/api/(.*)",
       "dest": "/api/[...].js"
     },
     {
-      "src": "/(.*)",
+      "src": "/(.*\\.(html|css|js|png|jpg|jpeg|gif|svg|ico|pdf|json))",
       "dest": "/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
     }
   ],
   "functions": {
