@@ -83,7 +83,7 @@ h1, h2, h3, h4, h5, h6 {
     display: flex !important;
     align-items: center !important;
     justify-content: center;
-    min-height: 90px;
+    min-height: 60px;
     height: auto;
     line-height: normal;
 }
@@ -92,14 +92,14 @@ h1, h2, h3, h4, h5, h6 {
     padding: 0.25rem 0 !important;
     background: rgba(255, 255, 255, 0.99) !important;
     box-shadow: 0 4px 30px rgba(0, 122, 94, 0.12);
-    min-height: 70px;
+    min-height: 50px;
     height: auto;
     line-height: normal;
 }
 
 .navbar.scrolled .navbar-brand img {
-    height: 60px;
-    min-height: 60px;
+    height: 45px;
+    min-height: 45px;
 }
 
 .navbar-brand img {
@@ -107,8 +107,8 @@ h1, h2, h3, h4, h5, h6 {
     filter: brightness(1) contrast(1.15);
     max-width: none;
     width: auto;
-    min-height: 80px;
-    height: 80px;
+    min-height: 55px;
+    height: 55px;
     object-fit: contain;
     background: transparent !important;
     mix-blend-mode: normal;
@@ -356,18 +356,18 @@ h1, h2, h3, h4, h5, h6 {
 /* Mobile Navigation */
 @media (max-width: 991px) {
     .navbar {
-        min-height: 80px;
-        height: 80px;
+        min-height: 60px;
+        height: 60px;
         padding: 0 !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center;
-        line-height: 80px;
+        line-height: 60px;
     }
     
     .navbar-brand img {
-        height: 70px;
-        min-height: 70px;
+        height: 50px;
+        min-height: 50px;
     }
     
     .navbar .container {
@@ -2591,8 +2591,8 @@ html {
     }
     
     .navbar-brand img {
-        height: 70px;
-        min-height: 70px;
+        height: 50px;
+        min-height: 50px;
     }
     
     .navbar-nav .btn {
@@ -3116,8 +3116,8 @@ footer ul.list-unstyled li i {
     }
     
     .navbar-brand img {
-        height: 100px;
-        min-height: 100px;
+        height: 60px;
+        min-height: 60px;
     }
 }
 
