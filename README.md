@@ -59,8 +59,8 @@ BABISHA/
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/mahimamj/Babisha.git
-   cd Babisha
+   git clone https://github.com/btdesign66/new-one.git
+   cd new-one
    ```
 
 2. **Start a local server**:
