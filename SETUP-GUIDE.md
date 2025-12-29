@@ -80,3 +80,4 @@ The website will be available at `http://localhost:8000`
 4. Configure proper CORS settings
 5. Use cloud storage for images (AWS S3, etc.)
 
+
