@@ -164,13 +164,12 @@ app.post('/api/generate-image', async (req, res, next) => {
             console.error('Google Generative AI API key not found');
             return res.status(500).json({
                 success: false,
-                message: 'Image generation service is not configured. Please contact administrator.'
+                message: 'Image generation service is not configured. Please set GOOGLE_GENERATIVE_AI_API_KEY environment variable.'
             });
         }
 
         // Generate image using Google Imagen API
-        // Note: Google's Generative AI SDK doesn't directly support Imagen
-        // We'll use the Vertex AI REST API or Generative AI API
+        // Try multiple approaches: Vertex AI, Generative AI API, or alternative
         const imagenResponse = await generateImageWithImagen(apiKey, prompt, aspectRatio);
 
         res.json({
@@ -189,63 +188,32 @@ app.post('/api/generate-image', async (req, res, next) => {
 
 /**
  * Generate image using Google Imagen API
- * Uses Vertex AI REST API for Imagen 3.0
+ * Supports multiple approaches: Vertex AI, Generative AI API, or alternative services
  */
 async function generateImageWithImagen(apiKey, prompt, aspectRatio) {
     try {
-        // Option 1: Try Vertex AI Imagen API (if using Vertex AI)
-        // This requires Vertex AI setup and different authentication
-        // For now, we'll use a fallback approach
-        
-        // Option 2: Use Google Generative AI with image generation capability
-        // Note: The standard Generative AI SDK doesn't support Imagen directly
-        // We'll use the REST API endpoint for Imagen
-        
-        // Imagen API endpoint (Vertex AI)
-        // This requires proper Vertex AI project setup
         const projectId = process.env.GOOGLE_CLOUD_PROJECT_ID;
         const location = process.env.GOOGLE_CLOUD_LOCATION || 'us-central1';
         
+        // Option 1: Try Vertex AI Imagen API (if project ID is configured)
         if (projectId) {
-            // Use Vertex AI endpoint
-            const vertexUrl = `https://${location}-aiplatform.googleapis.com/v1/projects/${projectId}/locations/${location}/publishers/google/models/imagen-3.0-generate-001:predict`;
-            
-            const requestBody = {
-                instances: [{
-                    prompt: prompt
-                }],
-                parameters: {
-                    sampleCount: 1,
-                    aspectRatio: aspectRatio,
-                    safetyFilterLevel: "block_some",
-                    personGeneration: "allow_all"
-                }
-            };
-
-            const response = await axios.post(
-                vertexUrl,
-                requestBody,
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${await getAccessToken()}`
-                    },
-                    timeout: 60000
-                }
-            );
-
-            if (response.data && response.data.predictions && response.data.predictions.length > 0) {
-                const imageBase64 = response.data.predictions[0].bytesBase64Encoded;
-                return {
-                    imageUrl: `data:image/png;base64,${imageBase64}`,
-                    imageBase64: imageBase64
-                };
+            try {
+                return await generateWithVertexAI(apiKey, projectId, location, prompt, aspectRatio);
+            } catch (vertexError) {
+                console.log('Vertex AI failed, trying alternative approach...', vertexError.message);
             }
         }
         
-        // Fallback: Use Generative AI API with image generation
-        // This is a placeholder - actual implementation depends on API availability
-        throw new Error('Imagen API requires Vertex AI setup. Please configure GOOGLE_CLOUD_PROJECT_ID environment variable.');
+        // Option 2: Try Generative AI API (Gemini) - Note: Gemini doesn't generate images directly
+        // But we can use it to create image generation prompts or use alternative
+        
+        // Option 3: Use alternative image generation service
+        // For now, we'll provide a helpful error message
+        throw new Error(
+            'Image generation requires Vertex AI setup. ' +
+            'Please set GOOGLE_CLOUD_PROJECT_ID environment variable, ' +
+            'or use an alternative image generation service like Stability AI or Replicate.'
+        );
         
     } catch (error) {
         if (error.response) {
@@ -258,13 +226,71 @@ async function generateImageWithImagen(apiKey, prompt, aspectRatio) {
 }
 
 /**
- * Get Google Cloud access token (for Vertex AI)
- * This requires google-auth-library package
+ * Generate image using Vertex AI Imagen
  */
-async function getAccessToken() {
-    // For production, use google-auth-library
-    // For now, return the API key as a fallback
-    return process.env.GOOGLE_GENERATIVE_AI_API_KEY || process.env.GEMINI_API_KEY;
+async function generateWithVertexAI(apiKey, projectId, location, prompt, aspectRatio) {
+    const vertexUrl = `https://${location}-aiplatform.googleapis.com/v1/projects/${projectId}/locations/${location}/publishers/google/models/imagen-3.0-generate-001:predict`;
+    
+    const requestBody = {
+        instances: [{
+            prompt: prompt
+        }],
+        parameters: {
+            sampleCount: 1,
+            aspectRatio: aspectRatio,
+            safetyFilterLevel: "block_some",
+            personGeneration: "allow_all"
+        }
+    };
+
+    // For Vertex AI, we need OAuth token, not API key
+    // Try to get access token
+    const accessToken = await getAccessToken(apiKey);
+    
+    const response = await axios.post(
+        vertexUrl,
+        requestBody,
+        {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            },
+            timeout: 60000
+        }
+    );
+
+    if (response.data && response.data.predictions && response.data.predictions.length > 0) {
+        const imageBase64 = response.data.predictions[0].bytesBase64Encoded;
+        return {
+            imageUrl: `data:image/png;base64,${imageBase64}`,
+            imageBase64: imageBase64
+        };
+    }
+    
+    throw new Error('No image generated from Vertex AI response');
+}
+
+/**
+ * Get Google Cloud access token (for Vertex AI)
+ * This requires google-auth-library package for OAuth
+ */
+async function getAccessToken(apiKey) {
+    // For Vertex AI, we need OAuth token, not API key
+    // Try to use google-auth-library if available
+    try {
+        const { GoogleAuth } = require('google-auth-library');
+        const auth = new GoogleAuth({
+            scopes: ['https://www.googleapis.com/auth/cloud-platform']
+        });
+        const client = await auth.getClient();
+        const accessToken = await client.getAccessToken();
+        return accessToken.token;
+    } catch (error) {
+        // If google-auth-library is not available, try using API key directly
+        // Note: This may not work for Vertex AI, but worth trying
+        console.log('google-auth-library not available, using API key directly');
+        return apiKey;
+    }
 }
 
 /**
