@@ -19,6 +19,26 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static('public')); // For serving generated images
 
+// 404 handler for API routes - return JSON instead of HTML
+app.use((req, res, next) => {
+    if (req.path.startsWith('/api/') && req.method !== 'OPTIONS') {
+        // This will only catch if no route matched
+        return res.status(404).json({
+            success: false,
+            message: `API endpoint not found: ${req.method} ${req.originalUrl}`
+        });
+    }
+    next();
+});
+
+// 404 handler for API routes - return JSON instead of HTML
+app.use('/api/*', (req, res) => {
+    res.status(404).json({
+        success: false,
+        message: `API endpoint not found: ${req.method} ${req.originalUrl}`
+    });
+});
+
 // Configuration
 const UPLOAD_DIR = path.join(__dirname, 'uploads');
 const RESULT_DIR = path.join(__dirname, 'public', 'results');
@@ -59,22 +79,33 @@ const upload = multer({
     }
 });
 
-// Error handling middleware
+// Error handling middleware - ensure JSON responses for API routes
 app.use((error, req, res, next) => {
-    if (error instanceof multer.MulterError) {
-        if (error.code === 'LIMIT_FILE_SIZE') {
+    // Always return JSON for API routes
+    if (req.path.startsWith('/api/')) {
+        if (error instanceof multer.MulterError) {
+            if (error.code === 'LIMIT_FILE_SIZE') {
+                return res.status(400).json({
+                    success: false,
+                    message: 'File size exceeds 10MB limit'
+                });
+            }
             return res.status(400).json({
                 success: false,
-                message: 'File size exceeds 10MB limit'
+                message: error.message || 'File upload error'
             });
         }
+        
+        console.error('API Error:', error);
+        const statusCode = error.status || error.statusCode || 500;
+        return res.status(statusCode).json({
+            success: false,
+            message: error.message || 'Internal server error'
+        });
     }
     
-    console.error('Error:', error);
-    res.status(500).json({
-        success: false,
-        message: error.message || 'Internal server error'
-    });
+    // For non-API routes, pass to next error handler
+    next(error);
 });
 
 /**

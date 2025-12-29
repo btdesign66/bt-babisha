@@ -245,9 +245,22 @@ async function generateTryOn() {
             body: formData
         });
         
+        // Check if response is JSON
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+            if (!response.ok) {
+                throw new Error(`Server error: ${response.status} ${response.statusText}. Make sure the backend server is running on http://localhost:3000`);
+            }
+            throw new Error('Server returned non-JSON response. Please check if the backend server is running correctly.');
+        }
+        
         if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.message || 'Failed to generate try-on image');
+            try {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Failed to generate try-on image');
+            } catch (parseError) {
+                throw new Error(`Server error: ${response.status} ${response.statusText}`);
+            }
         }
         
         const result = await response.json();
