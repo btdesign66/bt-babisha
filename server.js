@@ -472,13 +472,17 @@ cleanupOldFiles();
 setInterval(cleanupOldFiles, 60 * 60 * 1000); // Run cleanup every hour
 
 // Start server only if not in serverless environment (Vercel)
-if (process.env.VERCEL !== '1' && !process.env.VERCEL_ENV) {
+if (!isVercel) {
     app.listen(PORT, () => {
         console.log(`🚀 BABISHA Virtual Try-On API running on http://localhost:${PORT}`);
         console.log(`📁 Upload directory: ${UPLOAD_DIR}`);
         console.log(`📁 Results directory: ${RESULT_DIR}`);
         console.log(`⏰ Image retention: ${IMAGE_RETENTION_HOURS} hours`);
     });
+} else {
+    console.log('Running on Vercel - serverless mode');
+    console.log(`📁 Upload directory: ${UPLOAD_DIR}`);
+    console.log(`📁 Results directory: ${RESULT_DIR}`);
 }
 
 // Export for Vercel serverless functions
