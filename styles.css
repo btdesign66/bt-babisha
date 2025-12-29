@@ -3512,4 +3512,15 @@ footer ul.list-unstyled li i {
     .payment-partner-logo {
         height: 30px;
     }
+    
+    .discount-banner {
+        padding: 12px 0;
+        min-height: 40px;
+    }
+    
+    .discount-banner-content {
+        font-size: 0.85rem;
+        letter-spacing: 1px;
+        animation-duration: 35s;
+    }
 }
