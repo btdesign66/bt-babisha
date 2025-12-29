@@ -1,7 +1,19 @@
 // Virtual Try-On JavaScript
 
-// API Configuration
-const API_BASE_URL = 'http://localhost:3000/api'; // Change to your backend URL
+// API Configuration - Auto-detect environment
+const API_BASE_URL = (() => {
+    // Check if we're on Vercel or production
+    if (window.location.hostname.includes('vercel.app') || window.location.hostname.includes('vercel.com')) {
+        // Production/Vercel - use same origin
+        return '/api';
+    } else if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        // Local development
+        return 'http://localhost:3000/api';
+    } else {
+        // Other production domain - use same origin
+        return '/api';
+    }
+})();
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 const ALLOWED_FILE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
 

@@ -1,0 +1,9 @@
+node_modules
+uploads
+public/results
+*.log
+.env
+.env.local
+.git
+.gitignore
+

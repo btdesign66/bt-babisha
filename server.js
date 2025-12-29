@@ -31,24 +31,31 @@ app.use((req, res, next) => {
     next();
 });
 
-// 404 handler for API routes - return JSON instead of HTML
-app.use('/api/*', (req, res) => {
-    res.status(404).json({
-        success: false,
-        message: `API endpoint not found: ${req.method} ${req.originalUrl}`
-    });
-});
+// Remove duplicate 404 handler - already handled above
 
-// Configuration
-const UPLOAD_DIR = path.join(__dirname, 'uploads');
-const RESULT_DIR = path.join(__dirname, 'public', 'results');
+// Configuration - Use /tmp for Vercel (read-only filesystem)
+const isVercel = process.env.VERCEL === '1' || process.env.VERCEL_ENV;
+const UPLOAD_DIR = isVercel 
+    ? path.join('/tmp', 'uploads')
+    : path.join(__dirname, 'uploads');
+const RESULT_DIR = isVercel
+    ? path.join('/tmp', 'results')
+    : path.join(__dirname, 'public', 'results');
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 const IMAGE_RETENTION_HOURS = 24;
 
-// Ensure directories exist
+// Ensure directories exist (skip on Vercel - uses /tmp)
 async function ensureDirectories() {
-    await fs.mkdir(UPLOAD_DIR, { recursive: true });
-    await fs.mkdir(RESULT_DIR, { recursive: true });
+    try {
+        await fs.mkdir(UPLOAD_DIR, { recursive: true });
+        await fs.mkdir(RESULT_DIR, { recursive: true });
+    } catch (error) {
+        if (isVercel) {
+            console.log('Using /tmp for file storage on Vercel');
+        } else {
+            console.error('Error creating directories:', error);
+        }
+    }
 }
 ensureDirectories();
 
@@ -464,13 +471,16 @@ async function cleanupOldFiles() {
 cleanupOldFiles();
 setInterval(cleanupOldFiles, 60 * 60 * 1000); // Run cleanup every hour
 
-// Start server
-app.listen(PORT, () => {
-    console.log(`🚀 BABISHA Virtual Try-On API running on http://localhost:${PORT}`);
-    console.log(`📁 Upload directory: ${UPLOAD_DIR}`);
-    console.log(`📁 Results directory: ${RESULT_DIR}`);
-    console.log(`⏰ Image retention: ${IMAGE_RETENTION_HOURS} hours`);
-});
+// Start server only if not in serverless environment (Vercel)
+if (process.env.VERCEL !== '1' && !process.env.VERCEL_ENV) {
+    app.listen(PORT, () => {
+        console.log(`🚀 BABISHA Virtual Try-On API running on http://localhost:${PORT}`);
+        console.log(`📁 Upload directory: ${UPLOAD_DIR}`);
+        console.log(`📁 Results directory: ${RESULT_DIR}`);
+        console.log(`⏰ Image retention: ${IMAGE_RETENTION_HOURS} hours`);
+    });
+}
 
+// Export for Vercel serverless functions
 module.exports = app;
 
