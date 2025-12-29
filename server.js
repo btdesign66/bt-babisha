@@ -311,26 +311,35 @@ async function generateWithCustomModel(userPhotoPath, productImagePath, productT
     // For demo purposes, we'll simulate processing
     // In production, replace this with actual AI model API call
     
+    console.log('Using custom model (demo mode)');
+    console.log('User photo:', userPhotoPath);
+    console.log('Product type:', productType);
+    
     // Simulate processing delay
     await new Promise(resolve => setTimeout(resolve, 2000));
     
     // In production, you would:
     // 1. Call your AI model API (e.g., hosted on AWS SageMaker, Google Cloud, etc.)
-    // 2. Process the images
+    // 2. Process the images using AI
     // 3. Return the result
     
-    // For now, return a placeholder
-    // Replace this with actual API call to your model
+    // For demo: Copy user photo as placeholder
+    // NOTE: This is just a placeholder. In production, replace with actual AI processing
+    const resultPath = path.join(RESULT_DIR, `result-${Date.now()}-${crypto.randomBytes(4).toString('hex')}.jpg`);
     
-    const resultPath = path.join(RESULT_DIR, `result-${Date.now()}.jpg`);
-    
-    // Copy user photo as placeholder (replace with actual AI processing)
-    await fs.copyFile(userPhotoPath, resultPath);
-    
-    return {
-        imagePath: resultPath,
-        imageUrl: `/results/${path.basename(resultPath)}`
-    };
+    try {
+        // Copy user photo as placeholder (replace with actual AI processing)
+        await fs.copyFile(userPhotoPath, resultPath);
+        console.log('Result saved to:', resultPath);
+        
+        return {
+            imagePath: resultPath,
+            imageUrl: `/results/${path.basename(resultPath)}`
+        };
+    } catch (error) {
+        console.error('Error in custom model:', error);
+        throw new Error('Failed to process image');
+    }
 }
 
 /**

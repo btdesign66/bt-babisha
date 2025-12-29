@@ -142,17 +142,18 @@ h1, h2, h3, h4, h5, h6 {
     color: var(--text-dark) !important;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
-    padding: 0.5rem 1rem !important;
+    padding: 0.5rem 1.2rem !important;
     transform: translateY(0);
-    font-size: 0.95rem;
+    font-size: 1rem;
     letter-spacing: 0.2px;
     margin: 0 !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center;
     height: auto;
-    line-height: 1;
+    line-height: 1.2;
     border-radius: 6px;
+    white-space: nowrap;
 }
 
 .nav-link:hover {
@@ -289,18 +290,22 @@ h1, h2, h3, h4, h5, h6 {
     padding-bottom: 0 !important;
     height: 100% !important;
     width: 100%;
+    max-width: 100% !important;
     min-height: inherit;
     margin: 0;
+    padding-left: 3rem !important;
+    padding-right: 3rem !important;
 }
 
 .navbar-nav {
     display: flex !important;
     align-items: center !important;
     justify-content: center;
-    gap: 0;
+    gap: 0.5rem;
     height: 100% !important;
     margin: 0 !important;
     padding: 0 !important;
+    flex-wrap: nowrap;
 }
 
 .navbar-nav.navbar-nav:last-child {
@@ -3272,7 +3277,7 @@ footer ul.list-unstyled li i {
 
 /* BT Designers Text Section - Logo removed, text only */
 .bt-designers-text {
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     color: var(--text-light);
     font-style: italic;
     font-weight: 400;
@@ -3283,6 +3288,8 @@ footer ul.list-unstyled li i {
     display: flex;
     align-items: center;
     height: 100%;
+    margin-left: 1rem;
+    min-width: fit-content;
 }
 
 /* Customer Reviews Section */

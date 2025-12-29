@@ -222,10 +222,22 @@ async function generateTryOn() {
     try {
         // Prepare form data
         const formData = new FormData();
-        formData.append('productImage', state.selectedProduct.image || state.selectedProduct.imageUrl);
-        formData.append('productType', state.selectedProduct.type || state.selectedProduct.category);
-        formData.append('productName', state.selectedProduct.name);
+        
+        // Add product type and name (required)
+        formData.append('productType', state.selectedProduct.type || state.selectedProduct.category || 'lehenga');
+        formData.append('productName', state.selectedProduct.name || 'Product');
+        
+        // Add user photo (required - file)
         formData.append('userPhoto', state.uploadedImage.file);
+        
+        // Add product image if it's a file, otherwise it will use productType
+        if (state.selectedProduct.imageFile) {
+            formData.append('productImage', state.selectedProduct.imageFile);
+        } else if (state.selectedProduct.image || state.selectedProduct.imageUrl) {
+            // If product image is a URL, we'll let the backend handle it via productType
+            // For now, we'll skip it and let backend use default based on productType
+            console.log('Product image URL provided, backend will use productType:', state.selectedProduct.type);
+        }
         
         // Call API
         const response = await fetch(`${API_BASE_URL}/try-on`, {
@@ -251,7 +263,14 @@ async function generateTryOn() {
         
     } catch (error) {
         console.error('Error generating try-on:', error);
-        showError(error.message || 'An error occurred while generating your try-on. Please try again.');
+        let errorMessage = error.message || 'An error occurred while generating your try-on. Please try again.';
+        
+        // Check if it's a connection error
+        if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError') || error.name === 'TypeError') {
+            errorMessage = 'Cannot connect to the server. Please make sure the backend server is running on http://localhost:3000. Run "npm start" in the terminal to start the server.';
+        }
+        
+        showError(errorMessage);
     } finally {
         state.isProcessing = false;
         elements.generateBtn.disabled = false;
