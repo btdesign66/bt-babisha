@@ -123,14 +123,14 @@ document.addEventListener('DOMContentLoaded', async () => {
                 </tr>
             `).join('');
             
-            // Also attach event listeners as fallback
-            document.querySelectorAll('.btn-danger').forEach(btn => {
-                const productId = btn.getAttribute('data-product-id');
-                if (productId) {
-                    btn.addEventListener('click', (e) => {
-                        e.preventDefault();
+            // Also attach event listeners as fallback (using event delegation)
+            tbody.addEventListener('click', (e) => {
+                if (e.target.classList.contains('btn-danger')) {
+                    e.preventDefault();
+                    const productId = e.target.getAttribute('data-product-id') || e.target.getAttribute('onclick')?.match(/\('([^']+)'\)/)?.[1];
+                    if (productId) {
                         window.deleteProduct(productId);
-                    });
+                    }
                 }
             });
             
