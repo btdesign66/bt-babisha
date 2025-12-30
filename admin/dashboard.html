@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Babisha Admin</title>
     <link rel="stylesheet" href="styles/dashboard.css">
+    <link rel="stylesheet" href="styles/admin-pages.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 <body>
     <div class="admin-container">
@@ -142,6 +144,99 @@
                     </div>
                     <div class="stat-icon red">
                         <button class="stat-currency-btn">Rs</button>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Analytics Section -->
+            <section class="analytics-section">
+                <div class="analytics-header">
+                    <div class="header-left">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path d="M3 3v14h14M3 10l14-7" stroke="currentColor" stroke-width="2" fill="none"/>
+                        </svg>
+                        <h2>Analytics Overview</h2>
+                    </div>
+                    <div class="header-right">
+                        <select id="analyticsDateRange" class="form-control-sm">
+                            <option value="7">Last 7 Days</option>
+                            <option value="30" selected>Last 30 Days</option>
+                            <option value="90">Last 90 Days</option>
+                            <option value="365">Last Year</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Advanced Metrics Grid -->
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-header">
+                            <h3>Total Products</h3>
+                            <span class="metric-trend up" id="productsTrend">+12.5%</span>
+                        </div>
+                        <div class="metric-value" id="analyticsTotalProducts">0</div>
+                        <div class="metric-chart-mini">
+                            <canvas id="productsMiniChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-header">
+                            <h3>Active Products</h3>
+                            <span class="metric-trend up" id="activeTrend">+8.3%</span>
+                        </div>
+                        <div class="metric-value" id="analyticsActiveProducts">0</div>
+                        <div class="metric-chart-mini">
+                            <canvas id="activeMiniChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-header">
+                            <h3>Total Revenue</h3>
+                            <span class="metric-trend up" id="revenueTrend">+23.1%</span>
+                        </div>
+                        <div class="metric-value" id="analyticsRevenue">₹0</div>
+                        <div class="metric-chart-mini">
+                            <canvas id="revenueMiniChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-header">
+                            <h3>Conversion Rate</h3>
+                            <span class="metric-trend down" id="conversionTrend">-2.1%</span>
+                        </div>
+                        <div class="metric-value" id="analyticsConversion">0%</div>
+                        <div class="metric-chart-mini">
+                            <canvas id="conversionMiniChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Charts Section -->
+                <div class="charts-section">
+                    <div class="chart-container">
+                        <div class="chart-header">
+                            <h2>Product Performance</h2>
+                            <div class="chart-controls">
+                                <button class="chart-btn active" data-metric="views">Views</button>
+                                <button class="chart-btn" data-metric="sales">Sales</button>
+                                <button class="chart-btn" data-metric="revenue">Revenue</button>
+                            </div>
+                        </div>
+                        <div class="chart-wrapper">
+                            <canvas id="performanceChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <div class="chart-header">
+                            <h2>Category Distribution</h2>
+                        </div>
+                        <div class="chart-wrapper">
+                            <canvas id="categoryChart"></canvas>
+                        </div>
                     </div>
                 </div>
             </section>
