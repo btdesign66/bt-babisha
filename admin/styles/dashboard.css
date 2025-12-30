@@ -61,7 +61,11 @@ body::before {
     position: relative;
     z-index: 10;
     transition: width 0.3s ease, transform 0.3s ease;
-    overflow: hidden;
+    overflow: visible;
+}
+
+.sidebar-header {
+    overflow: visible;
 }
 
 .sidebar.collapsed {
