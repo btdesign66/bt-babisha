@@ -51,7 +51,7 @@ async function fetchProductsFromSupabase() {
             .from('products')
             .select('*')
             .eq('status', 'active') // Only fetch active products
-            .order('created_at', { ascending: false });
+            .order('created_at', { ascending: false }); // Newest products first
         
         if (error) {
             console.error('Error fetching products from Supabase:', error);
@@ -134,13 +134,15 @@ async function mergeProductsWithStatic() {
     
     // Combine: Supabase products first (newest at top), then static products
     // This ensures new products appear at the top while preserving all old products
+    // Supabase products are already ordered by created_at DESC (newest first)
     const mergedProducts = [
-        ...newSupabaseProducts,  // New products from Supabase (at top)
+        ...newSupabaseProducts,  // New products from Supabase (newest first, at top)
         ...staticProducts         // All existing static products (below)
     ];
     
     console.log(`✅ Merged products: ${newSupabaseProducts.length} new from Supabase + ${staticProducts.length} static = ${mergedProducts.length} total`);
-    console.log(`📊 Product breakdown: ${newSupabaseProducts.length} new products will appear at top`);
+    console.log(`📊 Product order: ${newSupabaseProducts.length} NEW products at TOP, then ${staticProducts.length} static products below`);
+    console.log(`🎯 First product will be: ${mergedProducts[0]?.name || 'N/A'}`);
     
     return mergedProducts;
 }
