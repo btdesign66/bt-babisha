@@ -43,8 +43,8 @@ window.deleteProduct = async function(id) {
         alert('Product deleted successfully!');
         
         // Reload products list
-        if (typeof loadProducts === 'function') {
-            await loadProducts();
+        if (typeof window.loadProducts === 'function') {
+            await window.loadProducts();
         } else {
             // Fallback: reload page
             window.location.reload();
@@ -140,61 +140,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
     
-    // Delete product function - make sure it's globally accessible
-    window.deleteProduct = async (id) => {
-        console.log('Delete product called with ID:', id);
-        
-        if (!id) {
-            alert('Error: Product ID is missing.');
-            return;
-        }
-        
-        if (!confirm('Are you sure you want to delete this product? This action cannot be undone.')) {
-            return;
-        }
-        
-        try {
-            console.log('Attempting to delete product:', id);
-            
-            // Check if supabase is available
-            if (!supabase || typeof supabase.from !== 'function') {
-                throw new Error('Supabase client not initialized');
-            }
-            
-            const { data, error } = await supabase
-                .from('products')
-                .delete()
-                .eq('id', id)
-                .select();
-            
-            if (error) {
-                console.error('Supabase delete error:', error);
-                throw error;
-            }
-            
-            console.log('Product deleted successfully:', data);
-            alert('Product deleted successfully!');
-            
-            // Reload products list
-            await loadProducts();
-        } catch (error) {
-            console.error('Error deleting product:', error);
-            let errorMessage = 'Error deleting product. ';
-            
-            if (error.message) {
-                errorMessage += error.message;
-            } else if (error.code) {
-                errorMessage += `Error code: ${error.code}`;
-            } else {
-                errorMessage += 'Please check the console for details.';
-            }
-            
-            alert(errorMessage);
-        }
-    };
-    
-    // Also attach to global scope for extra safety
-    if (typeof window !== 'undefined') {
-        window.deleteProduct = window.deleteProduct;
-    }
+    // Make loadProducts accessible globally for delete function
+    window.loadProducts = loadProducts;
 });
