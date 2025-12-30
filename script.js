@@ -3661,23 +3661,32 @@ async function initializeApp() {
     
     // Then try to load and merge Supabase products (will add new ones at top)
     if (typeof window.initializeProducts === 'function') {
-        console.log('Loading new products from Supabase and merging...');
+        console.log('🔄 Loading new products from Supabase and merging...');
         try {
             const mergedProducts = await window.initializeProducts();
             if (mergedProducts && mergedProducts.length > 0) {
+                const newProductCount = mergedProducts.length - sampleFabrics.length;
                 fabricData = mergedProducts;
                 // CRITICAL: Update filteredFabrics with merged order (new products first)
                 filteredFabrics = [...mergedProducts];
                 console.log('✅ Products merged: New Supabase products added at top, all static products preserved');
-                console.log(`📊 Total products: ${fabricData.length} (${mergedProducts.length - sampleFabrics.length} new from Supabase + ${sampleFabrics.length} static)`);
-                console.log(`📄 Page 1 will show: ${mergedProducts.slice(0, itemsPerPage).map(p => p.name).join(', ')}`);
+                console.log(`📊 Total products: ${fabricData.length} (${newProductCount} new from Supabase + ${sampleFabrics.length} static)`);
+                if (newProductCount > 0) {
+                    console.log(`📄 Page 1 will show: ${mergedProducts.slice(0, itemsPerPage).map(p => p.name).join(', ')}`);
+                } else {
+                    console.log('ℹ️ No new products from Supabase, showing static products only');
+                }
+            } else {
+                console.log('ℹ️ No products returned from Supabase, using static products only');
             }
         } catch (error) {
-            console.warn('⚠️ Could not load Supabase products, using static products only:', error);
+            console.error('❌ Error loading Supabase products:', error);
+            console.warn('⚠️ Using static products only due to error');
             // Keep static products if Supabase fails
         }
     } else {
-        console.log('ℹ️ Supabase integration not available, using static products only');
+        console.warn('⚠️ Supabase integration not available (initializeProducts function not found), using static products only');
+        console.log('Make sure supabase-products.js is loaded before script.js');
     }
     
     // Make globally accessible for debugging

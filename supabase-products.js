@@ -12,41 +12,60 @@ let supabaseClient = null;
 // Initialize Supabase client
 function initSupabase() {
     if (typeof window.supabase === 'undefined') {
-        console.warn('Supabase library not loaded. Loading from CDN...');
+        console.warn('⚠️ Supabase library not loaded. Loading from CDN...');
         const script = document.createElement('script');
         script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js';
         script.onload = () => {
             if (window.supabase && typeof window.supabase.createClient === 'function') {
                 supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-                console.log('✅ Supabase client initialized');
+                console.log('✅ Supabase client initialized from CDN');
+            } else {
+                console.error('❌ Failed to initialize Supabase client after CDN load');
             }
+        };
+        script.onerror = () => {
+            console.error('❌ Failed to load Supabase library from CDN');
         };
         document.head.appendChild(script);
     } else {
         if (typeof window.supabase.createClient === 'function') {
             supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-            console.log('✅ Supabase client initialized');
+            console.log('✅ Supabase client initialized (library already loaded)');
         } else if (typeof window.supabase.from === 'function') {
             supabaseClient = window.supabase;
             console.log('✅ Using existing Supabase client');
+        } else {
+            console.error('❌ Supabase library loaded but createClient method not available');
         }
     }
 }
 
 // Fetch products from Supabase
 async function fetchProductsFromSupabase() {
+    // Initialize Supabase if not already done
     if (!supabaseClient) {
         initSupabase();
-        // Wait a bit for initialization
-        await new Promise(resolve => setTimeout(resolve, 500));
+        // Wait longer for CDN script to load if needed
+        let attempts = 0;
+        while (!supabaseClient && attempts < 10) {
+            await new Promise(resolve => setTimeout(resolve, 200));
+            attempts++;
+            // Try to initialize again if window.supabase is now available
+            if (typeof window.supabase !== 'undefined' && typeof window.supabase.createClient === 'function') {
+                supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                console.log('✅ Supabase client initialized after retry');
+            }
+        }
     }
     
     if (!supabaseClient || typeof supabaseClient.from !== 'function') {
-        console.warn('Supabase client not available. Using static products only.');
+        console.warn('⚠️ Supabase client not available after initialization attempts. Using static products only.');
+        console.warn('Check if Supabase CDN is loaded and credentials are correct.');
         return [];
     }
     
     try {
+        console.log('🔍 Fetching products from Supabase...');
         const { data: products, error } = await supabaseClient
             .from('products')
             .select('*')
@@ -54,14 +73,17 @@ async function fetchProductsFromSupabase() {
             .order('created_at', { ascending: false }); // Newest products first
         
         if (error) {
-            console.error('Error fetching products from Supabase:', error);
+            console.error('❌ Error fetching products from Supabase:', error);
+            console.error('Error details:', JSON.stringify(error, null, 2));
             return [];
         }
         
         if (!products || products.length === 0) {
-            console.log('No products found in Supabase database.');
+            console.log('ℹ️ No active products found in Supabase database.');
             return [];
         }
+        
+        console.log(`✅ Successfully fetched ${products.length} products from Supabase`);
         
         // Transform Supabase products to match website format
         return products.map(product => ({
@@ -150,11 +172,13 @@ async function mergeProductsWithStatic() {
 
 // Initialize and update product data
 async function initializeProducts() {
+    console.log('🚀 Initializing products from Supabase...');
+    
     // Initialize Supabase
     initSupabase();
     
-    // Wait a moment for Supabase to initialize
-    await new Promise(resolve => setTimeout(resolve, 300));
+    // Wait longer for Supabase to initialize (especially if loading from CDN)
+    await new Promise(resolve => setTimeout(resolve, 1000));
     
     // Merge products
     const mergedProducts = await mergeProductsWithStatic();
@@ -166,8 +190,16 @@ async function initializeProducts() {
         console.log('✅ Updated window.fabricData with merged products (new at top, all static preserved)');
     }
     
+    // Also update filteredFabrics if it exists
+    if (typeof window.filteredFabrics !== 'undefined') {
+        window.filteredFabrics = [...mergedProducts];
+        console.log('✅ Updated window.filteredFabrics with merged products');
+    }
+    
     // Don't overwrite sampleFabrics - keep original static products array intact
     // This ensures we always have the base static products for future merges
+    
+    return mergedProducts;
     
     // Trigger product display if on products page
     if (window.location.pathname.includes('products.html') || 
