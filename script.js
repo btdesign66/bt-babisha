@@ -3654,25 +3654,28 @@ document.addEventListener('DOMContentLoaded', function() {
 async function initializeApp() {
     console.log('Initializing app...');
     
-    // Try to load products from Supabase first
+    // Always start with static products first
+    fabricData = [...sampleFabrics];
+    filteredFabrics = [...fabricData];
+    console.log('✅ Loaded static products:', fabricData.length);
+    
+    // Then try to load and merge Supabase products (will add new ones at top)
     if (typeof window.initializeProducts === 'function') {
-        console.log('Loading products from Supabase...');
-        const mergedProducts = await window.initializeProducts();
-        if (mergedProducts && mergedProducts.length > 0) {
-            fabricData = mergedProducts;
-            filteredFabrics = [...fabricData];
-            console.log('✅ Products loaded from Supabase:', fabricData.length);
-        } else {
-            // Fallback to static products
-            fabricData = [...sampleFabrics];
-            filteredFabrics = [...fabricData];
-            console.log('✅ Using static products:', fabricData.length);
+        console.log('Loading new products from Supabase and merging...');
+        try {
+            const mergedProducts = await window.initializeProducts();
+            if (mergedProducts && mergedProducts.length > 0) {
+                fabricData = mergedProducts;
+                filteredFabrics = [...fabricData];
+                console.log('✅ Products merged: New Supabase products added at top, all static products preserved');
+                console.log(`📊 Total products: ${fabricData.length} (${mergedProducts.length - sampleFabrics.length} new from Supabase + ${sampleFabrics.length} static)`);
+            }
+        } catch (error) {
+            console.warn('⚠️ Could not load Supabase products, using static products only:', error);
+            // Keep static products if Supabase fails
         }
     } else {
-        // Fallback to static products if Supabase not available
-        fabricData = [...sampleFabrics];
-        filteredFabrics = [...fabricData];
-        console.log('✅ Using static products (Supabase not available):', fabricData.length);
+        console.log('ℹ️ Supabase integration not available, using static products only');
     }
     
     // Make globally accessible for debugging
@@ -3717,10 +3720,25 @@ function getCurrentPage() {
 async function initializeProductsPage() {
     console.log('Setting up products page...');
     
-    // Try to load products from Supabase first
+    // Try to load products from Supabase first and merge with static products
     if (typeof window.initializeProducts === 'function') {
-        console.log('Loading products from Supabase...');
-        await window.initializeProducts();
+        console.log('Loading products from Supabase and merging with static products...');
+        const mergedProducts = await window.initializeProducts();
+        
+        // Update fabricData with merged products (new products at top, old products below)
+        if (mergedProducts && mergedProducts.length > 0) {
+            fabricData = mergedProducts;
+            console.log('✅ Products merged: New Supabase products at top, all static products preserved');
+        }
+    }
+    
+    // Fallback: Ensure fabricData has static products if Supabase didn't work
+    if (!fabricData || fabricData.length === 0) {
+        console.log('fabricData is empty, initializing from sampleFabrics');
+        if (sampleFabrics && sampleFabrics.length > 0) {
+            fabricData = [...sampleFabrics];
+            console.log('fabricData initialized with', fabricData.length, 'static fabrics');
+        }
     }
     
     // Ensure filteredFabrics is initialized with all products
@@ -3742,15 +3760,6 @@ async function initializeProductsPage() {
     console.log('hasURLParams:', hasURLParams);
     console.log('filteredFabrics.length:', filteredFabrics ? filteredFabrics.length : 'undefined');
     console.log('fabricData.length:', fabricData ? fabricData.length : 'undefined');
-    
-    // Ensure fabricData is initialized
-    if (!fabricData || fabricData.length === 0) {
-        console.log('fabricData is empty, initializing from sampleFabrics');
-        if (sampleFabrics && sampleFabrics.length > 0) {
-            fabricData = [...sampleFabrics];
-            console.log('fabricData initialized with', fabricData.length, 'fabrics');
-        }
-    }
     
     // Only display fabrics if handleURLParameters didn't already do it
     if (!hasURLParams) {

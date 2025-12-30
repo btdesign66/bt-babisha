@@ -104,30 +104,43 @@ async function mergeProductsWithStatic() {
     // Get static products if available
     let staticProducts = [];
     if (typeof window.sampleFabrics !== 'undefined' && Array.isArray(window.sampleFabrics)) {
-        staticProducts = window.sampleFabrics;
+        staticProducts = [...window.sampleFabrics]; // Create a copy to preserve original
     }
     
-    // Create a map to avoid duplicates (by name or ID)
-    const productMap = new Map();
+    // Create a map to track existing products by ID or name (for deduplication)
+    const existingProductKeys = new Set();
     
-    // First, add static products
+    // Add all static products to the set (to track what exists)
     staticProducts.forEach(product => {
-        const key = product.id || product.name;
-        if (!productMap.has(key)) {
-            productMap.set(key, product);
+        const key = product.id || product.name?.toLowerCase().trim();
+        if (key) {
+            existingProductKeys.add(key);
         }
     });
     
-    // Then, add Supabase products (they will override static products with same ID)
-    supabaseProducts.forEach(product => {
-        const key = product.id || product.name;
-        productMap.set(key, product);
+    // Filter out Supabase products that might duplicate static products
+    // Only add Supabase products that don't already exist
+    const newSupabaseProducts = supabaseProducts.filter(product => {
+        const key = product.id || product.name?.toLowerCase().trim();
+        if (!key) return true; // If no key, include it
+        
+        // Check if this product already exists in static products
+        const exists = existingProductKeys.has(key);
+        if (!exists) {
+            existingProductKeys.add(key); // Mark as added
+        }
+        return !exists; // Only include if it doesn't exist
     });
     
-    // Convert map back to array
-    const mergedProducts = Array.from(productMap.values());
+    // Combine: Supabase products first (newest at top), then static products
+    // This ensures new products appear at the top while preserving all old products
+    const mergedProducts = [
+        ...newSupabaseProducts,  // New products from Supabase (at top)
+        ...staticProducts         // All existing static products (below)
+    ];
     
-    console.log(`✅ Merged products: ${supabaseProducts.length} from Supabase + ${staticProducts.length} static = ${mergedProducts.length} total`);
+    console.log(`✅ Merged products: ${newSupabaseProducts.length} new from Supabase + ${staticProducts.length} static = ${mergedProducts.length} total`);
+    console.log(`📊 Product breakdown: ${newSupabaseProducts.length} new products will appear at top`);
     
     return mergedProducts;
 }
