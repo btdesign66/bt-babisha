@@ -237,8 +237,52 @@ if (document.readyState === 'loading') {
     initializeProducts();
 }
 
+// Test function to debug Supabase connection
+async function testSupabaseConnection() {
+    console.log('🧪 Testing Supabase connection...');
+    initSupabase();
+    
+    // Wait for initialization
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    if (!supabaseClient || typeof supabaseClient.from !== 'function') {
+        console.error('❌ Supabase client not available');
+        return false;
+    }
+    
+    try {
+        // Test query - get all products (not just active)
+        const { data, error } = await supabaseClient
+            .from('products')
+            .select('id, name, status, created_at')
+            .limit(5);
+        
+        if (error) {
+            console.error('❌ Supabase query error:', error);
+            return false;
+        }
+        
+        console.log('✅ Supabase connection successful!');
+        console.log(`📊 Found ${data.length} products in database (showing first 5):`, data);
+        
+        // Check active products
+        const { data: activeProducts } = await supabaseClient
+            .from('products')
+            .select('id, name, status')
+            .eq('status', 'active');
+        
+        console.log(`✅ Active products: ${activeProducts?.length || 0}`);
+        
+        return true;
+    } catch (error) {
+        console.error('❌ Exception testing Supabase:', error);
+        return false;
+    }
+}
+
 // Export functions for global use
 window.fetchProductsFromSupabase = fetchProductsFromSupabase;
 window.mergeProductsWithStatic = mergeProductsWithStatic;
 window.initializeProducts = initializeProducts;
+window.testSupabaseConnection = testSupabaseConnection;
 
