@@ -61,3 +61,4 @@ COMMENT ON COLUMN youtube_videos.status IS 'Video status: active (visible on web
 COMMENT ON COLUMN youtube_videos.featured IS 'Whether this video should be featured prominently';
 COMMENT ON COLUMN youtube_videos.display_order IS 'Order for displaying videos (lower numbers appear first)';
 
+

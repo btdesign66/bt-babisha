@@ -65,3 +65,4 @@ The admin link has been added to the Quick Links section in the footer of all pa
 - The "Back to Website" link points to `../index.html` (main website homepage)
 - Footer links point to `admin/index.html` from any page
 
+

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Products - Babisha Admin</title>
+    <title>Activity Logs - Babisha Admin</title>
     <link rel="stylesheet" href="styles/dashboard.css">
     <link rel="stylesheet" href="styles/admin-pages.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
@@ -26,7 +26,13 @@
                     </svg>
                     <span>Dashboard</span>
                 </a>
-                <a href="products.html" class="nav-item active">
+                <a href="analytics.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M3 3v14h14M3 10l14-7" stroke="currentColor" stroke-width="2" fill="none"/>
+                    </svg>
+                    <span>Analytics</span>
+                </a>
+                <a href="products.html" class="nav-item">
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                         <path d="M5 5h10v10H5V5z" stroke="currentColor" stroke-width="2" fill="none"/>
                         <path d="M7.5 8.5l2 2 3-3" stroke="currentColor" stroke-width="2" fill="none"/>
@@ -47,13 +53,7 @@
                     </svg>
                     <span>YouTube Videos</span>
                 </a>
-                <a href="analytics.html" class="nav-item">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                        <path d="M3 3v14h14M3 10l14-7" stroke="currentColor" stroke-width="2" fill="none"/>
-                    </svg>
-                    <span>Analytics</span>
-                </a>
-                <a href="activity-logs.html" class="nav-item">
+                <a href="activity-logs.html" class="nav-item active">
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                         <path d="M10 2v16M2 10h16" stroke="currentColor" stroke-width="2"/>
                     </svg>
@@ -78,56 +78,82 @@
         
         <!-- Main Content -->
         <main class="main-content">
+            <!-- Header -->
             <header class="content-header">
                 <div class="header-left">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                        <path d="M5 5h14v14H5V5z" stroke="currentColor" stroke-width="2"/>
+                        <path d="M10 2v16M2 10h16" stroke="currentColor" stroke-width="2"/>
                     </svg>
-                    <h1>Products</h1>
+                    <h1>Activity Logs & Audit Trail</h1>
                 </div>
                 <div class="header-right">
-                    <a href="add-product.html" class="btn-primary">
+                    <div class="filter-controls">
+                        <select id="logType" class="form-control-sm">
+                            <option value="all">All Activities</option>
+                            <option value="create">Created</option>
+                            <option value="update">Updated</option>
+                            <option value="delete">Deleted</option>
+                            <option value="login">Login</option>
+                            <option value="export">Export</option>
+                        </select>
+                        <select id="logDateRange" class="form-control-sm">
+                            <option value="today">Today</option>
+                            <option value="week">This Week</option>
+                            <option value="month" selected>This Month</option>
+                            <option value="all">All Time</option>
+                        </select>
+                    </div>
+                    <button class="btn-export" id="exportLogs">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                            <path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2"/>
+                            <path d="M8 2v12M2 8l6-6 6 6" stroke="currentColor" stroke-width="2" fill="none"/>
                         </svg>
-                        Add Product
-                    </a>
-                    <span class="admin-label">Admin</span>
-                    <button class="logout-btn" id="logoutBtn">
-                        Logout
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                            <path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" fill="none"/>
-                        </svg>
+                        Export Logs
                     </button>
+                    <span class="admin-label">Admin</span>
+                    <button class="logout-btn" id="logoutBtn">Logout</button>
                 </div>
             </header>
             
-            <div class="page-content">
-                <div class="table-container">
-                    <table class="data-table">
+            <!-- Activity Logs Table -->
+            <section class="logs-section">
+                <div class="logs-table-container">
+                    <table class="data-table logs-table">
                         <thead>
                             <tr>
-                                <th>Image</th>
-                                <th>Name</th>
-                                <th>Price</th>
-                                <th>Category</th>
+                                <th>Timestamp</th>
+                                <th>User</th>
+                                <th>Action</th>
+                                <th>Entity Type</th>
+                                <th>Entity Name</th>
+                                <th>IP Address</th>
                                 <th>Status</th>
-                                <th>Actions</th>
+                                <th>Details</th>
                             </tr>
                         </thead>
-                        <tbody id="productsTableBody">
-                            <tr>
-                                <td colspan="6" class="loading">Loading products...</td>
-                            </tr>
+                        <tbody id="logsTableBody">
+                            <tr><td colspan="8" class="loading">Loading activity logs...</td></tr>
                         </tbody>
                     </table>
                 </div>
-            </div>
+                
+                <!-- Pagination -->
+                <div class="pagination-container">
+                    <div class="pagination-info">
+                        Showing <span id="showingFrom">1</span>-<span id="showingTo">50</span> of <span id="totalLogs">0</span> logs
+                    </div>
+                    <div class="pagination">
+                        <button class="pagination-btn" id="prevPage">Previous</button>
+                        <span class="pagination-page">Page <span id="currentPage">1</span> of <span id="totalPages">1</span></span>
+                        <button class="pagination-btn" id="nextPage">Next</button>
+                    </div>
+                </div>
+            </section>
         </main>
     </div>
     
     <script src="config.js"></script>
     <script src="js/auth.js"></script>
-    <script src="js/products.js"></script>
+    <script src="js/activity-logs.js"></script>
 </body>
 </html>
+
