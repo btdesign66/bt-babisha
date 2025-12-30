@@ -3,6 +3,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Check authentication
     Auth.requireAuth();
     
+    // Initialize sidebar toggle
+    initializeSidebarToggle();
+    
     // Load statistics
     await loadStatistics();
     
@@ -22,6 +25,25 @@ document.addEventListener('DOMContentLoaded', async () => {
         e.preventDefault();
         window.open('../index.html', '_blank');
     });
+    
+    function initializeSidebarToggle() {
+        const sidebar = document.getElementById('sidebar');
+        const toggleBtn = document.getElementById('sidebarToggle');
+        
+        if (!sidebar || !toggleBtn) return;
+        
+        // Check if sidebar state is saved
+        const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+        if (isCollapsed) {
+            sidebar.classList.add('collapsed');
+        }
+        
+        toggleBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('collapsed');
+            // Save state
+            localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
+        });
+    }
     
     // Analytics date range change
     const dateRangeSelect = document.getElementById('analyticsDateRange');

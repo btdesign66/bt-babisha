@@ -60,6 +60,37 @@ body::before {
     box-shadow: 2px 0 10px rgba(0, 122, 94, 0.1);
     position: relative;
     z-index: 10;
+    transition: width 0.3s ease, transform 0.3s ease;
+    overflow: hidden;
+}
+
+.sidebar.collapsed {
+    width: 70px;
+}
+
+.sidebar.collapsed .logo img {
+    height: 40px;
+}
+
+.sidebar.collapsed .admin-panel-text,
+.sidebar.collapsed .nav-item span {
+    opacity: 0;
+    width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.sidebar.collapsed .nav-item {
+    justify-content: center;
+    padding: 12px;
+}
+
+.sidebar.collapsed .sidebar-header {
+    padding: 20px 10px;
+}
+
+.sidebar.collapsed .logo {
+    justify-content: center;
 }
 
 .sidebar::before {
@@ -80,6 +111,40 @@ body::before {
 .sidebar-header {
     padding: 30px 20px;
     border-bottom: 1px solid #e0e0e0;
+    position: relative;
+}
+
+.sidebar-toggle {
+    position: absolute;
+    top: 20px;
+    right: 15px;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+}
+
+.sidebar-toggle:hover {
+    background: var(--maroon-dark);
+    transform: scale(1.05);
+}
+
+.sidebar-toggle svg {
+    stroke: white;
+    transition: transform 0.3s ease;
+}
+
+.sidebar.collapsed .sidebar-toggle svg {
+    transform: rotate(180deg);
 }
 
 .logo {
