@@ -3720,6 +3720,9 @@ function getCurrentPage() {
 async function initializeProductsPage() {
     console.log('Setting up products page...');
     
+    // Reset to page 1 to ensure new products appear first
+    currentPageNumber = 1;
+    
     // Try to load products from Supabase first and merge with static products
     if (typeof window.initializeProducts === 'function') {
         console.log('Loading products from Supabase and merging with static products...');
@@ -3728,7 +3731,10 @@ async function initializeProductsPage() {
         // Update fabricData with merged products (new products at top, old products below)
         if (mergedProducts && mergedProducts.length > 0) {
             fabricData = mergedProducts;
+            // IMPORTANT: Update filteredFabrics with merged products to ensure new products are at top
+            filteredFabrics = [...mergedProducts];
             console.log('✅ Products merged: New Supabase products at top, all static products preserved');
+            console.log(`📊 First 6 products on page 1 will be: ${mergedProducts.slice(0, 6).map(p => p.name).join(', ')}`);
         }
     }
     
@@ -3737,13 +3743,21 @@ async function initializeProductsPage() {
         console.log('fabricData is empty, initializing from sampleFabrics');
         if (sampleFabrics && sampleFabrics.length > 0) {
             fabricData = [...sampleFabrics];
+            filteredFabrics = [...sampleFabrics];
             console.log('fabricData initialized with', fabricData.length, 'static fabrics');
         }
     }
     
-    // Ensure filteredFabrics is initialized with all products
-    if (filteredFabrics.length === 0) {
+    // Ensure filteredFabrics is initialized with all products (in correct order: new first)
+    if (filteredFabrics.length === 0 || filteredFabrics.length !== fabricData.length) {
         filteredFabrics = [...fabricData];
+        console.log('✅ filteredFabrics updated with merged products order');
+    }
+    
+    // Reset sort to default (newest first) to maintain new products at top
+    const sortSelect = document.getElementById('sortSelect');
+    if (sortSelect) {
+        sortSelect.value = 'featured'; // or 'newest' if you have that option
     }
     
     initializeFilters();
@@ -3760,6 +3774,7 @@ async function initializeProductsPage() {
     console.log('hasURLParams:', hasURLParams);
     console.log('filteredFabrics.length:', filteredFabrics ? filteredFabrics.length : 'undefined');
     console.log('fabricData.length:', fabricData ? fabricData.length : 'undefined');
+    console.log('Current page:', currentPageNumber, '- Will show products:', filteredFabrics.slice(0, itemsPerPage).map(p => p.name).join(', '));
     
     // Only display fabrics if handleURLParameters didn't already do it
     if (!hasURLParams) {

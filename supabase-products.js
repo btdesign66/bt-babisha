@@ -142,7 +142,8 @@ async function mergeProductsWithStatic() {
     
     console.log(`✅ Merged products: ${newSupabaseProducts.length} new from Supabase + ${staticProducts.length} static = ${mergedProducts.length} total`);
     console.log(`📊 Product order: ${newSupabaseProducts.length} NEW products at TOP, then ${staticProducts.length} static products below`);
-    console.log(`🎯 First product will be: ${mergedProducts[0]?.name || 'N/A'}`);
+    console.log(`🎯 First product on page 1 will be: ${mergedProducts[0]?.name || 'N/A'}`);
+    console.log(`📄 First page (6 products) will show: ${mergedProducts.slice(0, 6).map(p => p.name).join(', ')}`);
     
     return mergedProducts;
 }
