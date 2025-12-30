@@ -3666,9 +3666,11 @@ async function initializeApp() {
             const mergedProducts = await window.initializeProducts();
             if (mergedProducts && mergedProducts.length > 0) {
                 fabricData = mergedProducts;
-                filteredFabrics = [...fabricData];
+                // CRITICAL: Update filteredFabrics with merged order (new products first)
+                filteredFabrics = [...mergedProducts];
                 console.log('✅ Products merged: New Supabase products added at top, all static products preserved');
                 console.log(`📊 Total products: ${fabricData.length} (${mergedProducts.length - sampleFabrics.length} new from Supabase + ${sampleFabrics.length} static)`);
+                console.log(`📄 Page 1 will show: ${mergedProducts.slice(0, itemsPerPage).map(p => p.name).join(', ')}`);
             }
         } catch (error) {
             console.warn('⚠️ Could not load Supabase products, using static products only:', error);
