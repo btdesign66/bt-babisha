@@ -93,6 +93,16 @@ body::before {
     justify-content: center;
 }
 
+.sidebar.collapsed .sidebar-toggle {
+    right: 10px;
+    width: 28px;
+    height: 28px;
+}
+
+.sidebar.collapsed .sidebar-toggle svg {
+    transform: rotate(180deg);
+}
+
 .sidebar::before {
     content: '';
     position: absolute;
