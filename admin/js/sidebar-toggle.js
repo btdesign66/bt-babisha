@@ -1,20 +1,57 @@
 // Sidebar Toggle Functionality - Shared across all admin pages
-document.addEventListener('DOMContentLoaded', function() {
-    const sidebar = document.getElementById('sidebar');
-    const toggleBtn = document.getElementById('sidebarToggle');
+(function() {
+    'use strict';
     
-    if (!sidebar || !toggleBtn) return;
-    
-    // Check if sidebar state is saved
-    const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
-    if (isCollapsed) {
-        sidebar.classList.add('collapsed');
+    function initSidebarToggle() {
+        const sidebar = document.getElementById('sidebar');
+        const toggleBtn = document.getElementById('sidebarToggle');
+        
+        if (!sidebar) {
+            console.warn('Sidebar element not found');
+            return;
+        }
+        
+        if (!toggleBtn) {
+            console.warn('Sidebar toggle button not found');
+            return;
+        }
+        
+        console.log('Sidebar toggle initialized');
+        
+        // Check if sidebar state is saved
+        const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+        if (isCollapsed) {
+            sidebar.classList.add('collapsed');
+            console.log('Sidebar restored as collapsed');
+        }
+        
+        // Add click event listener
+        toggleBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('Toggle button clicked');
+            
+            sidebar.classList.toggle('collapsed');
+            const isNowCollapsed = sidebar.classList.contains('collapsed');
+            
+            // Save state to localStorage
+            localStorage.setItem('sidebarCollapsed', isNowCollapsed);
+            console.log('Sidebar toggled:', isNowCollapsed ? 'collapsed' : 'expanded');
+        });
+        
+        // Also handle click on the button itself
+        toggleBtn.style.cursor = 'pointer';
     }
     
-    toggleBtn.addEventListener('click', function() {
-        sidebar.classList.toggle('collapsed');
-        // Save state to localStorage
-        localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
-    });
-});
+    // Initialize when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initSidebarToggle);
+    } else {
+        // DOM is already loaded
+        initSidebarToggle();
+    }
+    
+    // Also try after a short delay as fallback
+    setTimeout(initSidebarToggle, 100);
+})();
 
