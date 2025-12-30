@@ -1,4 +1,13 @@
 /* Form Styles */
+:root {
+    --primary-color: #007A5E; /* Peacock Green */
+    --secondary-color: #C9A961; /* Foil Golden */
+    --accent-color: #DC143C; /* Red */
+    --text-dark: #2C1810; /* Dark Brown */
+    --text-light: #8B7355; /* Light Brown */
+    --white: #ffffff;
+    --maroon-dark: #005A44; /* Dark Peacock Green */
+}
 
 .form-container {
     max-width: 800px;
@@ -23,7 +32,7 @@
 .form-group label {
     font-size: 14px;
     font-weight: 500;
-    color: #333;
+    color: var(--text-dark);
     margin-bottom: 8px;
 }
 
@@ -35,14 +44,15 @@
     border-radius: 4px;
     font-size: 14px;
     font-family: inherit;
-    transition: border-color 0.3s;
+    transition: all 0.3s ease;
 }
 
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus {
     outline: none;
-    border-color: #c8102e;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(0, 122, 94, 0.1);
 }
 
 .form-group textarea {

@@ -1,10 +1,20 @@
 /* Admin Pages Common Styles */
+:root {
+    --primary-color: #007A5E; /* Peacock Green */
+    --secondary-color: #C9A961; /* Foil Golden */
+    --accent-color: #DC143C; /* Red */
+    --text-dark: #2C1810; /* Dark Brown */
+    --text-light: #8B7355; /* Light Brown */
+    --white: #ffffff;
+    --maroon-dark: #005A44; /* Dark Peacock Green */
+}
 
 .page-content {
-    background-color: #ffffff;
+    background-color: var(--white);
     border-radius: 8px;
     padding: 30px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 15px rgba(0, 122, 94, 0.1);
+    border-top: 3px solid var(--primary-color);
 }
 
 .btn-primary {
@@ -12,7 +22,7 @@
     align-items: center;
     gap: 8px;
     padding: 10px 20px;
-    background-color: #c8102e;
+    background-color: var(--primary-color);
     color: white;
     text-decoration: none;
     border-radius: 4px;
@@ -20,11 +30,14 @@
     font-weight: 500;
     border: none;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 122, 94, 0.2);
 }
 
 .btn-primary:hover {
-    background-color: #a00d25;
+    background-color: var(--maroon-dark);
+    box-shadow: 0 4px 12px rgba(0, 122, 94, 0.3);
+    transform: translateY(-1px);
 }
 
 .btn-primary svg {
