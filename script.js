@@ -3695,8 +3695,14 @@ function getCurrentPage() {
 }
 
 // Initialize Products Page
-function initializeProductsPage() {
+async function initializeProductsPage() {
     console.log('Setting up products page...');
+    
+    // Try to load products from Supabase first
+    if (typeof window.initializeProducts === 'function') {
+        console.log('Loading products from Supabase...');
+        await window.initializeProducts();
+    }
     
     // Ensure filteredFabrics is initialized with all products
     if (filteredFabrics.length === 0) {
