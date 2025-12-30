@@ -156,16 +156,15 @@ async function initializeProducts() {
     // Merge products
     const mergedProducts = await mergeProductsWithStatic();
     
-    // Update global product data if it exists
+    // Update global product data
+    // Note: We preserve the original sampleFabrics array, but update fabricData with merged products
     if (typeof window.fabricData !== 'undefined') {
         window.fabricData = mergedProducts;
-        console.log('✅ Updated window.fabricData with merged products');
+        console.log('✅ Updated window.fabricData with merged products (new at top, all static preserved)');
     }
     
-    if (typeof window.sampleFabrics !== 'undefined') {
-        window.sampleFabrics = mergedProducts;
-        console.log('✅ Updated window.sampleFabrics with merged products');
-    }
+    // Don't overwrite sampleFabrics - keep original static products array intact
+    // This ensures we always have the base static products for future merges
     
     // Trigger product display if on products page
     if (window.location.pathname.includes('products.html') || 
