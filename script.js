@@ -3651,10 +3651,29 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // Initialize App Function
-function initializeApp() {
+async function initializeApp() {
     console.log('Initializing app...');
-    fabricData = [...sampleFabrics];
-    filteredFabrics = [...fabricData];
+    
+    // Try to load products from Supabase first
+    if (typeof window.initializeProducts === 'function') {
+        console.log('Loading products from Supabase...');
+        const mergedProducts = await window.initializeProducts();
+        if (mergedProducts && mergedProducts.length > 0) {
+            fabricData = mergedProducts;
+            filteredFabrics = [...fabricData];
+            console.log('✅ Products loaded from Supabase:', fabricData.length);
+        } else {
+            // Fallback to static products
+            fabricData = [...sampleFabrics];
+            filteredFabrics = [...fabricData];
+            console.log('✅ Using static products:', fabricData.length);
+        }
+    } else {
+        // Fallback to static products if Supabase not available
+        fabricData = [...sampleFabrics];
+        filteredFabrics = [...fabricData];
+        console.log('✅ Using static products (Supabase not available):', fabricData.length);
+    }
     
     // Make globally accessible for debugging
     window.sampleFabrics = sampleFabrics;
