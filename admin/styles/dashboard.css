@@ -291,11 +291,27 @@ body::before {
 
 /* Quick Actions */
 .quick-actions {
-    background-color: var(--white);
-    border-radius: 8px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(253, 245, 230, 0.9) 100%);
+    border-radius: 12px;
     padding: 25px;
-    box-shadow: 0 4px 15px rgba(0, 122, 94, 0.1);
+    box-shadow: 0 4px 15px rgba(0, 122, 94, 0.15);
     border-top: 3px solid var(--primary-color);
+    position: relative;
+    overflow: hidden;
+}
+
+.quick-actions::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><defs><pattern id="actionPattern" x="0" y="0" width="60" height="60" patternUnits="userSpaceOnUse"><path d="M30 0 L30 60 M0 30 L60 30" stroke="%23C9A961" stroke-width="0.5" opacity="0.04"/><circle cx="30" cy="30" r="2" fill="%23007A5E" opacity="0.03"/></pattern></defs><rect width="120" height="120" fill="url(%23actionPattern)"/></svg>');
+    background-size: 100px 100px;
+    opacity: 0.3;
+    pointer-events: none;
 }
 
 .quick-actions-header {
