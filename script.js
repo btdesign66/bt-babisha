@@ -3756,11 +3756,8 @@ async function initializeProductsPage() {
         console.log('✅ filteredFabrics updated with merged products order');
     }
     
-    // Reset sort to default (newest first) to maintain new products at top
-    const sortSelect = document.getElementById('sortSelect');
-    if (sortSelect) {
-        sortSelect.value = 'featured'; // or 'newest' if you have that option
-    }
+    // Don't change sort - keep default to maintain new products at top
+    // The default sort (featured) will keep the merged order: new products first
     
     initializeFilters();
     initializeSearch();
