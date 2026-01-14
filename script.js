@@ -4707,11 +4707,10 @@ function handleURLParameters() {
     console.log('handleURLParameters called');
     const urlParams = new URLSearchParams(window.location.search);
     const category = urlParams.get('category');
-    const collection = urlParams.get('collection');
     const occasion = urlParams.get('occasion');
     const fabric = urlParams.get('fabric');
     
-    console.log('URL params - category:', category, 'collection:', collection, 'occasion:', occasion, 'fabric:', fabric);
+    console.log('URL params - category:', category, 'occasion:', occasion, 'fabric:', fabric);
     console.log('fabricData length:', fabricData ? fabricData.length : 'undefined');
     
     // Ensure fabricData is initialized
@@ -4727,7 +4726,7 @@ function handleURLParameters() {
     }
     
     // If no category parameter, don't display yet (let initializeProductsPage handle it)
-    if (!category && !collection && !occasion && !fabric) {
+    if (!category && !occasion && !fabric) {
         console.log('No URL parameters found');
         filteredFabrics = [...fabricData];
         console.log('filteredFabrics set to:', filteredFabrics.length);
@@ -4736,6 +4735,17 @@ function handleURLParameters() {
     
     if (category) {
         console.log('Filtering by category:', category);
+        
+        // Check if category is coming soon
+        const comingSoonCategories = ['sarees', 'suits', 'indo-western', 'childwear', 'kids-lehengas', 'kids-suits', 'kids-traditional', 'kids-casual'];
+        if (comingSoonCategories.includes(category)) {
+            // Show coming soon message
+            alert('This category is coming soon! Stay tuned for updates.');
+            // Redirect to products page without category filter
+            window.location.href = 'products.html';
+            return false;
+        }
+        
         // Check the appropriate checkbox
         if (category === 'lehengas') {
             const lehengaCheckbox = document.getElementById('cat-lehenga');
@@ -4828,11 +4838,11 @@ function handleURLParameters() {
         // Hide Apply button since filters are applied from URL params
         hideApplyButton();
         return true; // Return true to indicate we handled URL params and displayed
-    } else if (collection || occasion || fabric) {
-        // For collection, occasion, or fabric parameters, show all products for now
+    } else if (occasion || fabric) {
+        // For occasion, or fabric parameters, show all products for now
         // (since products don't have these properties yet)
         filteredFabrics = [...fabricData];
-        console.log('Showing all fabrics for collection/occasion/fabric param');
+        console.log('Showing all fabrics for occasion/fabric param');
         displayFabrics();
         // Hide Apply button since filters are applied from URL params
         hideApplyButton();
@@ -5080,7 +5090,7 @@ Supplier: ${fabric.supplier}
 
 Please let me know about availability and ordering process. Thank you!`;
 
-        const whatsappUrl = `https://wa.me/919624113555?text=${encodeURIComponent(message)}`;
+        const whatsappUrl = `https://wa.me/917567114541?text=${encodeURIComponent(message)}`;
         console.log('ðŸ"— WhatsApp URL created:', whatsappUrl);
         window.open(whatsappUrl, '_blank');
         console.log('₹œ… WhatsApp opened successfully!');
@@ -5519,7 +5529,7 @@ function orderNowDirect(fabricId) {
         const message = `Hi! I am interested in ordering ${fabric.name} - Price: ₹${fabric.price.toLocaleString()}/piece. Please tell me more about availability and ordering process.`;
         console.log('ðŸ“ Message:', message);
         
-        const whatsappUrl = `https://wa.me/919624113555?text=${encodeURIComponent(message)}`;
+        const whatsappUrl = `https://wa.me/917567114541?text=${encodeURIComponent(message)}`;
         console.log('ðŸ”— Opening WhatsApp:', whatsappUrl);
         
         try {
@@ -5539,7 +5549,7 @@ function orderNowDirect(fabricId) {
 // Test WhatsApp function
 function testWhatsApp() {
     console.log('ðŸ“± Testing WhatsApp directly...');
-    window.open('https://wa.me/919624113555?text=Hi! This is a test message from BABISHA website.', '_blank');
+    window.open('https://wa.me/917567114541?text=Hi! This is a test message from BABISHA website.', '_blank');
 }
 
 // Export functions for global access
