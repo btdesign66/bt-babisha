@@ -74,6 +74,12 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Enhanced Navigation Styles */
 .navbar {
+    position: fixed !important;
+    top: 42px !important; /* Position below discount banner */
+    left: 0;
+    right: 0;
+    width: 100%;
+    z-index: 1030 !important; /* Above other content */
     padding: 0.5rem 0 !important;
     transition: all 0.3s ease;
     background: rgba(255, 255, 255, 0.98) !important;
@@ -361,6 +367,12 @@ h1, h2, h3, h4, h5, h6 {
 /* Mobile Navigation */
 @media (max-width: 991px) {
     .navbar {
+        position: fixed !important;
+        top: 42px !important; /* Below discount banner */
+        left: 0;
+        right: 0;
+        width: 100%;
+        z-index: 1030 !important;
         min-height: 60px;
         height: 60px;
         padding: 0 !important;
@@ -409,7 +421,8 @@ h1, h2, h3, h4, h5, h6 {
     height: 100vh;
     position: relative;
     overflow: hidden;
-    margin-top: 42px; /* Account for discount banner */
+    margin-top: 102px; /* Account for discount banner (42px) + navbar (60px) */
+    padding-top: 0;
 }
 
 .hero-carousel {
@@ -1181,6 +1194,7 @@ h1, h2, h3, h4, h5, h6 {
 .search-filter-section {
     background: var(--white);
     padding: 1.25rem 0;
+    margin-top: 102px !important; /* Account for fixed navbar (60px) + discount banner (42px) */
     margin-bottom: 1rem;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
@@ -1516,6 +1530,37 @@ h1, h2, h3, h4, h5, h6 {
 section.py-3.bg-light {
     margin-top: 102px !important; /* 60px navbar + 42px banner */
     padding: 1rem 0 !important;
+}
+
+/* Ensure body content starts below fixed navbar */
+body {
+    padding-top: 0;
+    margin-top: 0;
+}
+
+/* Ensure html element doesn't interfere */
+html {
+    scroll-padding-top: 102px; /* Account for fixed navbar when scrolling to anchors */
+}
+
+/* Force navbar to stay at top on all pages */
+.navbar.fixed-top {
+    position: fixed !important;
+    top: 42px !important;
+    z-index: 1030 !important;
+}
+
+/* Main content spacing for fixed navbar */
+main,
+section:first-of-type:not(.hero-section) {
+    margin-top: 102px;
+}
+
+/* Products page and other pages spacing */
+.products-page,
+.product-detail-section {
+    margin-top: 102px;
+    padding-top: 2rem;
 }
 
 .breadcrumb {
@@ -2619,8 +2664,12 @@ html {
 /* Mobile Page Header */
 @media (max-width: 768px) {
     section.py-3.bg-light {
-        margin-top: 70px !important;
+        margin-top: 102px !important; /* Discount banner (42px) + Navbar (60px) */
         padding: 1.5rem 0 !important;
+    }
+    
+    .hero-section {
+        margin-top: 102px !important; /* Discount banner (42px) + Navbar (60px) */
     }
     
     .display-5 {
@@ -3169,14 +3218,14 @@ footer ul.list-unstyled li i {
 
 /* Discount Banner */
 .discount-banner {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
     background: linear-gradient(135deg, var(--accent-color) 0%, #E63946 50%, var(--secondary-color) 100%);
     color: white;
     padding: 12px 0;
-    z-index: 9999;
+    z-index: 1040 !important; /* Above navbar */
     overflow: hidden;
     box-shadow: 0 4px 15px rgba(220, 20, 60, 0.2);
     text-align: center;
