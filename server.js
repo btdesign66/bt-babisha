@@ -22,6 +22,7 @@ app.use(cors({
 app.use(express.json({ limit: '10mb' })); // Increase limit for image uploads
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(express.static('public')); // For serving generated images
+app.use(express.static(__dirname)); // Serve files from root directory (HTML, CSS, JS files)
 
 // 404 handler for API routes - return JSON instead of HTML
 app.use((req, res, next) => {

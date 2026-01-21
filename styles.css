@@ -80,7 +80,8 @@ h1, h2, h3, h4, h5, h6 {
     right: 0;
     width: 100%;
     z-index: 1030 !important; /* Above other content */
-    padding: 0.5rem 0 !important;
+    height: 76px !important;
+    padding: 0 16px !important;
     transition: all 0.3s ease;
     background: rgba(255, 255, 255, 0.98) !important;
     backdrop-filter: blur(20px);
@@ -89,23 +90,24 @@ h1, h2, h3, h4, h5, h6 {
     display: flex !important;
     align-items: center !important;
     justify-content: center;
-    min-height: 60px;
-    height: auto;
+    min-height: 76px;
+    max-height: 76px;
     line-height: normal;
 }
 
 .navbar.scrolled {
-    padding: 0.25rem 0 !important;
+    height: 76px !important;
+    padding: 0 16px !important;
     background: rgba(255, 255, 255, 0.99) !important;
     box-shadow: 0 4px 30px rgba(0, 122, 94, 0.12);
-    min-height: 50px;
-    height: auto;
+    min-height: 76px;
+    max-height: 76px;
     line-height: normal;
 }
 
 .navbar.scrolled .navbar-brand img {
-    height: 45px;
-    min-height: 45px;
+    height: 60px;
+    min-height: 60px;
 }
 
 .navbar-brand img {
@@ -113,8 +115,9 @@ h1, h2, h3, h4, h5, h6 {
     filter: brightness(1) contrast(1.15);
     max-width: none;
     width: auto;
-    min-height: 55px;
-    height: 55px;
+    height: 60px !important;
+    min-height: 60px;
+    max-height: 60px;
     object-fit: contain;
     background: transparent !important;
     mix-blend-mode: normal;
@@ -134,7 +137,7 @@ h1, h2, h3, h4, h5, h6 {
     margin-right: 1.5rem;
     margin-top: 0 !important;
     margin-bottom: 0 !important;
-    height: auto;
+    height: 76px;
     line-height: 1;
 }
 
@@ -148,7 +151,9 @@ h1, h2, h3, h4, h5, h6 {
     color: var(--text-dark) !important;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
-    padding: 0.5rem 1.2rem !important;
+    padding: 0 1.2rem !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
     transform: translateY(0);
     font-size: 1rem;
     letter-spacing: 0.2px;
@@ -156,8 +161,8 @@ h1, h2, h3, h4, h5, h6 {
     display: flex !important;
     align-items: center !important;
     justify-content: center;
-    height: auto;
-    line-height: 1.2;
+    height: 76px;
+    line-height: 76px !important;
     border-radius: 6px;
     white-space: nowrap;
 }
@@ -294,10 +299,10 @@ h1, h2, h3, h4, h5, h6 {
     justify-content: space-between;
     padding-top: 0 !important;
     padding-bottom: 0 !important;
-    height: 100% !important;
+    height: 76px !important;
     width: 100%;
     max-width: 100% !important;
-    min-height: inherit;
+    min-height: 76px;
     margin: 0;
     padding-left: 3rem !important;
     padding-right: 3rem !important;
@@ -308,7 +313,7 @@ h1, h2, h3, h4, h5, h6 {
     align-items: center !important;
     justify-content: center;
     gap: 0.5rem;
-    height: 100% !important;
+    height: 76px !important;
     margin: 0 !important;
     padding: 0 !important;
     flex-wrap: nowrap;
@@ -347,7 +352,7 @@ h1, h2, h3, h4, h5, h6 {
 .navbar-nav .nav-item {
     display: flex !important;
     align-items: center !important;
-    height: auto;
+    height: 76px;
     margin: 0 !important;
     padding: 0 !important;
 }
@@ -362,6 +367,7 @@ h1, h2, h3, h4, h5, h6 {
     padding: 0.5rem 1rem;
     height: auto;
     line-height: 1;
+    max-height: 76px;
 }
 
 /* Mobile Navigation */
@@ -373,18 +379,23 @@ h1, h2, h3, h4, h5, h6 {
         right: 0;
         width: 100%;
         z-index: 1030 !important;
-        min-height: 60px;
-        height: 60px;
-        padding: 0 !important;
+        height: 76px !important;
+        min-height: 76px;
+        max-height: 76px;
+        padding: 0 16px !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center;
-        line-height: 60px;
     }
     
     .navbar-brand img {
-        height: 50px;
-        min-height: 50px;
+        height: 60px;
+        min-height: 60px;
+        max-height: 60px;
+    }
+    
+    .navbar .container {
+        height: 76px !important;
     }
     
     .navbar .container {
@@ -421,7 +432,7 @@ h1, h2, h3, h4, h5, h6 {
     height: 100vh;
     position: relative;
     overflow: hidden;
-    margin-top: 102px; /* Account for discount banner (42px) + navbar (60px) */
+    margin-top: 118px; /* Account for discount banner (42px) + navbar (76px) */
     padding-top: 0;
 }
 
@@ -1194,7 +1205,7 @@ h1, h2, h3, h4, h5, h6 {
 .search-filter-section {
     background: var(--white);
     padding: 1.25rem 0;
-    margin-top: 102px !important; /* Account for fixed navbar (60px) + discount banner (42px) */
+    margin-top: 118px !important; /* Account for fixed navbar (76px) + discount banner (42px) */
     margin-bottom: 1rem;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
@@ -1528,7 +1539,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Breadcrumb Section */
 section.py-3.bg-light {
-    margin-top: 102px !important; /* 60px navbar + 42px banner */
+    margin-top: 118px !important; /* 76px navbar + 42px banner */
     padding: 1rem 0 !important;
 }
 
@@ -1540,7 +1551,7 @@ body {
 
 /* Ensure html element doesn't interfere */
 html {
-    scroll-padding-top: 102px; /* Account for fixed navbar when scrolling to anchors */
+    scroll-padding-top: 118px; /* Account for fixed navbar (76px) + banner (42px) when scrolling to anchors */
 }
 
 /* Force navbar to stay at top on all pages */
@@ -1553,13 +1564,13 @@ html {
 /* Main content spacing for fixed navbar */
 main,
 section:first-of-type:not(.hero-section) {
-    margin-top: 102px;
+    margin-top: 118px; /* 76px navbar + 42px banner */
 }
 
 /* Products page and other pages spacing */
 .products-page,
 .product-detail-section {
-    margin-top: 102px;
+    margin-top: 118px; /* 76px navbar + 42px banner */
     padding-top: 2rem;
 }
 
@@ -2664,12 +2675,12 @@ html {
 /* Mobile Page Header */
 @media (max-width: 768px) {
     section.py-3.bg-light {
-        margin-top: 102px !important; /* Discount banner (42px) + Navbar (60px) */
+        margin-top: 118px !important; /* Discount banner (42px) + Navbar (76px) */
         padding: 1.5rem 0 !important;
     }
     
     .hero-section {
-        margin-top: 102px !important; /* Discount banner (42px) + Navbar (60px) */
+        margin-top: 118px !important; /* Discount banner (42px) + Navbar (76px) */
     }
     
     .display-5 {

@@ -103,7 +103,7 @@ async function fetchProductsFromSupabase() {
             },
             supplier: product.supplier || 'BABISHA Collections',
             rating: parseFloat(product.rating) || 4.5,
-            reviews: parseInt(product.reviews) || 0,
+            reviews: parseInt(product.reviews) || 100,
             onSale: product.on_sale || false,
             savings: product.savings || 0,
             slug: product.slug || product.name.toLowerCase().replace(/\s+/g, '-'),

@@ -25,8 +25,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.0,
+        reviews: 84,
         onSale: true,
         savings: 20
     },
@@ -46,8 +46,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.01,
+        reviews: 123,
         onSale: true,
         savings: 20
     },
@@ -67,8 +67,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.012,
+        reviews: 224,
         onSale: true,
         savings: 20
     },
@@ -88,8 +88,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.02,
+        reviews: 179,
         onSale: true,
         savings: 20
     },
@@ -109,8 +109,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.022,
+        reviews: 203,
         onSale: true,
         savings: 20
     },
@@ -130,8 +130,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.03,
+        reviews: 111,
         onSale: true,
         savings: 20
     },
@@ -151,8 +151,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.033,
+        reviews: 222,
         onSale: true,
         savings: 20
     },
@@ -172,8 +172,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.04,
+        reviews: 52,
         onSale: true,
         savings: 20
     },
@@ -193,8 +193,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.043,
+        reviews: 238,
         onSale: true,
         savings: 20
     },
@@ -214,8 +214,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.05,
+        reviews: 124,
         onSale: true,
         savings: 20
     },
@@ -235,8 +235,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.054,
+        reviews: 195,
         onSale: true,
         savings: 20
     },
@@ -256,8 +256,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.06,
+        reviews: 210,
         onSale: true,
         savings: 20
     },
@@ -277,8 +277,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.064,
+        reviews: 228,
         onSale: true,
         savings: 20
     },
@@ -298,8 +298,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.07,
+        reviews: 221,
         onSale: true,
         savings: 20
     },
@@ -319,8 +319,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.075,
+        reviews: 125,
         onSale: true,
         savings: 20
     },
@@ -340,8 +340,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.08,
+        reviews: 75,
         onSale: true,
         savings: 20
     },
@@ -361,8 +361,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.085,
+        reviews: 206,
         onSale: true,
         savings: 20
     },
@@ -382,8 +382,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.09,
+        reviews: 143,
         onSale: true,
         savings: 20
     },
@@ -403,8 +403,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.096,
+        reviews: 127,
         onSale: true,
         savings: 20
     },
@@ -424,8 +424,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.1,
+        reviews: 168,
         onSale: true,
         savings: 20
     },
@@ -445,8 +445,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.11,
+        reviews: 63,
         onSale: true,
         savings: 20
     },
@@ -466,7 +466,7 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
+        rating: 4.112,
         reviews: 100,
         onSale: true,
         savings: 20
@@ -487,8 +487,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.12,
+        reviews: 187,
         onSale: true,
         savings: 20
     },
@@ -508,8 +508,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.122,
+        reviews: 139,
         onSale: true,
         savings: 20
     },
@@ -529,8 +529,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.13,
+        reviews: 196,
         onSale: true,
         savings: 20
     },
@@ -550,8 +550,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.133,
+        reviews: 96,
         onSale: true,
         savings: 20
     },
@@ -571,8 +571,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.14,
+        reviews: 104,
         onSale: true,
         savings: 20
     },
@@ -592,8 +592,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.143,
+        reviews: 90,
         onSale: true,
         savings: 20
     },
@@ -613,8 +613,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.15,
+        reviews: 70,
         onSale: true,
         savings: 20
     },
@@ -634,8 +634,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.154,
+        reviews: 190,
         onSale: true,
         savings: 20
     },
@@ -655,8 +655,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.16,
+        reviews: 200,
         onSale: true,
         savings: 20
     },
@@ -676,8 +676,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.164,
+        reviews: 101,
         onSale: true,
         savings: 20
     },
@@ -697,8 +697,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.17,
+        reviews: 50,
         onSale: true,
         savings: 20
     },
@@ -718,8 +718,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.175,
+        reviews: 246,
         onSale: true,
         savings: 20
     },
@@ -739,8 +739,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.18,
+        reviews: 205,
         onSale: true,
         savings: 20
     },
@@ -760,8 +760,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.185,
+        reviews: 136,
         onSale: true,
         savings: 20
     },
@@ -781,8 +781,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.19,
+        reviews: 113,
         onSale: true,
         savings: 20
     },
@@ -802,8 +802,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.196,
+        reviews: 186,
         onSale: true,
         savings: 20
     },
@@ -823,8 +823,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.2,
+        reviews: 140,
         onSale: true,
         savings: 20
     },
@@ -844,8 +844,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.21,
+        reviews: 95,
         onSale: true,
         savings: 20
     },
@@ -865,8 +865,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.212,
+        reviews: 115,
         onSale: true,
         savings: 20
     },
@@ -886,8 +886,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.22,
+        reviews: 229,
         onSale: true,
         savings: 20
     },
@@ -907,8 +907,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.222,
+        reviews: 128,
         onSale: true,
         savings: 20
     },
@@ -928,8 +928,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.23,
+        reviews: 202,
         onSale: true,
         savings: 20
     },
@@ -949,8 +949,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.233,
+        reviews: 184,
         onSale: true,
         savings: 20
     },
@@ -970,8 +970,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.24,
+        reviews: 54,
         onSale: true,
         savings: 20
     },
@@ -991,8 +991,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.243,
+        reviews: 188,
         onSale: true,
         savings: 20
     },
@@ -1012,8 +1012,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.25,
+        reviews: 213,
         onSale: true,
         savings: 20
     },
@@ -1033,8 +1033,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.254,
+        reviews: 89,
         onSale: true,
         savings: 20
     },
@@ -1054,8 +1054,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.26,
+        reviews: 242,
         onSale: true,
         savings: 20
     },
@@ -1075,8 +1075,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.264,
+        reviews: 65,
         onSale: true,
         savings: 20
     },
@@ -1096,8 +1096,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.27,
+        reviews: 209,
         onSale: true,
         savings: 20
     },
@@ -1117,8 +1117,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.275,
+        reviews: 81,
         onSale: true,
         savings: 20
     },
@@ -1138,8 +1138,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.28,
+        reviews: 225,
         onSale: true,
         savings: 20
     },
@@ -1159,8 +1159,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.285,
+        reviews: 158,
         onSale: true,
         savings: 20
     },
@@ -1180,8 +1180,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.29,
+        reviews: 178,
         onSale: true,
         savings: 20
     },
@@ -1201,8 +1201,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.296,
+        reviews: 121,
         onSale: true,
         savings: 20
     },
@@ -1222,8 +1222,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.3,
+        reviews: 68,
         onSale: true,
         savings: 20
     },
@@ -1243,8 +1243,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.31,
+        reviews: 133,
         onSale: true,
         savings: 20
     },
@@ -1264,8 +1264,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.312,
+        reviews: 167,
         onSale: true,
         savings: 20
     },
@@ -1285,8 +1285,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.32,
+        reviews: 165,
         onSale: true,
         savings: 20
     },
@@ -1306,8 +1306,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.322,
+        reviews: 67,
         onSale: true,
         savings: 20
     },
@@ -1327,8 +1327,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.33,
+        reviews: 192,
         onSale: true,
         savings: 20
     },
@@ -1348,8 +1348,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.333,
+        reviews: 91,
         onSale: true,
         savings: 20
     },
@@ -1369,8 +1369,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.34,
+        reviews: 72,
         onSale: true,
         savings: 20
     },
@@ -1390,8 +1390,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.343,
+        reviews: 172,
         onSale: true,
         savings: 20
     },
@@ -1411,8 +1411,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.35,
+        reviews: 236,
         onSale: true,
         savings: 20
     },
@@ -1432,8 +1432,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.354,
+        reviews: 122,
         onSale: true,
         savings: 20
     },
@@ -1453,8 +1453,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.36,
+        reviews: 193,
         onSale: true,
         savings: 20
     },
@@ -1474,8 +1474,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.364,
+        reviews: 138,
         onSale: true,
         savings: 20
     },
@@ -1495,8 +1495,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.37,
+        reviews: 79,
         onSale: true,
         savings: 20
     },
@@ -1516,8 +1516,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.375,
+        reviews: 218,
         onSale: true,
         savings: 20
     },
@@ -1537,8 +1537,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.38,
+        reviews: 155,
         onSale: true,
         savings: 20
     },
@@ -1558,8 +1558,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.385,
+        reviews: 109,
         onSale: true,
         savings: 20
     },
@@ -1579,8 +1579,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.39,
+        reviews: 219,
         onSale: true,
         savings: 20
     },
@@ -1600,8 +1600,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.396,
+        reviews: 56,
         onSale: true,
         savings: 20
     },
@@ -1621,8 +1621,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.4,
+        reviews: 223,
         onSale: true,
         savings: 20
     },
@@ -1642,8 +1642,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.41,
+        reviews: 235,
         onSale: true,
         savings: 20
     },
@@ -1663,8 +1663,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.412,
+        reviews: 94,
         onSale: true,
         savings: 20
     },
@@ -1684,8 +1684,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.42,
+        reviews: 247,
         onSale: true,
         savings: 20
     },
@@ -1705,8 +1705,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.422,
+        reviews: 212,
         onSale: true,
         savings: 20
     },
@@ -1726,8 +1726,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.43,
+        reviews: 160,
         onSale: true,
         savings: 20
     },
@@ -1747,8 +1747,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.433,
+        reviews: 162,
         onSale: true,
         savings: 20
     },
@@ -1768,8 +1768,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.44,
+        reviews: 171,
         onSale: true,
         savings: 20
     },
@@ -1789,8 +1789,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.443,
+        reviews: 230,
         onSale: true,
         savings: 20
     },
@@ -1810,8 +1810,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.45,
+        reviews: 166,
         onSale: true,
         savings: 20
     },
@@ -1831,8 +1831,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.454,
+        reviews: 198,
         onSale: true,
         savings: 20
     },
@@ -1852,8 +1852,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.46,
+        reviews: 132,
         onSale: true,
         savings: 20
     },
@@ -1873,8 +1873,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.464,
+        reviews: 73,
         onSale: true,
         savings: 20
     },
@@ -1894,8 +1894,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.47,
+        reviews: 170,
         onSale: true,
         savings: 20
     },
@@ -1915,8 +1915,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.475,
+        reviews: 137,
         onSale: true,
         savings: 20
     },
@@ -1936,8 +1936,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.48,
+        reviews: 60,
         onSale: true,
         savings: 20
     },
@@ -1957,8 +1957,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.485,
+        reviews: 148,
         onSale: true,
         savings: 20
     },
@@ -1978,8 +1978,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.49,
+        reviews: 215,
         onSale: true,
         savings: 20
     },
@@ -1999,8 +1999,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.496,
+        reviews: 156,
         onSale: true,
         savings: 20
     },
@@ -2021,7 +2021,7 @@ const sampleFabrics = [
         },
         supplier: "BABISHA Collections",
         rating: 4.5,
-        reviews: 100,
+        reviews: 86,
         onSale: true,
         savings: 20
     },
@@ -2041,8 +2041,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.51,
+        reviews: 147,
         onSale: true,
         savings: 20
     },
@@ -2062,8 +2062,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.512,
+        reviews: 211,
         onSale: true,
         savings: 20
     },
@@ -2083,8 +2083,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.52,
+        reviews: 103,
         onSale: true,
         savings: 20
     },
@@ -2104,8 +2104,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.522,
+        reviews: 107,
         onSale: true,
         savings: 20
     },
@@ -2125,8 +2125,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.53,
+        reviews: 71,
         onSale: true,
         savings: 20
     },
@@ -2146,8 +2146,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.533,
+        reviews: 185,
         onSale: true,
         savings: 20
     },
@@ -2167,8 +2167,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.54,
+        reviews: 146,
         onSale: true,
         savings: 20
     },
@@ -2188,8 +2188,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.543,
+        reviews: 117,
         onSale: true,
         savings: 20
     },
@@ -2209,8 +2209,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.55,
+        reviews: 243,
         onSale: true,
         savings: 20
     },
@@ -2230,8 +2230,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.554,
+        reviews: 102,
         onSale: true,
         savings: 20
     },
@@ -2251,8 +2251,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.56,
+        reviews: 66,
         onSale: true,
         savings: 20
     },
@@ -2272,8 +2272,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.564,
+        reviews: 177,
         onSale: true,
         savings: 20
     },
@@ -2293,8 +2293,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.57,
+        reviews: 194,
         onSale: true,
         savings: 20
     },
@@ -2314,8 +2314,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.575,
+        reviews: 197,
         onSale: true,
         savings: 20
     },
@@ -2335,8 +2335,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.58,
+        reviews: 161,
         onSale: true,
         savings: 20
     },
@@ -2356,8 +2356,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.585,
+        reviews: 82,
         onSale: true,
         savings: 20
     },
@@ -2377,8 +2377,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.59,
+        reviews: 145,
         onSale: true,
         savings: 20
     },
@@ -2398,8 +2398,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.596,
+        reviews: 58,
         onSale: true,
         savings: 20
     },
@@ -2419,8 +2419,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.6,
+        reviews: 237,
         onSale: true,
         savings: 20
     },
@@ -2440,8 +2440,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.61,
+        reviews: 151,
         onSale: true,
         savings: 20
     },
@@ -2461,8 +2461,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.612,
+        reviews: 204,
         onSale: true,
         savings: 20
     },
@@ -2482,8 +2482,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.62,
+        reviews: 135,
         onSale: true,
         savings: 20
     },
@@ -2503,8 +2503,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.622,
+        reviews: 105,
         onSale: true,
         savings: 20
     },
@@ -2524,8 +2524,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.63,
+        reviews: 180,
         onSale: true,
         savings: 20
     },
@@ -2545,8 +2545,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.633,
+        reviews: 181,
         onSale: true,
         savings: 20
     },
@@ -2566,8 +2566,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.64,
+        reviews: 141,
         onSale: true,
         savings: 20
     },
@@ -2587,8 +2587,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.643,
+        reviews: 144,
         onSale: true,
         savings: 20
     },
@@ -2608,8 +2608,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.65,
+        reviews: 173,
         onSale: true,
         savings: 20
     },
@@ -2629,8 +2629,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.654,
+        reviews: 93,
         onSale: true,
         savings: 20
     },
@@ -2650,8 +2650,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.66,
+        reviews: 244,
         onSale: true,
         savings: 20
     },
@@ -2671,8 +2671,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.664,
+        reviews: 62,
         onSale: true,
         savings: 20
     },
@@ -2692,8 +2692,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.67,
+        reviews: 164,
         onSale: true,
         savings: 20
     },
@@ -2713,8 +2713,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.675,
+        reviews: 87,
         onSale: true,
         savings: 20
     },
@@ -2734,8 +2734,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.68,
+        reviews: 189,
         onSale: true,
         savings: 20
     },
@@ -2755,8 +2755,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.685,
+        reviews: 64,
         onSale: true,
         savings: 20
     },
@@ -2776,8 +2776,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.69,
+        reviews: 129,
         onSale: true,
         savings: 20
     },
@@ -2797,8 +2797,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.696,
+        reviews: 154,
         onSale: true,
         savings: 20
     },
@@ -2818,8 +2818,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.7,
+        reviews: 153,
         onSale: true,
         savings: 20
     },
@@ -2839,8 +2839,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.71,
+        reviews: 78,
         onSale: true,
         savings: 20
     },
@@ -2860,8 +2860,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.712,
+        reviews: 159,
         onSale: true,
         savings: 20
     },
@@ -2881,8 +2881,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.72,
+        reviews: 233,
         onSale: true,
         savings: 20
     },
@@ -2902,8 +2902,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.722,
+        reviews: 241,
         onSale: true,
         savings: 20
     },
@@ -2923,8 +2923,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.73,
+        reviews: 150,
         onSale: true,
         savings: 20
     },
@@ -2944,8 +2944,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.733,
+        reviews: 231,
         onSale: true,
         savings: 20
     },
@@ -2965,8 +2965,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.74,
+        reviews: 97,
         onSale: true,
         savings: 20
     },
@@ -2986,8 +2986,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.743,
+        reviews: 216,
         onSale: true,
         savings: 20
     },
@@ -3007,8 +3007,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.75,
+        reviews: 152,
         onSale: true,
         savings: 20
     },
@@ -3028,8 +3028,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.754,
+        reviews: 234,
         onSale: true,
         savings: 20
     },
@@ -3049,8 +3049,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.76,
+        reviews: 99,
         onSale: true,
         savings: 20
     },
@@ -3070,8 +3070,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.764,
+        reviews: 51,
         onSale: true,
         savings: 20
     },
@@ -3091,8 +3091,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.77,
+        reviews: 131,
         onSale: true,
         savings: 20
     },
@@ -3112,8 +3112,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.775,
+        reviews: 182,
         onSale: true,
         savings: 20
     },
@@ -3133,8 +3133,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.78,
+        reviews: 114,
         onSale: true,
         savings: 20
     },
@@ -3154,8 +3154,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.785,
+        reviews: 174,
         onSale: true,
         savings: 20
     },
@@ -3175,8 +3175,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.79,
+        reviews: 249,
         onSale: true,
         savings: 20
     },
@@ -3196,8 +3196,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.796,
+        reviews: 108,
         onSale: true,
         savings: 20
     },
@@ -3217,8 +3217,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.8,
+        reviews: 217,
         onSale: true,
         savings: 20
     },
@@ -3238,8 +3238,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.81,
+        reviews: 245,
         onSale: true,
         savings: 20
     },
@@ -3259,8 +3259,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.812,
+        reviews: 201,
         onSale: true,
         savings: 20
     },
@@ -3280,8 +3280,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.82,
+        reviews: 119,
         onSale: true,
         savings: 20
     },
@@ -3301,8 +3301,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.822,
+        reviews: 110,
         onSale: true,
         savings: 20
     },
@@ -3322,8 +3322,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.83,
+        reviews: 76,
         onSale: true,
         savings: 20
     },
@@ -3343,8 +3343,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.833,
+        reviews: 57,
         onSale: true,
         savings: 20
     },
@@ -3364,8 +3364,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.84,
+        reviews: 59,
         onSale: true,
         savings: 20
     },
@@ -3385,8 +3385,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.843,
+        reviews: 176,
         onSale: true,
         savings: 20
     },
@@ -3406,8 +3406,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.85,
+        reviews: 227,
         onSale: true,
         savings: 20
     },
@@ -3427,8 +3427,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.854,
+        reviews: 74,
         onSale: true,
         savings: 20
     },
@@ -3448,8 +3448,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.86,
+        reviews: 208,
         onSale: true,
         savings: 20
     },
@@ -3469,8 +3469,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.864,
+        reviews: 83,
         onSale: true,
         savings: 20
     },
@@ -3490,8 +3490,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.87,
+        reviews: 88,
         onSale: true,
         savings: 20
     },
@@ -3511,8 +3511,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.875,
+        reviews: 116,
         onSale: true,
         savings: 20
     },
@@ -3532,8 +3532,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.88,
+        reviews: 120,
         onSale: true,
         savings: 20
     },
@@ -3553,8 +3553,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.885,
+        reviews: 130,
         onSale: true,
         savings: 20
     },
@@ -3574,8 +3574,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.89,
+        reviews: 53,
         onSale: true,
         savings: 20
     },
@@ -3595,8 +3595,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.896,
+        reviews: 80,
         onSale: true,
         savings: 20
     },
@@ -3616,8 +3616,8 @@ const sampleFabrics = [
             origin: "India"
         },
         supplier: "BABISHA Collections",
-        rating: 4.5,
-        reviews: 100,
+        rating: 4.9,
+        reviews: 239,
         onSale: true,
         savings: 20
     },
