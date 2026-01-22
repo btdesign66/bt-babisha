@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BDS PRO - Payment System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/qrcode@1.5.3/build/qrcode.min.js"></script>
+    <style>
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <div class="min-h-screen">
+        <!-- Header -->
+        <header class="bg-white shadow-sm border-b border-gray-200">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-16">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-gradient-to-r from-purple-600 to-blue-600 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-chart-line text-white text-lg"></i>
+                        </div>
+                        <span class="text-2xl font-bold gradient-text">BDS PRO</span>
+                    </div>
+                    <div class="text-sm text-gray-500">
+                        Payment System Demo
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="text-center mb-8">
+                <h1 class="text-3xl font-bold text-gray-900 mb-2">Crypto Payment System</h1>
+                <p class="text-gray-600">Pay with USDT using ERC20 or TRC20 networks</p>
+            </div>
+
+            <!-- Payment Form -->
+            <div class="bg-white rounded-xl shadow-lg p-8 mb-8">
+                <h2 class="text-xl font-semibold text-gray-900 mb-6">Create Payment</h2>
+                
+                <form id="payment-form" class="space-y-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Amount (USDT)</label>
+                        <input type="number" id="amount" placeholder="Enter amount" 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" required>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Payment Method</label>
+                        <select id="currency" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" required>
+                            <option value="">Select payment method</option>
+                            <option value="USDT-ERC20">USDT (ERC20) - Ethereum Network</option>
+                            <option value="USDT-TRC20">USDT (TRC20) - Tron Network</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="w-full bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition-colors">
+                        Create Payment
+                    </button>
+                </form>
+            </div>
+
+            <!-- Payment Details -->
+            <div id="payment-details" class="hidden">
+                <div class="bg-white rounded-xl shadow-lg p-8 mb-8">
+                    <h2 class="text-xl font-semibold text-gray-900 mb-6">Payment Details</h2>
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <!-- Payment Info -->
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Order ID</label>
+                                <div class="text-sm font-mono text-gray-900" id="order-id"></div>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Amount</label>
+                                <div class="text-lg font-semibold text-gray-900" id="payment-amount"></div>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Currency</label>
+                                <div class="text-sm text-gray-900" id="payment-currency"></div>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                                <div class="text-sm">
+                                    <span id="payment-status" class="px-2 py-1 text-xs font-semibold rounded-full"></span>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Wallet Address</label>
+                                <div class="flex items-center space-x-2">
+                                    <input type="text" id="wallet-address" readonly 
+                                           class="flex-1 px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 text-sm font-mono">
+                                    <button onclick="copyToClipboard('wallet-address', 'Wallet Address')" 
+                                            class="p-2 text-gray-500 hover:text-gray-700">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- QR Code -->
+                        <div class="text-center">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">QR Code</label>
+                            <div class="flex justify-center p-4 bg-gray-50 rounded-lg">
+                                <div id="qr-code" class="w-64 h-64"></div>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-2">Scan to copy wallet address</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 flex space-x-4">
+                        <button onclick="checkPaymentStatus()" class="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors">
+                            Check Status
+                        </button>
+                        <button onclick="resetForm()" class="bg-gray-600 text-white py-2 px-4 rounded-lg hover:bg-gray-700 transition-colors">
+                            New Payment
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment History -->
+            <div class="bg-white rounded-xl shadow-lg p-8">
+                <h2 class="text-xl font-semibold text-gray-900 mb-6">Payment History</h2>
+                <div id="payment-history" class="space-y-4">
+                    <p class="text-gray-500 text-center">No payments yet</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:5000/api';
+        let currentOrderId = null;
+
+        // Form submission
+        document.getElementById('payment-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const amount = document.getElementById('amount').value;
+            const currency = document.getElementById('currency').value;
+            
+            if (!amount || !currency) {
+                alert('Please fill in all fields');
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/payments/create`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer demo-token' // In real app, get from login
+                    },
+                    body: JSON.stringify({ amount: parseFloat(amount), currency })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    currentOrderId = data.data.orderId;
+                    displayPaymentDetails(data.data);
+                    loadPaymentHistory();
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Error creating payment:', error);
+                alert('Error creating payment. Please try again.');
+            }
+        });
+
+        // Display payment details
+        function displayPaymentDetails(payment) {
+            document.getElementById('order-id').textContent = payment.orderId;
+            document.getElementById('payment-amount').textContent = payment.amount + ' USDT';
+            document.getElementById('payment-currency').textContent = payment.currency;
+            document.getElementById('wallet-address').value = payment.wallet;
+            
+            // Update status
+            const statusElement = document.getElementById('payment-status');
+            statusElement.textContent = payment.status;
+            statusElement.className = `px-2 py-1 text-xs font-semibold rounded-full ${
+                payment.status === 'paid' ? 'bg-green-100 text-green-600' :
+                payment.status === 'pending' ? 'bg-yellow-100 text-yellow-600' :
+                'bg-red-100 text-red-600'
+            }`;
+            
+            // Generate QR code
+            const qrCodeDiv = document.getElementById('qr-code');
+            qrCodeDiv.innerHTML = '';
+            QRCode.toCanvas(qrCodeDiv, payment.wallet, {
+                width: 256,
+                height: 256,
+                margin: 2,
+                color: {
+                    dark: '#000000',
+                    light: '#FFFFFF'
+                }
+            });
+            
+            document.getElementById('payment-details').classList.remove('hidden');
+        }
+
+        // Check payment status
+        async function checkPaymentStatus() {
+            if (!currentOrderId) return;
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/payments/status/${currentOrderId}`, {
+                    headers: {
+                        'Authorization': 'Bearer demo-token'
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    displayPaymentDetails(data.data);
+                    loadPaymentHistory();
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Error checking payment status:', error);
+                alert('Error checking payment status. Please try again.');
+            }
+        }
+
+        // Load payment history
+        async function loadPaymentHistory() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/payments/history`, {
+                    headers: {
+                        'Authorization': 'Bearer demo-token'
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    const historyDiv = document.getElementById('payment-history');
+                    
+                    if (data.data.payments.length === 0) {
+                        historyDiv.innerHTML = '<p class="text-gray-500 text-center">No payments yet</p>';
+                        return;
+                    }
+                    
+                    historyDiv.innerHTML = data.data.payments.map(payment => `
+                        <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                            <div class="flex-1">
+                                <div class="text-sm font-medium text-gray-900">${payment.amount} USDT</div>
+                                <div class="text-xs text-gray-500">${payment.currency} • ${new Date(payment.createdAt).toLocaleString()}</div>
+                            </div>
+                            <div class="text-right">
+                                <span class="px-2 py-1 text-xs font-semibold rounded-full ${
+                                    payment.status === 'paid' ? 'bg-green-100 text-green-600' :
+                                    payment.status === 'pending' ? 'bg-yellow-100 text-yellow-600' :
+                                    'bg-red-100 text-red-600'
+                                }">${payment.status}</span>
+                                ${payment.txHash ? `<div class="text-xs text-gray-500 mt-1">${payment.txHash.slice(0, 10)}...</div>` : ''}
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            } catch (error) {
+                console.error('Error loading payment history:', error);
+            }
+        }
+
+        // Copy to clipboard
+        function copyToClipboard(elementId, label) {
+            const element = document.getElementById(elementId);
+            element.select();
+            element.setSelectionRange(0, 99999);
+            document.execCommand('copy');
+            alert(`${label} copied to clipboard!`);
+        }
+
+        // Reset form
+        function resetForm() {
+            document.getElementById('payment-form').reset();
+            document.getElementById('payment-details').classList.add('hidden');
+            currentOrderId = null;
+        }
+
+        // Auto-refresh payment status every 10 seconds
+        setInterval(() => {
+            if (currentOrderId) {
+                checkPaymentStatus();
+            }
+        }, 10000);
+
+        // Load payment history on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadPaymentHistory();
+        });
+    </script>
+</body>
+</html>

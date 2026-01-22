@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algo-Wiz</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Algo-Wiz</h1>
+        <div class="control-panel">
+            <select id="algorithm-select">
+                <option value="bubble">Bubble Sort</option>
+                <option value="insertion">Insertion Sort</option>
+                <option value="selection">Selection Sort</option>
+                <option value="merge">Merge Sort</option>
+                <option value="quick">Quick Sort</option>
+                <option value="heap">Heap Sort</option>
+                <option value="shell">Shell Sort</option>
+                <option value="radix">Radix Sort</option>
+                <option value="counting">Counting Sort</option>
+                <option value="cocktail_shaker">Cocktail Shaker Sort</option>
+                <option value="linear">Linear Search</option>
+                <option value="binary">Binary Search</option>
+                <option value="jump">Jump Search</option>
+                <option value="interpolation">Interpolation Search</option>
+                <option value="exponential">Exponential Search</option>
+                <option value="ternary">Ternary Search</option>
+            </select>
+            <input type="text" id="array-input" placeholder="Enter array (e.g., 4,5,3,2,1)">
+            <button id="start-btn">Start</button>
+            <button id="pause-btn">Pause</button>
+            <button id="reset-btn">Reset</button>
+            <input type="range" id="speed-slider" min="1" max="10" value="5">
+            <span id="speed-value">5x</span>
+        </div>
+        <div id="visualization"></div>
+        <div id="complexity-display">
+            <p>Time Complexity: <span id="time-complexity">-</span></p>
+            <p>Space Complexity: <span id="space-complexity">-</span></p>
+        </div>
+
+        <h2>Graph Visualization</h2>
+        <div class="graph-control-panel">
+            <select id="graph-algorithm-select">
+                <option value="dijkstra">Dijkstra's Algorithm</option>
+                <option value="prim">Prim's Algorithm</option>
+                <option value="kruskal">Kruskal's Algorithm</option>
+                <option value="dfs">Depth-First Search</option>
+                <option value="bfs">Breadth-First Search</option>
+            </select>
+            <textarea id="graph-input" placeholder="Enter adjacency matrix (e.g., [[0,1,0],[1,0,1],[0,1,0]])"></textarea>
+            <input type="number" id="start-node-input" placeholder="Start Node (0-indexed)">
+            <button id="graph-start-btn">Start</button>
+            <button id="graph-pause-btn">Pause</button>
+            <button id="graph-reset-btn">Reset</button>
+        </div>
+        <div id="graph-visualization"></div>
+
+        <h2>Linked List Visualization</h2>
+        <div class="linkedlist-control-panel">
+            <select id="linkedlist-operation-select">
+                <option value="insert_beginning">Insert at Beginning</option>
+                <option value="insert_end">Insert at End</option>
+                <option value="delete">Delete by Value</option>
+                <option value="search">Search</option>
+                <option value="reverse">Reverse</option>
+            </select>
+            <input type="text" id="linkedlist-input" placeholder="Enter linked list (e.g., 1,2,3)">
+            <input type="number" id="linkedlist-value-input" placeholder="Value">
+            <button id="linkedlist-start-btn">Start</button>
+            <button id="linkedlist-pause-btn">Pause</button>
+            <button id="linkedlist-reset-btn">Reset</button>
+        </div>
+        <div id="linkedlist-visualization"></div>
+    </div>
+    <script src="{{ url_for('static', filename='js/api.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/visualizer.js') }}"></script>
+</body>
+</html> 

@@ -1,0 +1,1032 @@
+{% extends "base.html" %}
+
+{% block title %}NAVIO - My Routes{% endblock %}
+
+{% block extra_css %}
+<style>
+    .turn-by-turn-directions {
+        max-height: 300px;
+        overflow-y: auto;
+        margin-top: 15px;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        padding: 15px;
+    }
+
+    .turn-by-turn-directions h6 {
+        color: #495057;
+        margin-bottom: 15px;
+        font-weight: 600;
+    }
+
+    .turn-by-turn-directions .list-group-item {
+        border-left: none;
+        border-right: none;
+        padding: 10px 15px;
+    }
+
+    .turn-by-turn-directions .list-group-item:first-child {
+        border-top: none;
+    }
+
+    .turn-by-turn-directions .list-group-item:last-child {
+        border-bottom: none;
+    }
+
+    .turn-by-turn-directions .list-group-item.active {
+        background-color: #e9ecef;
+        color: #0d6efd;
+        font-weight: 500;
+    }
+
+    .turn-by-turn-directions .list-group-item small {
+        font-size: 0.875em;
+    }
+
+    #routeMap, #liveMap {
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .waypoint-input {
+        border-radius: 4px 0 0 4px;
+    }
+
+    .btn-outline-danger {
+        border-radius: 0 4px 4px 0;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="row">
+        <!-- Routes List Panel -->
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">My Delivery Routes</h5>
+                    <button class="btn btn-primary btn-sm" onclick="showNewRouteModal()">New Route</button>
+                </div>
+                <div class="card-body">
+                    <div class="list-group" id="routesList">
+                        <!-- Routes will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Live Map Panel -->
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Live Route Tracking</h5>
+                </div>
+                <div class="card-body">
+                    <div id="liveMap" style="height: 600px; width: 100%; border-radius: 8px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- New Route Modal -->
+<div class="modal fade" id="newRouteModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Create New Route</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="newRouteForm">
+                    <div class="mb-3">
+                        <label for="routeName" class="form-label">Route Name</label>
+                        <input type="text" class="form-control" id="routeName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="startLocation" class="form-label">Start Location</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="startLocation" required>
+                            <button class="btn btn-outline-secondary" type="button" id="startLocationGPS">
+                                <i class="fas fa-location-arrow"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="endLocation" class="form-label">End Location</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="endLocation" required>
+                            <button class="btn btn-outline-secondary" type="button" id="endLocationGPS">
+                                <i class="fas fa-location-arrow"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Waypoints</label>
+                        <div id="waypointsList" class="list-group mb-2">
+                            <!-- Waypoints will be added here -->
+                        </div>
+                        <button type="button" class="btn btn-outline-primary btn-sm" onclick="addWaypoint()">
+                            <i class="fas fa-plus"></i> Add Waypoint
+                        </button>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Optimization Preferences</label>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="isRoundTrip">
+                                    <label class="form-check-label" for="isRoundTrip">
+                                        Round Trip
+                                    </label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="considerTraffic">
+                                    <label class="form-check-label" for="considerTraffic">
+                                        Consider Traffic
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="avoidTolls">
+                                    <label class="form-check-label" for="avoidTolls">
+                                        Avoid Tolls
+                                    </label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="useHighways">
+                                    <label class="form-check-label" for="useHighways">
+                                        Use Highways
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <label class="form-label">Optimization Priority</label>
+                            <select class="form-select" id="optimizationPriority">
+                                <option value="balanced">Balanced</option>
+                                <option value="time">Time Priority</option>
+                                <option value="distance">Distance Priority</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="routeMap" style="height: 400px; width: 100%; margin-top: 20px; border-radius: 8px;"></div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="createNewRoute()">Create Route</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Route Details Modal -->
+<div class="modal fade" id="routeDetailsModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Route Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div id="routeDetails">
+                    <!-- Route details will be loaded here -->
+                </div>
+                <div id="routeDetailsMap" style="height: 400px; width: 100%; margin-top: 20px; border-radius: 8px;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<!-- Add Socket.IO client library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+<!-- Add Google Maps Geometry library -->
+<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places,geometry"></script>
+<script>
+let routesModal;
+let detailsModal;
+let map;
+let liveMap;
+let startMarker;
+let endMarker;
+let waypointMarkers = [];
+let directionsService;
+let directionsRenderer;
+let liveDirectionsRenderer;
+let startAutocomplete;
+let endAutocomplete;
+let waypointAutocompletes = [];
+let currentRoute = null;
+let deliveryMarker = null;
+let deliveryPath = null;
+
+document.addEventListener('DOMContentLoaded', function() {
+    routesModal = new bootstrap.Modal(document.getElementById('newRouteModal'));
+    detailsModal = new bootstrap.Modal(document.getElementById('routeDetailsModal'));
+    loadRoutes();
+    initMaps();
+});
+
+function initMaps() {
+    // Initialize the route creation map
+    map = new google.maps.Map(document.getElementById('routeMap'), {
+        center: { lat: 40.7128, lng: -74.0060 },
+        zoom: 12
+    });
+
+    // Initialize the live tracking map
+    liveMap = new google.maps.Map(document.getElementById('liveMap'), {
+        center: { lat: 40.7128, lng: -74.0060 },
+        zoom: 12
+    });
+
+    // Initialize markers
+    startMarker = new google.maps.Marker({
+        map: map,
+        draggable: true,
+        icon: {
+            path: google.maps.SymbolPath.CIRCLE,
+            scale: 10,
+            fillColor: "#4CAF50",
+            fillOpacity: 1,
+            strokeColor: "#4CAF50",
+            strokeWeight: 2,
+        }
+    });
+
+    endMarker = new google.maps.Marker({
+        map: map,
+        draggable: true,
+        icon: {
+            path: google.maps.SymbolPath.CIRCLE,
+            scale: 10,
+            fillColor: "#F44336",
+            fillOpacity: 1,
+            strokeColor: "#F44336",
+            strokeWeight: 2,
+        }
+    });
+
+    // Initialize directions services and renderers
+    directionsService = new google.maps.DirectionsService();
+    directionsRenderer = new google.maps.DirectionsRenderer({
+        map: map,
+        suppressMarkers: true,
+        preserveViewport: true
+    });
+
+    liveDirectionsRenderer = new google.maps.DirectionsRenderer({
+        map: liveMap,
+        suppressMarkers: true
+    });
+
+    // Initialize autocomplete for locations
+    initAutocomplete();
+    initEventListeners();
+
+    // Enable traffic layer
+    const trafficLayer = new google.maps.TrafficLayer();
+    trafficLayer.setMap(map);
+    trafficLayer.setMap(liveMap);
+}
+
+function initAutocomplete() {
+    startAutocomplete = new google.maps.places.Autocomplete(
+        document.getElementById('startLocation'),
+        {
+            types: ['geocode'],
+            fields: ['geometry', 'formatted_address']
+        }
+    );
+
+    endAutocomplete = new google.maps.places.Autocomplete(
+        document.getElementById('endLocation'),
+        {
+            types: ['geocode'],
+            fields: ['geometry', 'formatted_address']
+        }
+    );
+
+    startAutocomplete.addListener('place_changed', () => handlePlaceChanged(startAutocomplete, startMarker));
+    endAutocomplete.addListener('place_changed', () => handlePlaceChanged(endAutocomplete, endMarker));
+}
+
+function initEventListeners() {
+    // Marker drag events
+    startMarker.addListener('dragend', () => {
+        updateAddressFromMarker(startMarker, 'startLocation');
+        updateRoute();
+    });
+
+    endMarker.addListener('dragend', () => {
+        updateAddressFromMarker(endMarker, 'endLocation');
+        updateRoute();
+    });
+
+    // GPS buttons
+    document.getElementById('startLocationGPS').addEventListener('click', () => getCurrentLocation('startLocation', startMarker));
+    document.getElementById('endLocationGPS').addEventListener('click', () => getCurrentLocation('endLocation', endMarker));
+}
+
+function addWaypoint() {
+    try {
+        const waypointId = `waypoint-${waypointMarkers.length}`;
+        const waypointHtml = `
+            <div class="list-group-item" id="${waypointId}">
+                <div class="input-group">
+                    <input type="text" class="form-control waypoint-input" placeholder="Enter waypoint location">
+                    <button class="btn btn-outline-danger" onclick="removeWaypoint('${waypointId}')">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+        `;
+        
+        const waypointsList = document.getElementById('waypointsList');
+        if (!waypointsList) {
+            console.error('Waypoints list container not found');
+            return;
+        }
+        
+        waypointsList.insertAdjacentHTML('beforeend', waypointHtml);
+        
+        const waypointInput = document.querySelector(`#${waypointId} .waypoint-input`);
+        if (!waypointInput) {
+            console.error('Waypoint input not found');
+            return;
+        }
+        
+        const waypointAutocomplete = new google.maps.places.Autocomplete(waypointInput, {
+            types: ['geocode'],
+            fields: ['geometry', 'formatted_address']
+        });
+        
+        const marker = new google.maps.Marker({
+            map: map,
+            draggable: true,
+            icon: {
+                path: google.maps.SymbolPath.CIRCLE,
+                scale: 8,
+                fillColor: "#2196F3",
+                fillOpacity: 1,
+                strokeColor: "#2196F3",
+                strokeWeight: 2,
+            }
+        });
+        
+        waypointMarkers.push({ marker, autocomplete: waypointAutocomplete, input: waypointInput });
+        
+        waypointAutocomplete.addListener('place_changed', () => {
+            const place = waypointAutocomplete.getPlace();
+            if (place && place.geometry) {
+                marker.setPosition(place.geometry.location);
+                updateRoute();
+            }
+        });
+        
+        marker.addListener('dragend', () => {
+            updateAddressFromMarker(marker, waypointInput);
+            updateRoute();
+        });
+    } catch (error) {
+        console.error('Error adding waypoint:', error);
+    }
+}
+
+function removeWaypoint(waypointId) {
+    const index = waypointMarkers.findIndex(wp => wp.input.id === waypointId);
+    if (index !== -1) {
+        waypointMarkers[index].marker.setMap(null);
+        waypointMarkers.splice(index, 1);
+        document.getElementById(waypointId).remove();
+        updateRoute();
+    }
+}
+
+function updateRoute() {
+    try {
+        if (!startMarker || !endMarker) {
+            console.error('Start or end marker not initialized');
+            return;
+        }
+
+        const waypoints = waypointMarkers.map(wp => ({
+            location: wp.marker.getPosition(),
+            stopover: true
+        }));
+
+        const request = {
+            origin: startMarker.getPosition(),
+            destination: endMarker.getPosition(),
+            waypoints: waypoints,
+            optimizeWaypoints: false,
+            travelMode: google.maps.TravelMode.DRIVING,
+            drivingOptions: {
+                departureTime: new Date(),
+                trafficModel: google.maps.TrafficModel.BEST_GUESS
+            }
+        };
+
+        directionsService.route(request, (result, status) => {
+            if (status === 'OK' && result) {
+                directionsRenderer.setDirections(result);
+                displayTurnByTurnDirections(result);
+                
+                // Update route information
+                if (result.routes && result.routes[0]) {
+                    const route = result.routes[0];
+                    const leg = route.legs[0];
+                    
+                    // Store route information
+                    if (!currentRoute) {
+                        currentRoute = {};
+                    }
+                    currentRoute.totalDistance = leg.distance.value;
+                    currentRoute.totalDuration = leg.duration.value;
+                    currentRoute.startLocation = leg.start_location;
+                    currentRoute.endLocation = leg.end_location;
+                }
+            } else {
+                console.error('Directions request failed:', status);
+                showErrorMessage('Failed to calculate route. Please try again.');
+            }
+        });
+    } catch (error) {
+        console.error('Error updating route:', error);
+        showErrorMessage('An error occurred while updating the route.');
+    }
+}
+
+function displayTurnByTurnDirections(result) {
+    try {
+        if (!result || !result.routes || !result.routes[0]) {
+            console.error('Invalid directions result');
+            return;
+        }
+
+        const route = result.routes[0];
+        const directionsDiv = document.createElement('div');
+        directionsDiv.className = 'mt-3';
+        directionsDiv.innerHTML = '<h6>Turn-by-Turn Directions</h6>';
+        
+        const stepsList = document.createElement('ol');
+        stepsList.className = 'list-group list-group-numbered';
+        
+        // Store route steps for later use in tracking
+        if (!currentRoute) {
+            currentRoute = {};
+        }
+        currentRoute.steps = [];
+        
+        route.legs.forEach((leg, legIndex) => {
+            if (!leg || !leg.steps) return;
+            
+            leg.steps.forEach((step, stepIndex) => {
+                if (!step || !step.instructions) return;
+                
+                // Store step information
+                currentRoute.steps.push({
+                    position: step.start_location,
+                    instructions: step.instructions,
+                    distance: step.distance,
+                    duration: step.duration
+                });
+                
+                const stepItem = document.createElement('li');
+                stepItem.className = 'list-group-item';
+                stepItem.innerHTML = `
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>${step.instructions}</div>
+                        <small class="text-muted">${step.distance?.text || 'N/A'} - ${step.duration?.text || 'N/A'}</small>
+                    </div>
+                `;
+                stepsList.appendChild(stepItem);
+            });
+        });
+        
+        directionsDiv.appendChild(stepsList);
+        
+        // Remove existing directions if any
+        const existingDirections = document.querySelector('.turn-by-turn-directions');
+        if (existingDirections) {
+            existingDirections.remove();
+        }
+        
+        const mapContainer = document.getElementById('routeMap');
+        if (!mapContainer || !mapContainer.parentNode) {
+            console.error('Map container not found');
+            return;
+        }
+        
+        directionsDiv.classList.add('turn-by-turn-directions');
+        mapContainer.parentNode.insertBefore(directionsDiv, mapContainer.nextSibling);
+    } catch (error) {
+        console.error('Error displaying turn-by-turn directions:', error);
+    }
+}
+
+function showErrorMessage(message) {
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'alert alert-danger mt-3';
+    errorDiv.textContent = message;
+    
+    const mapContainer = document.getElementById('routeMap');
+    if (mapContainer && mapContainer.parentNode) {
+        const existingError = mapContainer.parentNode.querySelector('.alert-danger');
+        if (existingError) {
+            existingError.remove();
+        }
+        mapContainer.parentNode.insertBefore(errorDiv, mapContainer.nextSibling);
+    }
+}
+
+function updateCurrentStep(currentPosition) {
+    try {
+        const directionsDiv = document.querySelector('.turn-by-turn-directions');
+        if (!directionsDiv) return;
+        
+        const steps = directionsDiv.querySelectorAll('li');
+        if (!steps.length) return;
+        
+        let currentStep = null;
+        let minDistance = Infinity;
+        
+        steps.forEach((step, index) => {
+            const stepPosition = getStepPosition(index);
+            if (!stepPosition) return;
+            
+            const distance = google.maps.geometry.spherical.computeDistanceBetween(
+                currentPosition,
+                stepPosition
+            );
+            
+            if (distance < minDistance) {
+                minDistance = distance;
+                currentStep = step;
+            }
+        });
+        
+        if (currentStep) {
+            // Remove highlight from all steps
+            steps.forEach(step => {
+                step.classList.remove('active', 'text-primary');
+                step.style.backgroundColor = '';
+            });
+            
+            // Highlight current step
+            currentStep.classList.add('active', 'text-primary');
+            currentStep.style.backgroundColor = '#e9ecef';
+            
+            // Scroll to current step
+            currentStep.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+    } catch (error) {
+        console.error('Error updating current step:', error);
+    }
+}
+
+function getStepPosition(stepIndex) {
+    if (!currentRoute || !currentRoute.steps || !currentRoute.steps[stepIndex]) {
+        return null;
+    }
+    return currentRoute.steps[stepIndex].position;
+}
+
+function startLiveTracking(routeId) {
+    if (currentRoute) {
+        stopLiveTracking();
+    }
+    
+    currentRoute = { id: routeId };
+    
+    // Create delivery marker
+    deliveryMarker = new google.maps.Marker({
+        map: liveMap,
+        icon: {
+            path: google.maps.SymbolPath.CIRCLE,
+            scale: 8,
+            fillColor: "#FFC107",
+            fillOpacity: 1,
+            strokeColor: "#FFC107",
+            strokeWeight: 2,
+        }
+    });
+    
+    // Create delivery path
+    deliveryPath = new google.maps.Polyline({
+        map: liveMap,
+        path: [],
+        geodesic: true,
+        strokeColor: '#FFC107',
+        strokeOpacity: 1.0,
+        strokeWeight: 2
+    });
+    
+    // Initialize WebSocket connection for real-time updates
+    const socket = io();
+    
+    socket.on('connect', () => {
+        console.log('WebSocket connected');
+        socket.emit('start_tracking', { routeId: routeId });
+    });
+    
+    socket.on('location_update', (data) => {
+        updateDeliveryLocation(data);
+    });
+    
+    socket.on('disconnect', () => {
+        console.log('WebSocket disconnected');
+    });
+    
+    // Store socket in the current route object
+    currentRoute.socket = socket;
+    
+    // Load route details and start tracking
+    loadRouteDetails(routeId);
+}
+
+async function loadRouteDetails(routeId) {
+    try {
+        const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
+        if (!token) {
+            window.location.href = '/login';
+            return;
+        }
+
+        const response = await fetch(`/api/routes/${routeId}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to load route details');
+        }
+
+        const route = await response.json();
+        
+        // Update current route with details
+        currentRoute = {
+            ...currentRoute,
+            ...route,
+            steps: route.steps || []
+        };
+        
+        // Display route on live map
+        const request = {
+            origin: route.startLocation,
+            destination: route.endLocation,
+            waypoints: route.waypoints?.map(wp => ({
+                location: wp,
+                stopover: true
+            })) || [],
+            travelMode: google.maps.TravelMode.DRIVING,
+            drivingOptions: {
+                departureTime: new Date(),
+                trafficModel: google.maps.TrafficModel.BEST_GUESS
+            }
+        };
+        
+        directionsService.route(request, (result, status) => {
+            if (status === 'OK' && result) {
+                liveDirectionsRenderer.setDirections(result);
+                displayTurnByTurnDirections(result);
+            } else {
+                console.error('Failed to display route on live map:', status);
+            }
+        });
+    } catch (error) {
+        console.error('Error loading route details:', error);
+        showErrorMessage('Failed to load route details');
+    }
+}
+
+function updateDeliveryLocation(data) {
+    if (!currentRoute) return;
+    
+    if (data) {
+        // Update with real data from WebSocket
+        const position = new google.maps.LatLng(data.latitude, data.longitude);
+        deliveryMarker.setPosition(position);
+        
+        const path = deliveryPath.getPath();
+        path.push(position);
+        
+        // Update turn-by-turn directions based on current position
+        updateCurrentStep(position);
+        
+        // Center map on delivery
+        liveMap.setCenter(position);
+    } else {
+        // Fallback to simulation if no real data
+        const route = getRouteById(currentRoute);
+        if (route) {
+            const path = deliveryPath.getPath();
+            const lastPosition = path.getLength() > 0 ? path.getAt(path.getLength() - 1) : route.startLocation;
+            
+            const newPosition = simulateMovement(lastPosition, route);
+            path.push(newPosition);
+            deliveryMarker.setPosition(newPosition);
+            
+            // Center map on delivery
+            liveMap.setCenter(newPosition);
+        }
+    }
+}
+
+function stopLiveTracking() {
+    if (currentRoute && currentRoute.socket) {
+        currentRoute.socket.emit('stop_tracking');
+        currentRoute.socket.disconnect();
+    }
+    
+    if (deliveryMarker) {
+        deliveryMarker.setMap(null);
+        deliveryMarker = null;
+    }
+    if (deliveryPath) {
+        deliveryPath.setMap(null);
+        deliveryPath = null;
+    }
+    currentRoute = null;
+}
+
+function simulateMovement(currentPosition, route) {
+    // This is a simple simulation - replace with actual delivery tracking logic
+    const lat = currentPosition.lat() + (Math.random() - 0.5) * 0.001;
+    const lng = currentPosition.lng() + (Math.random() - 0.5) * 0.001;
+    return new google.maps.LatLng(lat, lng);
+}
+
+async function loadRoutes() {
+    try {
+        const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
+        if (!token) {
+            window.location.href = '/login';
+            return;
+        }
+
+        const response = await fetch('/api/routes', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to load routes');
+        }
+
+        const routes = await response.json();
+        const routesList = document.getElementById('routesList');
+        routesList.innerHTML = '';
+
+        if (routes.length === 0) {
+            routesList.innerHTML = `
+                <div class="text-center p-3">
+                    <p class="text-muted mb-0">No routes found</p>
+                    <button class="btn btn-primary btn-sm mt-2" onclick="showNewRouteModal()">
+                        Create Your First Route
+                    </button>
+                </div>
+            `;
+            return;
+        }
+
+        routes.forEach(route => {
+            const routeCard = document.createElement('div');
+            routeCard.className = 'list-group-item list-group-item-action';
+            routeCard.innerHTML = `
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="mb-1">${route.name}</h6>
+                        <small class="text-muted">
+                            ${route.startLocation} → ${route.endLocation}
+                        </small>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-sm btn-outline-primary" onclick="viewRouteDetails(${route.id})">
+                            <i class="fas fa-info-circle"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-success" onclick="startLiveTracking(${route.id})">
+                            <i class="fas fa-play"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger" onclick="deleteRoute(${route.id})">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="mt-2">
+                    <span class="badge bg-${getStatusBadgeColor(route.status)}">${route.status}</span>
+                    <small class="text-muted ms-2">
+                        ${route.totalDistance ? route.totalDistance.toFixed(2) + ' km' : 'N/A'} • 
+                        ${route.estimatedTime ? Math.round(route.estimatedTime) + ' min' : 'N/A'}
+                    </small>
+                </div>
+            `;
+            routesList.appendChild(routeCard);
+        });
+    } catch (error) {
+        console.error('Error loading routes:', error);
+        const routesList = document.getElementById('routesList');
+        routesList.innerHTML = `
+            <div class="alert alert-danger m-3">
+                Failed to load routes. Please try again.
+                <button class="btn btn-sm btn-outline-danger ms-2" onclick="loadRoutes()">
+                    Retry
+                </button>
+            </div>
+        `;
+    }
+}
+
+function getStatusBadgeColor(status) {
+    switch (status?.toLowerCase()) {
+        case 'completed':
+            return 'success';
+        case 'in_progress':
+            return 'warning';
+        case 'pending':
+            return 'info';
+        default:
+            return 'secondary';
+    }
+}
+
+function showNewRouteModal() {
+    // Reset form
+    document.getElementById('newRouteForm').reset();
+    
+    // Clear markers
+    if (startMarker) startMarker.setMap(null);
+    if (endMarker) endMarker.setMap(null);
+    waypointMarkers.forEach(wp => wp.marker.setMap(null));
+    waypointMarkers = [];
+    
+    // Clear directions
+    directionsRenderer.setDirections({ routes: [] });
+    
+    // Show modal
+    routesModal.show();
+}
+
+async function createNewRoute() {
+    try {
+        const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
+        if (!token) {
+            window.location.href = '/login';
+            return;
+        }
+
+        const formData = {
+            name: document.getElementById('routeName').value,
+            startLocation: document.getElementById('startLocation').value,
+            endLocation: document.getElementById('endLocation').value,
+            waypoints: waypointMarkers.map(wp => wp.input.value),
+            isRoundTrip: document.getElementById('isRoundTrip').checked,
+            priority: document.getElementById('optimizationPriority').value,
+            preferences: {
+                considerTraffic: document.getElementById('considerTraffic').checked,
+                avoidTolls: document.getElementById('avoidTolls').checked,
+                useHighways: document.getElementById('useHighways').checked
+            }
+        };
+
+        // First optimize the route
+        const optimizeResponse = await fetch('/api/optimize/route', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(formData)
+        });
+
+        if (!optimizeResponse.ok) {
+            throw new Error('Failed to optimize route');
+        }
+
+        const result = await optimizeResponse.json();
+        
+        // Then save the optimized route
+        const saveResponse = await fetch('/api/routes', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                ...formData,
+                totalDistance: result.total_distance,
+                estimatedTime: result.estimated_time,
+                status: 'pending'
+            })
+        });
+
+        if (!saveResponse.ok) {
+            throw new Error('Failed to save route');
+        }
+
+        routesModal.hide();
+        loadRoutes(); // Reload the routes list
+    } catch (error) {
+        console.error('Error creating route:', error);
+        showErrorMessage('Failed to create route. Please try again.');
+    }
+}
+
+async function viewRouteDetails(routeId) {
+    try {
+        const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
+        if (!token) {
+            window.location.href = '/login';
+            return;
+        }
+
+        const response = await fetch(`/api/routes/${routeId}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to load route details');
+        }
+
+        const route = await response.json();
+        const detailsDiv = document.getElementById('routeDetails');
+        
+        detailsDiv.innerHTML = `
+            <div class="row">
+                <div class="col-md-6">
+                    <h6>Route Information</h6>
+                    <p><strong>Name:</strong> ${route.name}</p>
+                    <p><strong>Start:</strong> ${route.startLocation}</p>
+                    <p><strong>End:</strong> ${route.endLocation}</p>
+                    <p><strong>Status:</strong> <span class="badge bg-${getStatusBadgeColor(route.status)}">${route.status}</span></p>
+                </div>
+                <div class="col-md-6">
+                    <h6>Route Statistics</h6>
+                    <p><strong>Total Distance:</strong> ${route.totalDistance ? route.totalDistance.toFixed(2) + ' km' : 'N/A'}</p>
+                    <p><strong>Estimated Time:</strong> ${route.estimatedTime ? Math.round(route.estimatedTime) + ' min' : 'N/A'}</p>
+                    <p><strong>Created:</strong> ${new Date(route.createdAt).toLocaleString()}</p>
+                    ${route.completedAt ? `<p><strong>Completed:</strong> ${new Date(route.completedAt).toLocaleString()}</p>` : ''}
+                </div>
+            </div>
+            ${route.waypoints && route.waypoints.length > 0 ? `
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <h6>Waypoints</h6>
+                        <ul class="list-group">
+                            ${route.waypoints.map((waypoint, index) => `
+                                <li class="list-group-item">${index + 1}. ${waypoint}</li>
+                            `).join('')}
+                        </ul>
+                    </div>
+                </div>
+            ` : ''}
+        `;
+
+        detailsModal.show();
+    } catch (error) {
+        console.error('Error loading route details:', error);
+        alert('Failed to load route details. Please try again.');
+    }
+}
+
+async function deleteRoute(routeId) {
+    if (!confirm('Are you sure you want to delete this route?')) {
+        return;
+    }
+
+    try {
+        const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
+        if (!token) {
+            window.location.href = '/login';
+            return;
+        }
+
+        const response = await fetch(`/api/routes/${routeId}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to delete route');
+        }
+
+        loadRoutes();
+    } catch (error) {
+        console.error('Error deleting route:', error);
+        alert('Failed to delete route. Please try again.');
+    }
+}
+</script>
+{% endblock %} 

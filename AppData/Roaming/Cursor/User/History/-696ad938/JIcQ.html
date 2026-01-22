@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Maps Navigation Demo</title>
+    <script async src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places,directions"></script>
+    <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        #map { height: 80vh; min-height: 400px; width: 100%; }
+        .controls { margin: 1rem; }
+        .controls button { margin-right: 1rem; padding: 0.5rem 1rem; font-size: 1rem; }
+    </style>
+</head>
+<body>
+    <div class="controls">
+        <button class="start-navigation">Start Navigation</button>
+        <button class="live-tracking">Live Tracking</button>
+    </div>
+    <div id="map"></div>
+    <script>
+let map, directionsService, directionsRenderer, currentRoute, isNavigating = false, isLiveTracking = false;
+window.locations = [
+    { lat: 28.6139, lng: 77.2090 }, // Example: New Delhi
+    { lat: 27.1767, lng: 78.0081 }, // Example: Agra
+    { lat: 26.9124, lng: 75.7873 }  // Example: Jaipur
+];
+
+function initMap() {
+    map = new google.maps.Map(document.getElementById('map'), {
+        center: window.locations[0],
+        zoom: 6
+    });
+    directionsService = new google.maps.DirectionsService();
+    directionsRenderer = new google.maps.DirectionsRenderer({ map: map });
+}
+
+if (window.google && window.google.maps) {
+    initMap();
+} else {
+    window.initMap = initMap;
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const startNavBtn = document.querySelector('.start-navigation');
+    const liveTrackBtn = document.querySelector('.live-tracking');
+    if (startNavBtn) startNavBtn.addEventListener('click', startNavigation);
+    if (liveTrackBtn) liveTrackBtn.addEventListener('click', toggleLiveTracking);
+});
+
+function startNavigation() {
+    if (!window.locations || window.locations.length < 2) {
+        alert('Please add at least 2 locations to start navigation.');
+        return;
+    }
+    const origin = window.locations[0];
+    const destination = window.locations[window.locations.length - 1];
+    const waypoints = window.locations.slice(1, -1).map(loc => ({
+        location: { lat: loc.lat, lng: loc.lng },
+        stopover: true
+    }));
+
+    directionsService.route({
+        origin: { lat: origin.lat, lng: origin.lng },
+        destination: { lat: destination.lat, lng: destination.lng },
+        waypoints,
+        travelMode: google.maps.TravelMode.DRIVING
+    }, (result, status) => {
+        if (status === google.maps.DirectionsStatus.OK) {
+            directionsRenderer.setDirections(result);
+            currentRoute = result;
+        } else {
+            alert('Failed to calculate route. Please try again.');
+        }
+    });
+}
+
+function toggleLiveTracking() {
+    isLiveTracking = !isLiveTracking;
+    const liveTrackBtn = document.querySelector('.live-tracking');
+    if (liveTrackBtn) {
+        if (isLiveTracking) {
+            liveTrackBtn.classList.add('active');
+            if (navigator.geolocation) {
+                navigator.geolocation.watchPosition(
+                    pos => {
+                        const { latitude, longitude } = pos.coords;
+                        map.setCenter({ lat: latitude, lng: longitude });
+                    },
+                    err => alert('Error getting location: ' + err.message),
+                    { enableHighAccuracy: true }
+                );
+            }
+        } else {
+            liveTrackBtn.classList.remove('active');
+            // Optionally stop geolocation tracking
+        }
+    }
+}
+    </script>
+</body>
+</html> 

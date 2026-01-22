@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Seat Booking</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="main-header">
+        <h1>Public Transport Seat Reservation</h1>
+        <p class="tagline">Book your seat with ease.</p>
+    </header>
+
+    <nav class="main-nav">
+        <ul>
+            <li><a href="#booking-section">Book Seat</a></li>
+            <li><a href="#cancellation-section">Cancel Booking</a></li>
+            <li><a href="#cancel-waitlist-section">Cancel Waitlist</a></li>
+            <li><a href="#seat-overview-section">Seat Overview</a></li>
+            <li><a href="#waitlist-section">Waitlist</a></li>
+        </ul>
+    </nav>
+
+    <main class="container">
+        <section id="dashboard">
+            <h2>Dashboard</h2>
+            <div id="dashboard-content">
+                <p>Welcome to your dashboard!</p>
+                <div id="user-bookings">
+                    <h3>Your Bookings</h3>
+                    <ul id="user-bookings-list">
+                    </ul>
+                </div>
+                <div id="user-waitlist">
+                    <h3>Your Waitlist Requests</h3>
+                    <ul id="user-waitlist-list">
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <div class="main-content">
+            <section id="booking-section">
+                <h2>Book a Seat</h2>
+                <form id="booking-form">
+                    <div class="form-group">
+                        <label for="name">Name:</label>
+                        <input type="text" id="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contact">Contact:</label>
+                        <input type="text" id="contact" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="age">Age:</label>
+                        <input type="number" id="age" min="0" value="25">
+                    </div>
+                    <div class="form-group">
+                        <label for="disability">Disability:</label>
+                        <select id="disability">
+                            <option value="no" selected>No</option>
+                            <option value="yes">Yes</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="bus-stop">Bus Stop:</label>
+                        <select id="bus-stop" required>
+                            <option value="">-- Select Stop --</option>
+                            <option value="kashipur">Kashipur</option>
+                            <option value="ramnagar">Ramnagar</option>
+                            <option value="nainital">Nainital</option>
+                            <option value="haldwani">Haldwani</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="payment-option">Payment Option:</label>
+                        <select id="payment-option">
+                            <option value="">-- Select Option --</option>
+                            <option value="credit_card">Credit Card</option>
+                            <option value="debit_card">Debit Card</option>
+                            <option value="upi">UPI</option>
+                            <option value="wallet">Wallet</option>
+                        </select>
+                    </div>
+                    <div id="payment-details" style="display: none;">
+                    </div>
+                    <button type="button" onclick="bookSeat()" class="btn btn-primary">Book Seat</button>
+                    <p id="booking-status" class="status-message"></p>
+                </form>
+            </section>
+
+            <section id="cancellation-section">
+                <h2>Cancel Booking</h2>
+                <form id="cancellation-form">
+                    <div class="form-group">
+                        <label for="cancel-seat">Seat Number:</label>
+                        <input type="text" id="cancel-seat">
+                    </div>
+                    <button type="button" onclick="cancelBooking()" class="btn btn-secondary">Cancel Booking</button>
+                    <p id="cancellation-status" class="status-message"></p>
+                </form>
+            </section>
+
+            <section id="cancel-waitlist-section">
+                <h2>Cancel Waitlist Request</h2>
+                <form id="cancel-waitlist-form">
+                    <div class="form-group">
+                        <label for="cancel-waitlist-contact">Contact Number:</label>
+                        <input type="text" id="cancel-waitlist-contact" placeholder="Your registered contact">
+                    </div>
+                    <button type="button" onclick="cancelWaitlistRequest()" class="btn btn-warning">Cancel Request</button>
+                    <p id="cancel-waitlist-status" class="status-message"></p>
+                </form>
+            </section>
+
+            <section id="seat-overview-section">
+                <h2>Seat Overview</h2>
+                <ul id="seat-list-overview" class="seat-overview"></ul>
+            </section>
+
+            <section id="waitlist-section">
+                <h2>Waitlist</h2>
+                <ul id="waitlist-list" class="waitlist"></ul>
+                <p id="waitlist-status" class="status-message"></p>
+            </section>
+        </div>
+    </main>
+
+    <footer class="main-footer">
+        <p>&copy; 2025 Public Transport Booking System (Frontend Simulation)</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

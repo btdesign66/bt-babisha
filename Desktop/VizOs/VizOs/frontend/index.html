@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VizOS - Interactive OS Simulation Tool</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-desktop"></i>
+                    <h1>VizOS</h1>
+                </div>
+                <p class="subtitle">Interactive Operating System Simulation Tool</p>
+            </div>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <nav class="nav-tabs">
+            <button class="tab-btn active" data-tab="cpu-scheduling">
+                <i class="fas fa-microchip"></i>
+                CPU Scheduling
+            </button>
+            <button class="tab-btn" data-tab="bankers">
+                <i class="fas fa-shield-alt"></i>
+                Banker's Algorithm
+            </button>
+            <button class="tab-btn" data-tab="deadlock">
+                <i class="fas fa-exclamation-triangle"></i>
+                Deadlock Detection
+            </button>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- CPU Scheduling Tab -->
+            <div class="tab-content active" id="cpu-scheduling">
+                <div class="content-header">
+                    <h2>CPU Scheduling Algorithms</h2>
+                    <p>Visualize and compare different CPU scheduling algorithms</p>
+                </div>
+                
+                <div class="algorithm-selector">
+                    <label for="algorithm-select">Select Algorithm:</label>
+                    <select id="algorithm-select">
+                        <option value="fcfs">First Come First Serve (FCFS)</option>
+                        <option value="sjf">Shortest Job First (SJF)</option>
+                        <option value="priority">Priority Scheduling</option>
+                        <option value="roundrobin">Round Robin</option>
+                    </select>
+                </div>
+
+                <div class="input-section">
+                    <div class="process-input-container">
+                        <div class="input-header">
+                            <h3>Process Configuration</h3>
+                            <button type="button" class="btn-secondary" id="add-process-btn">
+                                <i class="fas fa-plus"></i>
+                                Add Process
+                            </button>
+                        </div>
+                        <div id="processes-container">
+                            <!-- Process inputs will be dynamically added here -->
+                        </div>
+                    </div>
+                    <div class="input-group" id="quantum-group" style="display: none;">
+                        <label for="quantum-input">Time Quantum:</label>
+                        <input type="number" id="quantum-input" value="2" min="1">
+                    </div>
+                    <button class="btn-primary" id="simulate-btn">
+                        <i class="fas fa-play"></i>
+                        Simulate
+                    </button>
+                </div>
+
+                <div class="results-section">
+                    <div class="gantt-chart-container">
+                        <h3>Gantt Chart</h3>
+                        <canvas id="gantt-chart" width="800" height="200"></canvas>
+                    </div>
+                    
+                    <div class="metrics-container">
+                        <h3>Performance Metrics</h3>
+                        <div class="metrics-grid">
+                            <div class="metric-card">
+                                <div class="metric-value" id="avg-waiting-time">-</div>
+                                <div class="metric-label">Average Waiting Time</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-value" id="avg-turnaround-time">-</div>
+                                <div class="metric-label">Average Turnaround Time</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-value" id="avg-response-time">-</div>
+                                <div class="metric-label">Average Response Time</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-value" id="cpu-utilization">-</div>
+                                <div class="metric-label">CPU Utilization</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Banker's Algorithm Tab -->
+            <div class="tab-content" id="bankers">
+                <div class="content-header">
+                    <h2>Banker's Algorithm</h2>
+                    <p>Deadlock avoidance using Banker's algorithm</p>
+                </div>
+
+                <div class="input-section">
+                    <div class="input-group">
+                        <label for="bankers-processes">Number of Processes:</label>
+                        <input type="number" id="bankers-processes" value="3" min="1" max="10">
+                    </div>
+                    <div class="input-group">
+                        <label for="bankers-resources">Number of Resources:</label>
+                        <input type="number" id="bankers-resources" value="3" min="1" max="10">
+                    </div>
+                    <button class="btn-primary" id="bankers-simulate-btn">
+                        <i class="fas fa-play"></i>
+                        Simulate Banker's Algorithm
+                    </button>
+                </div>
+
+                <div class="results-section">
+                    <div class="rag-visualization">
+                        <h3>Resource Allocation Graph (RAG)</h3>
+                        <svg id="rag-chart" width="600" height="400"></svg>
+                    </div>
+                    
+                    <div class="safe-sequence">
+                        <h3>Safe Sequence</h3>
+                        <div id="safe-sequence-result">Click simulate to find safe sequence</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Deadlock Detection Tab -->
+            <div class="tab-content" id="deadlock">
+                <div class="content-header">
+                    <h2>Deadlock Detection</h2>
+                    <p>Detect and visualize deadlocks in resource allocation</p>
+                </div>
+
+                <div class="input-section">
+                    <div class="input-group">
+                        <label for="deadlock-processes">Number of Processes:</label>
+                        <input type="number" id="deadlock-processes" value="4" min="1" max="10">
+                    </div>
+                    <div class="input-group">
+                        <label for="deadlock-resources">Number of Resources:</label>
+                        <input type="number" id="deadlock-resources" value="3" min="1" max="10">
+                    </div>
+                    <button class="btn-primary" id="deadlock-simulate-btn">
+                        <i class="fas fa-search"></i>
+                        Detect Deadlock
+                    </button>
+                </div>
+
+                <div class="results-section">
+                    <div class="deadlock-visualization">
+                        <h3>Deadlock Detection Result</h3>
+                        <div id="deadlock-result">Click detect to analyze for deadlocks</div>
+                    </div>
+                    
+                    <div class="wait-for-graph">
+                        <h3>Wait-for Graph</h3>
+                        <svg id="wait-for-chart" width="600" height="400"></svg>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Loading Overlay -->
+        <div class="loading-overlay" id="loading-overlay">
+            <div class="loading-spinner">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Processing...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/fcfs.js"></script>
+    <script src="js/sjf.js"></script>
+    <script src="js/priority.js"></script>
+    <script src="js/roundrobin.js"></script>
+    <script src="js/bankers.js"></script>
+    <script src="js/deadlock.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

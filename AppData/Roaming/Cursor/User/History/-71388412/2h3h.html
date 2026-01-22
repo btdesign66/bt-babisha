@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BDS PRO - My Account Dashboard</title>
+    <meta name="description" content="BDS PRO Account Dashboard - Manage your crypto investments and USDT deposits">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- QR Code Library -->
+    <script src="https://unpkg.com/qrcode@1.5.3/build/qrcode.min.js"></script>
+    
+    <style>
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .crypto-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .bep20-card {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            color: white;
+        }
+        
+        .trc20-card {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+        }
+        
+        .sidebar-item.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .sidebar-item:hover {
+            background: #f3f4f6;
+        }
+        
+        .sidebar-item.active:hover {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b border-gray-200">
+        <div class="flex items-center justify-between px-6 py-4">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-gradient-to-r from-purple-600 to-blue-600 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-chart-line text-white text-lg"></i>
+                </div>
+                <span class="text-2xl font-bold gradient-text">BDS PRO</span>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <div class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium flex items-center space-x-2">
+                    <i class="fab fa-whatsapp"></i>
+                    <span>Cashback WhatsApp Support: +91 98765 43210</span>
+                </div>
+                
+                <div class="flex items-center space-x-3">
+                    <div class="text-right">
+                        <p class="text-sm font-medium text-gray-900">nitinkandpalco</p>
+                        <p class="text-xs text-gray-500">nitinkandpalco@gmail.com</p>
+                    </div>
+                    <div class="w-8 h-8 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full flex items-center justify-center">
+                        <span class="text-white font-medium text-sm">N</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="flex min-h-screen">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-white shadow-lg">
+            <nav class="mt-6 px-3">
+                <a href="#" class="sidebar-item flex items-center px-3 py-2 text-sm font-medium rounded-md mb-1 transition-colors">
+                    <i class="fas fa-home w-5 h-5 mr-3"></i>
+                    Dashboard
+                </a>
+                <a href="#" class="sidebar-item active flex items-center px-3 py-2 text-sm font-medium rounded-md mb-1 transition-colors">
+                    <i class="fas fa-user w-5 h-5 mr-3"></i>
+                    My Account
+                </a>
+                <a href="#" class="sidebar-item flex items-center px-3 py-2 text-sm font-medium rounded-md mb-1 transition-colors">
+                    <i class="fas fa-users w-5 h-5 mr-3"></i>
+                    My Referral
+                </a>
+                <a href="#" class="sidebar-item flex items-center px-3 py-2 text-sm font-medium rounded-md mb-1 transition-colors">
+                    <i class="fas fa-coins w-5 h-5 mr-3"></i>
+                    Cashback
+                </a>
+                <a href="#" class="sidebar-item flex items-center px-3 py-2 text-sm font-medium rounded-md mb-1 transition-colors">
+                    <i class="fas fa-wallet w-5 h-5 mr-3"></i>
+                    Withdrawal
+                </a>
+                <a href="#" class="sidebar-item flex items-center px-3 py-2 text-sm font-medium rounded-md mb-1 transition-colors text-red-600 hover:text-red-700">
+                    <i class="fas fa-sign-out-alt w-5 h-5 mr-3"></i>
+                    Logout
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-6">
+            <div class="mb-8">
+                <h1 class="text-3xl font-bold text-gray-900">My Account</h1>
+                <p class="text-gray-600 mt-2">Manage your investments and transactions.</p>
+            </div>
+
+            <!-- Tabs -->
+            <div class="mb-8">
+                <div class="border-b border-gray-200">
+                    <nav class="-mb-px flex space-x-8">
+                        <button class="tab-button active py-2 px-1 border-b-2 border-purple-500 text-purple-600 font-medium text-sm" onclick="switchTab('deposit')">
+                            Deposit
+                        </button>
+                        <button class="tab-button py-2 px-1 border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 font-medium text-sm" onclick="switchTab('withdraw')">
+                            Withdraw
+                        </button>
+                        <button class="tab-button py-2 px-1 border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 font-medium text-sm" onclick="switchTab('history')">
+                            History
+                        </button>
+                    </nav>
+                </div>
+            </div>
+
+            <!-- Deposit Tab Content -->
+            <div id="deposit-tab" class="tab-content">
+                <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
+                    <h2 class="text-xl font-semibold text-gray-900 mb-6">Add Funds</h2>
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <!-- Amount Input -->
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Amount (USDT)</label>
+                                <input type="number" id="deposit-amount" placeholder="Enter amount" 
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                            </div>
+                            <p class="text-sm text-gray-500">Minimum deposit: 50 USDT</p>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Payment Method</label>
+                                <select id="payment-method" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                                    <option value="">Select payment method</option>
+                                    <option value="usdt-bep20">USDT (BEP20) - Binance Smart Chain</option>
+                                    <option value="usdt-trc20">USDT (TRC20) - Tron Network</option>
+                                    <option value="bank-transfer">Bank Transfer</option>
+                                    <option value="upi">UPI</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Crypto Payment Section -->
+                        <div id="crypto-payment-section" class="hidden">
+                            <div class="space-y-4">
+                                <div class="crypto-card rounded-lg p-4">
+                                    <h3 class="text-lg font-semibold mb-2">Crypto Payment Details</h3>
+                                    <div id="crypto-details">
+                                        <!-- Dynamic content will be inserted here -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6">
+                        <button id="proceed-payment" class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition-colors">
+                            Proceed to Payment
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Crypto Addresses Section -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- BEP20 Card -->
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-semibold text-gray-900">BEP20 USDT</h3>
+                            <span class="px-3 py-1 text-sm font-medium text-yellow-600 bg-yellow-100 rounded-full">
+                                Binance Smart Chain
+                            </span>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Deposit Address</label>
+                                <div class="flex items-center space-x-2">
+                                    <input type="text" id="bep20-address" value="0xdfca28ad998742570aecb7ffde1fe564b7d42c30" 
+                                           readonly class="flex-1 px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 text-sm font-mono">
+                                    <button onclick="copyToClipboard('bep20-address', 'BEP20 Address')" 
+                                            class="p-2 text-gray-500 hover:text-gray-700">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                    <button onclick="toggleQR('bep20')" class="p-2 text-gray-500 hover:text-gray-700">
+                                        <i class="fas fa-qrcode"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Balance</label>
+                                <div class="text-2xl font-bold text-gray-900" id="bep20-balance">150.25 USDT</div>
+                            </div>
+
+                            <div id="bep20-qr" class="hidden">
+                                <div class="flex justify-center p-4 bg-gray-50 rounded-lg">
+                                    <div id="bep20-qr-code" class="w-48 h-48"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TRC20 Card -->
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-semibold text-gray-900">TRC20 USDT</h3>
+                            <span class="px-3 py-1 text-sm font-medium text-red-600 bg-red-100 rounded-full">
+                                Tron Network
+                            </span>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Deposit Address</label>
+                                <div class="flex items-center space-x-2">
+                                    <input type="text" id="trc20-address" value="TTxh7Fv9Npov8rZGYzYzwcUWhQzBEpAtzt" 
+                                           readonly class="flex-1 px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 text-sm font-mono">
+                                    <button onclick="copyToClipboard('trc20-address', 'TRC20 Address')" 
+                                            class="p-2 text-gray-500 hover:text-gray-700">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                    <button onclick="toggleQR('trc20')" class="p-2 text-gray-500 hover:text-gray-700">
+                                        <i class="fas fa-qrcode"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Balance</label>
+                                <div class="text-2xl font-bold text-gray-900" id="trc20-balance">75.50 USDT</div>
+                            </div>
+
+                            <div id="trc20-qr" class="hidden">
+                                <div class="flex justify-center p-4 bg-gray-50 rounded-lg">
+                                    <div id="trc20-qr-code" class="w-48 h-48"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Withdraw Tab Content -->
+            <div id="withdraw-tab" class="tab-content hidden">
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h2 class="text-xl font-semibold text-gray-900 mb-6">Withdraw Funds</h2>
+                    <p class="text-gray-600">Withdrawal functionality coming soon...</p>
+                </div>
+            </div>
+
+            <!-- History Tab Content -->
+            <div id="history-tab" class="tab-content hidden">
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h2 class="text-xl font-semibold text-gray-900 mb-6">Transaction History</h2>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Network</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2024-01-15</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Deposit</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-green-600">+50.00 USDT</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-600">BEP20</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-600">Confirmed</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2024-01-14</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Deposit</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-green-600">+25.00 USDT</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-600">TRC20</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-600">Pending</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Tab switching functionality
+        function switchTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.add('hidden');
+            });
+            
+            // Remove active class from all tab buttons
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('active', 'border-purple-500', 'text-purple-600');
+                button.classList.add('border-transparent', 'text-gray-500');
+            });
+            
+            // Show selected tab content
+            document.getElementById(tabName + '-tab').classList.remove('hidden');
+            
+            // Add active class to clicked button
+            event.target.classList.add('active', 'border-purple-500', 'text-purple-600');
+            event.target.classList.remove('border-transparent', 'text-gray-500');
+        }
+
+        // Payment method change handler
+        document.getElementById('payment-method').addEventListener('change', function() {
+            const cryptoSection = document.getElementById('crypto-payment-section');
+            const cryptoDetails = document.getElementById('crypto-details');
+            
+            if (this.value === 'usdt-bep20' || this.value === 'usdt-trc20') {
+                cryptoSection.classList.remove('hidden');
+                
+                const amount = document.getElementById('deposit-amount').value;
+                const network = this.value === 'usdt-bep20' ? 'BEP20' : 'TRC20';
+                const address = this.value === 'usdt-bep20' ? 
+                    '0xdfca28ad998742570aecb7ffde1fe564b7d42c30' : 
+                    'TTxh7Fv9Npov8rZGYzYzwcUWhQzBEpAtzt';
+                
+                cryptoDetails.innerHTML = `
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Amount to Deposit</label>
+                            <div class="text-lg font-semibold">${amount || '0'} USDT</div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Network</label>
+                            <div class="text-sm">${network} (${this.value === 'usdt-bep20' ? 'Binance Smart Chain' : 'Tron Network'})</div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Deposit Address</label>
+                            <div class="text-sm font-mono break-all">${address}</div>
+                        </div>
+                        <div class="text-xs text-yellow-200">
+                            <i class="fas fa-exclamation-triangle mr-1"></i>
+                            Send only USDT tokens to this address. Sending other tokens may result in permanent loss.
+                        </div>
+                    </div>
+                `;
+            } else {
+                cryptoSection.classList.add('hidden');
+            }
+        });
+
+        // Copy to clipboard functionality
+        function copyToClipboard(elementId, label) {
+            const element = document.getElementById(elementId);
+            element.select();
+            element.setSelectionRange(0, 99999); // For mobile devices
+            document.execCommand('copy');
+            alert(`${label} copied to clipboard!`);
+        }
+
+        // QR code toggle functionality
+        function toggleQR(network) {
+            const qrDiv = document.getElementById(network + '-qr');
+            const qrCodeDiv = document.getElementById(network + '-qr-code');
+            
+            if (qrDiv.classList.contains('hidden')) {
+                qrDiv.classList.remove('hidden');
+                
+                // Generate QR code
+                const address = network === 'bep20' ? 
+                    '0xdfca28ad998742570aecb7ffde1fe564b7d42c30' : 
+                    'TTxh7Fv9Npov8rZGYzYzwcUWhQzBEpAtzt';
+                
+                QRCode.toCanvas(qrCodeDiv, address, {
+                    width: 192,
+                    height: 192,
+                    margin: 2,
+                    color: {
+                        dark: '#000000',
+                        light: '#FFFFFF'
+                    }
+                }, function (error) {
+                    if (error) console.error(error);
+                });
+            } else {
+                qrDiv.classList.add('hidden');
+            }
+        }
+
+        // Proceed payment button handler
+        document.getElementById('proceed-payment').addEventListener('click', function() {
+            const amount = document.getElementById('deposit-amount').value;
+            const method = document.getElementById('payment-method').value;
+            
+            if (!amount || !method) {
+                alert('Please enter amount and select payment method');
+                return;
+            }
+            
+            if (parseFloat(amount) < 50) {
+                alert('Minimum deposit amount is 50 USDT');
+                return;
+            }
+            
+            if (method === 'usdt-bep20' || method === 'usdt-trc20') {
+                alert(`Please send ${amount} USDT to the displayed address. Your deposit will be confirmed after 3 network confirmations.`);
+            } else {
+                alert('Selected payment method is not yet available. Please use USDT (BEP20) or USDT (TRC20).');
+            }
+        });
+
+        // Real-time balance updates (simulation)
+        function updateBalances() {
+            // Simulate balance updates
+            const bep20Balance = (150.25 + Math.random() * 10).toFixed(2);
+            const trc20Balance = (75.50 + Math.random() * 5).toFixed(2);
+            
+            document.getElementById('bep20-balance').textContent = bep20Balance + ' USDT';
+            document.getElementById('trc20-balance').textContent = trc20Balance + ' USDT';
+        }
+
+        // Update balances every 30 seconds
+        setInterval(updateBalances, 30000);
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('BDS PRO Account Dashboard loaded');
+        });
+    </script>
+</body>
+</html>

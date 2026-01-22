@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}ALGO-WIZ - {{ algorithm_type.title() }} Visualization{% endblock %}
+
+{% block content %}
+<div class="visualization-page">
+    <h1>{{ algorithm_type.title() }} Algorithm Visualization</h1>
+    
+    <div class="visualization-container">
+        <div id="array-container" class="array-container"></div>
+        <div id="explanation-container" class="explanation-container"></div>
+        <div id="stats-container" class="stats-container"></div>
+    </div>
+    
+    <div id="controls-container" class="controls-container">
+        <!-- Controls will be dynamically inserted here by JavaScript -->
+    </div>
+</div>
+
+{% block scripts %}
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="{{ url_for('static', filename='js/visualization.js') }}"></script>
+<script src="{{ url_for('static', filename='js/searching.js') }}"></script>
+{% endblock %}
+{% endblock %} 

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Firebase Config Helper</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; max-width: 800px; margin: 0 auto; }
+        .step { background: #f5f5f5; padding: 15px; margin: 10px 0; border-radius: 5px; }
+        .code { background: #e8e8e8; padding: 10px; border-radius: 3px; font-family: monospace; }
+        .highlight { background: yellow; padding: 2px; }
+    </style>
+</head>
+<body>
+    <h1>🔥 Firebase Configuration Helper</h1>
+    
+    <div class="step">
+        <h3>Step 1: Go to Firebase Console</h3>
+        <p>Visit: <a href="https://console.firebase.google.com/" target="_blank">https://console.firebase.google.com/</a></p>
+    </div>
+    
+    <div class="step">
+        <h3>Step 2: Select Your Project</h3>
+        <p>Look for a project with domain: <span class="highlight">bdspro-41480.firebaseapp.com</span></p>
+    </div>
+    
+    <div class="step">
+        <h3>Step 3: Get Project Settings</h3>
+        <p>1. Click the gear icon (⚙️) in the top left</p>
+        <p>2. Select "Project settings"</p>
+    </div>
+    
+    <div class="step">
+        <h3>Step 4: Find Your Web App Config</h3>
+        <p>1. Scroll down to "Your apps" section</p>
+        <p>2. Look for a web app (</> icon) or click "Add app" → "Web"</p>
+        <p>3. If you need to create a new web app:</p>
+        <ul>
+            <li>App nickname: <span class="code">bds-pro-web</span></li>
+            <li>Check "Also set up Firebase Hosting" (optional)</li>
+        </ul>
+    </div>
+    
+    <div class="step">
+        <h3>Step 5: Copy the Configuration</h3>
+        <p>You'll see something like this:</p>
+        <div class="code">
+const firebaseConfig = {<br>
+&nbsp;&nbsp;apiKey: "AIzaSyXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",<br>
+&nbsp;&nbsp;authDomain: "bdspro-41480.firebaseapp.com",<br>
+&nbsp;&nbsp;projectId: "bdspro-41480",<br>
+&nbsp;&nbsp;storageBucket: "bdspro-41480.appspot.com",<br>
+&nbsp;&nbsp;messagingSenderId: "123456789012",<br>
+&nbsp;&nbsp;appId: "1:123456789012:web:abcdef1234567890"<br>
+};
+        </div>
+    </div>
+    
+    <div class="step">
+        <h3>Step 6: Enable Google Authentication</h3>
+        <p>1. Go to "Authentication" in the left sidebar</p>
+        <p>2. Click "Get started"</p>
+        <p>3. Go to "Sign-in method" tab</p>
+        <p>4. Enable "Google" provider</p>
+        <p>5. Add your domain: <span class="code">localhost</span></p>
+    </div>
+    
+    <div class="step">
+        <h3>Step 7: Provide the Values</h3>
+        <p>Please share these 6 values with me:</p>
+        <ul>
+            <li><strong>apiKey:</strong> The long string starting with "AIzaSy"</li>
+            <li><strong>projectId:</strong> Should be "bdspro-41480"</li>
+            <li><strong>storageBucket:</strong> Should be "bdspro-41480.appspot.com"</li>
+            <li><strong>messagingSenderId:</strong> A number like "123456789012"</li>
+            <li><strong>appId:</strong> Something like "1:123456789012:web:abcdef123456"</li>
+            <li><strong>authDomain:</strong> "bdspro-41480.firebaseapp.com" (you already have this)</li>
+        </ul>
+    </div>
+    
+    <div class="step">
+        <h3>Alternative: Quick Setup</h3>
+        <p>If you can't find the config, I can help you:</p>
+        <ul>
+            <li>Create a new Firebase project</li>
+            <li>Set up Google authentication</li>
+            <li>Provide working credentials</li>
+        </ul>
+    </div>
+</body>
+</html>

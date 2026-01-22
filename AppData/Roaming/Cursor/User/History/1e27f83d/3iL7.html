@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Babisha</title>
+    <link rel="stylesheet" href="styles/login.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo-section">
+            <div class="logo">
+                <span class="logo-b">B</span><span class="logo-text">abisha</span>
+            </div>
+        </div>
+        
+        <div class="login-content">
+            <h1 class="admin-title">Admin Panel</h1>
+            <p class="subtitle">Sign in to manage your content</p>
+            
+            <form id="loginForm" class="login-form">
+                <div class="form-group">
+                    <label for="email">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M2 3h12v10H2V3zm1 1v8h10V4H3zm.5 0l4.5 3.5L13 4H3.5z" fill="currentColor"/>
+                        </svg>
+                        Email Address
+                    </label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <rect x="5" y="7" width="6" height="5" rx="1" stroke="currentColor" fill="none"/>
+                            <path d="M8 4v3M5 7h6" stroke="currentColor"/>
+                        </svg>
+                        Password
+                    </label>
+                    <div class="password-input-wrapper">
+                        <input type="password" id="password" name="password" required>
+                        <button type="button" class="toggle-password" id="togglePassword">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                <path d="M8 3C4.5 3 1.7 5.5 0 8c1.7 2.5 4.5 5 8 5s6.3-2.5 8-5c-1.7-2.5-4.5-5-8-5zm0 8.5c-1.9 0-3.5-1.6-3.5-3.5S6.1 4.5 8 4.5 11.5 6.1 11.5 8 9.9 11.5 8 11.5zm0-5.5c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" fill="currentColor"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="form-options">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="rememberMe" name="rememberMe">
+                        <span>Remember me</span>
+                    </label>
+                </div>
+                
+                <button type="submit" class="signin-btn">
+                    <span>Sign In</span>
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" fill="none"/>
+                    </svg>
+                </button>
+            </form>
+            
+            <a href="#" class="back-link" id="backToWebsite">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M10 4l-4 4 4 4" stroke="currentColor" stroke-width="2" fill="none"/>
+                </svg>
+                Back to Website
+            </a>
+        </div>
+    </div>
+    
+    <script src="config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/login.js"></script>
+</body>
+</html>

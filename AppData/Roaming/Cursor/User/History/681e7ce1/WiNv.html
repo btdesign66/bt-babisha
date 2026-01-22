@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Searching - Algo-Wiz</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Searching</h1>
+            <button id="dark-mode-toggle"><i class="fas fa-moon"></i></button>
+        </header>
+        <main>
+            <section class="algorithm-section">
+                <h2>Searching Algorithms</h2>
+                <div class="control-panel">
+                    <select id="algorithm-select">
+                        <option value="linear">Linear Search</option>
+                        <option value="binary">Binary Search</option>
+                        <option value="jump">Jump Search</option>
+                        <option value="interpolation">Interpolation Search</option>
+                        <option value="exponential">Exponential Search</option>
+                        <option value="ternary">Ternary Search</option>
+                    </select>
+                    <input type="text" id="array-input" placeholder="Enter array (e.g., 1,2,3,4,5)">
+                    <input type="number" id="target-input" placeholder="Target Value">
+                    <button id="start-btn"><i class="fas fa-play"></i> Start</button>
+                    <button id="pause-btn"><i class="fas fa-pause"></i> Pause</button>
+                    <button id="reset-btn"><i class="fas fa-redo"></i> Reset</button>
+                    <input type="range" id="speed-slider" min="1" max="10" value="5">
+                    <span id="speed-value">5x</span>
+                </div>
+                <div id="visualization" class="visualization-area"></div>
+                <div id="complexity-display" class="complexity-display">
+                    <p>Time Complexity: <span id="time-complexity">-</span></p>
+                    <p>Space Complexity: <span id="space-complexity">-</span></p>
+                </div>
+            </section>
+            <section class="random-input-section">
+                <h2>Random Input Generator</h2>
+                <button id="random-input-btn"><i class="fas fa-random"></i> Generate Random Input</button>
+                <div id="random-input-display" class="random-input-display"></div>
+            </section>
+        </main>
+    </div>
+    <script src="{{ url_for('static', filename='js/api.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/visualizer.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/darkMode.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/randomInput.js') }}"></script>
+</body>
+</html> 

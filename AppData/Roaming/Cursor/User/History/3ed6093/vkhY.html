@@ -1,0 +1,446 @@
+{% extends "base.html" %}
+
+{% block title %}NAVIO - Home{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+            <div class="position-sticky pt-3">
+                <div class="mb-4">
+                    <h5>Route Settings</h5>
+                    <div class="form-check form-switch mb-2">
+                        <input class="form-check-input" type="checkbox" id="trafficToggle" checked>
+                        <label class="form-check-label" for="trafficToggle">Consider Traffic</label>
+                    </div>
+                    <div class="form-check form-switch mb-2">
+                        <input class="form-check-input" type="checkbox" id="tollToggle">
+                        <label class="form-check-label" for="tollToggle">Avoid Tolls</label>
+                    </div>
+                    <div class="form-check form-switch mb-2">
+                        <input class="form-check-input" type="checkbox" id="highwayToggle" checked>
+                        <label class="form-check-label" for="highwayToggle">Use Highways</label>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <h5>Vehicle Settings</h5>
+                    <select class="form-select mb-2" id="vehicleType">
+                        <option value="car">Car</option>
+                        <option value="truck">Truck</option>
+                        <option value="van">Van</option>
+                        <option value="bike">Bike</option>
+                    </select>
+                    <div class="input-group mb-2">
+                        <span class="input-group-text">Fuel</span>
+                        <input type="number" class="form-control" id="fuelEfficiency" value="10" min="1" max="50">
+                        <span class="input-group-text">km/l</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">Route Optimization</h1>
+                <div class="btn-toolbar mb-2 mb-md-0">
+                    <div class="btn-group me-2">
+                        <button type="button" class="btn btn-sm btn-outline-primary" onclick="saveCurrentRoute()">
+                            <i class="fas fa-save"></i> Save Route
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="clearRoute()">
+                            <i class="fas fa-trash"></i> Clear
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Map Container -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div id="map" style="height: 500px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);"></div>
+                </div>
+            </div>
+
+            <!-- Route Information -->
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Route Details</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label class="form-label">Start Location</label>
+                                <input type="text" class="form-control" id="startLocation" placeholder="Enter start location">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">End Location</label>
+                                <input type="text" class="form-control" id="endLocation" placeholder="Enter end location">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Waypoints</label>
+                                <div id="waypointsContainer">
+                                    <!-- Waypoints will be added here -->
+                                </div>
+                                <button type="button" class="btn btn-outline-primary btn-sm mt-2" onclick="addWaypoint()">
+                                    <i class="fas fa-plus"></i> Add Waypoint
+                                </button>
+                            </div>
+                            <button type="button" class="btn btn-primary w-100" onclick="optimizeRoute()">
+                                <i class="fas fa-route"></i> Optimize Route
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Route Summary</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-6 mb-3">
+                                    <div class="card bg-light">
+                                        <div class="card-body text-center">
+                                            <h6 class="card-subtitle mb-2 text-muted">Total Distance</h6>
+                                            <h3 class="card-title" id="totalDistance">0 km</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <div class="card bg-light">
+                                        <div class="card-body text-center">
+                                            <h6 class="card-subtitle mb-2 text-muted">Estimated Time</h6>
+                                            <h3 class="card-title" id="estimatedTime">0 min</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card bg-light">
+                                <div class="card-body">
+                                    <h6 class="card-subtitle mb-2 text-muted">Turn-by-Turn Directions</h6>
+                                    <div id="directions" class="directions-container">
+                                        <!-- Directions will be added here -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    padding: 48px 0 0;
+    box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+}
+
+.directions-container {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.direction-step {
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+}
+
+.direction-step:last-child {
+    border-bottom: none;
+}
+
+.waypoint-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.waypoint-item input {
+    flex-grow: 1;
+    margin-right: 8px;
+}
+
+@media (max-width: 767.98px) {
+    .sidebar {
+        position: static;
+        height: auto;
+        padding-top: 0;
+    }
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6sNWP3otKrfEc5_YcCwwPVs_DaYZhKNc&libraries=places"></script>
+<script>
+let map;
+let directionsService;
+let directionsRenderer;
+let markers = [];
+let waypoints = [];
+
+function initMap() {
+    // Initialize map
+    map = new google.maps.Map(document.getElementById('map'), {
+        center: { lat: 0, lng: 0 },
+        zoom: 2,
+        mapTypeControl: true,
+        streetViewControl: true,
+        fullscreenControl: true
+    });
+
+    // Initialize directions service and renderer
+    directionsService = new google.maps.DirectionsService();
+    directionsRenderer = new google.maps.DirectionsRenderer({
+        map: map,
+        suppressMarkers: true,
+        polylineOptions: {
+            strokeColor: '#4285F4',
+            strokeWeight: 5
+        }
+    });
+
+    // Add click listener to map
+    map.addListener('click', function(e) {
+        addMarker(e.latLng);
+    });
+
+    // Initialize autocomplete for start and end locations
+    const startInput = document.getElementById('startLocation');
+    const endInput = document.getElementById('endLocation');
+    
+    const startAutocomplete = new google.maps.places.Autocomplete(startInput, {
+        types: ['geocode', 'establishment'],
+        fields: ['formatted_address', 'geometry', 'name']
+    });
+    
+    const endAutocomplete = new google.maps.places.Autocomplete(endInput, {
+        types: ['geocode', 'establishment'],
+        fields: ['formatted_address', 'geometry', 'name']
+    });
+
+    // Add place changed listeners
+    startAutocomplete.addListener('place_changed', function() {
+        const place = startAutocomplete.getPlace();
+        if (place.geometry) {
+            map.setCenter(place.geometry.location);
+            map.setZoom(15);
+        }
+    });
+
+    endAutocomplete.addListener('place_changed', function() {
+        const place = endAutocomplete.getPlace();
+        if (place.geometry) {
+            map.setCenter(place.geometry.location);
+            map.setZoom(15);
+        }
+    });
+}
+
+function addMarker(location) {
+    const marker = new google.maps.Marker({
+        position: location,
+        map: map,
+        draggable: true
+    });
+
+    markers.push(marker);
+    return marker;
+}
+
+function addWaypoint() {
+    const container = document.getElementById('waypointsContainer');
+    const waypointDiv = document.createElement('div');
+    waypointDiv.className = 'waypoint-item';
+    waypointDiv.innerHTML = `
+        <input type="text" class="form-control" placeholder="Enter waypoint location">
+        <button type="button" class="btn btn-outline-danger btn-sm" onclick="removeWaypoint(this)">
+            <i class="fas fa-times"></i>
+        </button>
+    `;
+    container.appendChild(waypointDiv);
+}
+
+function removeWaypoint(button) {
+    button.parentElement.remove();
+}
+
+async function optimizeRoute() {
+    const startLocation = document.getElementById('startLocation').value;
+    const endLocation = document.getElementById('endLocation').value;
+    
+    if (!startLocation || !endLocation) {
+        alert('Please enter both start and end locations');
+        return;
+    }
+
+    // Get waypoints
+    const waypointInputs = document.querySelectorAll('#waypointsContainer input');
+    const waypoints = Array.from(waypointInputs).map(input => input.value).filter(value => value);
+
+    try {
+        const response = await fetch('/api/optimize/dijkstra', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                startNode: startLocation,
+                endNode: endLocation,
+                waypoints: waypoints,
+                preferences: {
+                    considerTraffic: document.getElementById('trafficToggle').checked,
+                    avoidTolls: document.getElementById('tollToggle').checked,
+                    useHighways: document.getElementById('highwayToggle').checked,
+                    vehicleType: document.getElementById('vehicleType').value,
+                    fuelEfficiency: document.getElementById('fuelEfficiency').value
+                }
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to optimize route');
+        }
+
+        const result = await response.json();
+        displayRoute(result);
+    } catch (error) {
+        console.error('Error optimizing route:', error);
+        alert('Failed to optimize route. Please try again.');
+    }
+}
+
+function displayRoute(result) {
+    // Update route summary
+    document.getElementById('totalDistance').textContent = `${result.totalDistance.toFixed(2)} km`;
+    document.getElementById('estimatedTime').textContent = `${Math.round(result.estimatedTime)} min`;
+
+    // Display directions
+    const directionsContainer = document.getElementById('directions');
+    directionsContainer.innerHTML = '';
+
+    result.directions.forEach((direction, index) => {
+        const step = document.createElement('div');
+        step.className = 'direction-step';
+        step.innerHTML = `
+            <div class="d-flex align-items-center">
+                <span class="badge bg-primary me-2">${index + 1}</span>
+                <span>${direction.instruction}</span>
+            </div>
+            <small class="text-muted">${direction.distance.toFixed(2)} km - ${Math.round(direction.duration)} min</small>
+        `;
+        directionsContainer.appendChild(step);
+    });
+
+    // Draw route on map
+    const request = {
+        origin: result.startLocation,
+        destination: result.endLocation,
+        waypoints: result.waypoints.map(wp => ({ location: wp })),
+        optimizeWaypoints: true,
+        travelMode: google.maps.TravelMode.DRIVING,
+        drivingOptions: {
+            departureTime: new Date(),
+            trafficModel: document.getElementById('trafficToggle').checked ? 
+                google.maps.TrafficModel.BEST_GUESS : 
+                google.maps.TrafficModel.PESSIMISTIC
+        },
+        avoidHighways: !document.getElementById('highwayToggle').checked,
+        avoidTolls: document.getElementById('tollToggle').checked
+    };
+
+    directionsService.route(request, function(result, status) {
+        if (status === 'OK') {
+            directionsRenderer.setDirections(result);
+            
+            // Add traffic layer if traffic is enabled
+            if (document.getElementById('trafficToggle').checked) {
+                const trafficLayer = new google.maps.TrafficLayer();
+                trafficLayer.setMap(map);
+            }
+        } else {
+            console.error('Directions request failed:', status);
+            alert('Failed to display route on map. Please try again.');
+        }
+    });
+}
+
+function clearRoute() {
+    // Clear markers
+    markers.forEach(marker => marker.setMap(null));
+    markers = [];
+
+    // Clear directions
+    directionsRenderer.setDirections({ routes: [] });
+
+    // Clear inputs
+    document.getElementById('startLocation').value = '';
+    document.getElementById('endLocation').value = '';
+    document.getElementById('waypointsContainer').innerHTML = '';
+    document.getElementById('totalDistance').textContent = '0 km';
+    document.getElementById('estimatedTime').textContent = '0 min';
+    document.getElementById('directions').innerHTML = '';
+}
+
+async function saveCurrentRoute() {
+    const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
+    if (!token) {
+        window.location.href = '/login';
+        return;
+    }
+
+    const startLocation = document.getElementById('startLocation').value;
+    const endLocation = document.getElementById('endLocation').value;
+    
+    if (!startLocation || !endLocation) {
+        alert('Please enter both start and end locations');
+        return;
+    }
+
+    const waypointInputs = document.querySelectorAll('#waypointsContainer input');
+    const waypoints = Array.from(waypointInputs).map(input => input.value).filter(value => value);
+
+    try {
+        const response = await fetch('/api/routes', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                name: `${startLocation} to ${endLocation}`,
+                startLocation: startLocation,
+                endLocation: endLocation,
+                waypoints: waypoints,
+                totalDistance: parseFloat(document.getElementById('totalDistance').textContent),
+                estimatedTime: parseInt(document.getElementById('estimatedTime').textContent)
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to save route');
+        }
+
+        alert('Route saved successfully!');
+    } catch (error) {
+        console.error('Error saving route:', error);
+        alert('Failed to save route. Please try again.');
+    }
+}
+
+// Initialize map when the page loads
+document.addEventListener('DOMContentLoaded', initMap);
+</script>
+{% endblock %} 

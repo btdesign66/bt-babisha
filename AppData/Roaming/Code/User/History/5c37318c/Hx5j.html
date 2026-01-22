@@ -1,0 +1,20 @@
+function startBubbleSort() {
+    let array = [5, 3, 8, 4, 2];
+
+    // Fetch sorted array from backend
+    fetch('http://localhost:8080/api/algorithms/bubble-sort', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(array),
+    })
+    .then(response => response.json())
+    .then(sortedArray => {
+        console.log("Sorted Array:", sortedArray);
+        document.getElementById("array").innerText = JSON.stringify(sortedArray);
+    })
+    .catch(error => {
+        console.error("Error:", error);
+    });
+}

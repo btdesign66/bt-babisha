@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Algo-Wiz Visualizer</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #ffffff;
+      text-align: center;
+    }
+
+    header {
+      background-color: #a8d5e3;
+      color: white;
+      padding: 20px 0;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2em;
+    }
+
+    .container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 20px;
+      padding: 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background-color: #f2f0ea;
+      border: 2px solid #0f52d9;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0px 3px 6px rgba(0,0,0,0.1);
+      transition: transform 0.2s ease-in-out;
+    }
+
+    .card:hover {
+      transform: scale(1.05);
+    }
+
+    .card h3 {
+      margin-bottom: 15px;
+    }
+
+    .btn {
+      background-color: #;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1em;
+    }
+
+    .btn:hover {
+      background-color: #0056b3;
+    }
+
+    footer {
+      background-color: #004080;
+      color: white;
+      padding: 10px 0;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>ALGO-WIZ: Algorithm Visualizer</h1>
+   
+  </header>
+
+  <div class="container">
+    <div class="card">
+      <h3>Binary Search</h3>
+      <button class="btn" onclick="launch('binary')">Visualize</button>
+    </div>
+    <div class="card">
+      <h3>Linear Search</h3>
+      <button class="btn" onclick="launch('linear')">Visualize</button>
+    </div>
+    <div class="card">
+      <h3>Jump Search</h3>
+      <button class="btn" onclick="launch('jump')">Visualize</button>
+    </div>
+    <div class="card">
+      <h3>Quick Sort</h3>
+      <button class="btn" onclick="launch('quick')">Visualize</button>
+    </div>
+    <div class="card">
+      <h3>Min Heap</h3>
+      <button class="btn" onclick="launch('minheap')">Visualize</button>
+    </div>
+    <div class="card">
+      <h3>Max Heap</h3>
+      <button class="btn" onclick="launch('maxheap')">Visualize</button>
+    </div>
+    <div class="card">
+      <h3>Merge Sort</h3>
+      <button class="btn" onclick="launch('merge')">Visualize</button>
+    </div>
+    <div class="card">
+      <h3>Counting Sort</h3>
+      <button class="btn" onclick="launch('counting')">Visualize</button>
+    </div>
+    <div class="card">
+      <h3>Bubble Sort</h3>
+      <button class="btn" onclick="launch('bubble')">Visualize</button>
+    </div>
+    <div class="card">
+        <h3>Radix Sort</h3>
+        <button class="btn" onclick="launch('radix')">Visualize</button>
+      </div>
+  </div>
+
+  <footer>
+    © 2025 ALGO-WIZ -By Team UTOPIANS | Powered by Flask & JavaScript
+  </footer>
+
+  <script>
+    function launch(algorithm) {
+      alert(`You clicked: ${algorithm}`);
+      // Redirect or open visualization page for algorithm
+      // window.location.href = `visualizer/${algorithm}.html`;
+    }
+  </script>
+
+</body>
+</html>

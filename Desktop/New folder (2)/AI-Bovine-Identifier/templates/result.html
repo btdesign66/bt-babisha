@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block title %}Result - AI Bovine Identifier{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow">
+            <div class="card-header bg-success text-white text-center">
+                <h4><i class="fas fa-check-circle"></i> Identification Result</h4>
+            </div>
+            <div class="card-body">
+                {% if breed %}
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5 class="text-primary">Predicted Breed: {{ breed.name }}</h5>
+                        <div class="mb-3">
+                            <span class="badge bg-{{ 'success' if confidence > 0.8 else 'warning' if confidence > 0.6 else 'danger' }} fs-6">
+                                Confidence: {{ "%.1f"|format(confidence * 100) }}%
+                            </span>
+                        </div>
+                        
+                        {% if image_path %}
+                        <div class="mb-4">
+                            <img src="{{ url_for('static', filename=image_path.replace('static/', '')) }}" 
+                                 class="img-fluid rounded" 
+                                 alt="Uploaded image" 
+                                 style="max-height: 400px;">
+                        </div>
+                        {% endif %}
+                        
+                        <div class="d-grid gap-2">
+                            <a href="{{ url_for('upload') }}" class="btn btn-primary">
+                                <i class="fas fa-upload"></i> Upload Another Image
+                            </a>
+                            <a href="{{ url_for('history') }}" class="btn btn-outline-secondary">
+                                <i class="fas fa-history"></i> View History
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <h5 class="text-info">Breed Information</h5>
+                        <div class="card">
+                            <div class="card-body">
+                                <table class="table table-borderless">
+                                    <tr>
+                                        <td><strong>Origin:</strong></td>
+                                        <td>{{ breed.origin or 'Not specified' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Lifespan:</strong></td>
+                                        <td>{{ breed.lifespan or 'Not specified' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Temperament:</strong></td>
+                                        <td>{{ breed.temperament or 'Not specified' }}</td>
+                                    </tr>
+                                </table>
+                                
+                                {% if breed.description %}
+                                <div class="mt-3">
+                                    <h6>Description:</h6>
+                                    <p class="text-muted">{{ breed.description }}</p>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <div class="text-center">
+                    <i class="fas fa-exclamation-triangle fa-3x text-warning mb-3"></i>
+                    <h5>No Result Available</h5>
+                    <p class="text-muted">Unable to identify the breed. Please try uploading a clearer image.</p>
+                    <a href="{{ url_for('upload') }}" class="btn btn-primary">
+                        <i class="fas fa-upload"></i> Try Again
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if confidence and confidence < 0.6 %}
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="alert alert-warning" role="alert">
+            <h6><i class="fas fa-exclamation-triangle"></i> Low Confidence Warning</h6>
+            <p class="mb-0">The confidence score is relatively low. For better results, try uploading a clearer image with better lighting and ensure the bovine is clearly visible.</p>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

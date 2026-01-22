@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - BABISHA | Quality Fabrics Collection</title>
+    <meta name="description" content="Explore our extensive collection of premium fabrics including cotton, silk, linen, and denim. Find the perfect fabric for your project with detailed specifications and competitive pricing.">
+    <meta name="keywords" content="fabric products, cotton fabrics, silk fabrics, linen fabrics, denim fabrics, wholesale fabrics">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top shadow-sm" style="margin-top: 42px;">
+        <div class="container">
+            <div class="d-flex align-items-center">
+                <a class="navbar-brand" href="index.html">
+                    <img src="babishatmlogo.png" alt="BABISHA Logo" height="140" class="d-inline-block align-text-top">
+                </a>
+                <div class="bt-designers-text d-none d-lg-block">
+                    <small class="text-muted">Babisha is a brand under BT Designers</small>
+                </div>
+            </div>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    
+                    <!-- Women Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="womenDropdown" role="button" data-bs-toggle="dropdown">
+                            Women
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="products.html?category=sarees">Sarees</a></li>
+                            <li><a class="dropdown-item" href="products.html?category=lehengas">Lehengas</a></li>
+                            <li><a class="dropdown-item" href="products.html?category=suits">Suits</a></li>
+                            <li><a class="dropdown-item" href="products.html?category=indo-western">Indo-Western</a></li>
+                        </ul>
+                    </li>
+                    
+                    <!-- Kids Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="kidsDropdown" role="button" data-bs-toggle="dropdown">
+                            Kids
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="products.html?category=childwear">Childwear</a></li>
+                            <li><a class="dropdown-item" href="products.html?category=kids-lehengas">Kids Lehengas</a></li>
+                            <li><a class="dropdown-item" href="products.html?category=kids-suits">Kids Suits</a></li>
+                            <li><a class="dropdown-item" href="products.html?category=kids-traditional">Traditional Wear</a></li>
+                            <li><a class="dropdown-item" href="products.html?category=kids-casual">Casual Wear</a></li>
+                        </ul>
+                    </li>
+                    
+                    <!-- Collections Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="collectionsDropdown" role="button" data-bs-toggle="dropdown">
+                            Collections
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="products.html?collection=summer-25">Summer '25</a></li>
+                            <li><a class="dropdown-item" href="products.html?collection=festive">Festive Wear</a></li>
+                            <li><a class="dropdown-item" href="products.html?collection=bridal">Bridal Couture</a></li>
+                            <li><a class="dropdown-item" href="products.html?collection=handloom">Handloom Special</a></li>
+                            <li><a class="dropdown-item" href="products.html?collection=luxury">Luxury Fabrics</a></li>
+                        </ul>
+                    </li>
+                    
+                    <!-- Occasions Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="occasionsDropdown" role="button" data-bs-toggle="dropdown">
+                            Occasions
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="products.html?occasion=wedding">Wedding</a></li>
+                            <li><a class="dropdown-item" href="products.html?occasion=reception">Reception</a></li>
+                            <li><a class="dropdown-item" href="products.html?occasion=party">Party</a></li>
+                            <li><a class="dropdown-item" href="products.html?occasion=office">Office/Formal</a></li>
+                            <li><a class="dropdown-item" href="products.html?occasion=casual">Casual Wear</a></li>
+                        </ul>
+                    </li>
+                    
+                    <!-- Fabrics Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="fabricsDropdown" role="button" data-bs-toggle="dropdown">
+                            Fabrics
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="products.html?fabric=cotton">Cotton</a></li>
+                            <li><a class="dropdown-item" href="products.html?fabric=silk">Silk</a></li>
+                            <li><a class="dropdown-item" href="products.html?fabric=linen">Linen</a></li>
+                            <li><a class="dropdown-item" href="products.html?fabric=organza">Organza</a></li>
+                            <li><a class="dropdown-item" href="products.html?fabric=velvet">Velvet</a></li>
+                            <li><a class="dropdown-item" href="products.html?fabric=chiffon">Chiffon</a></li>
+                        </ul>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html">Contact Us</a>
+                    </li>
+                </ul>
+                
+                <!-- Right side items -->
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://www.instagram.com/babisha.by.btdesigners?igsh=dzg0cWFleDQ4anlj" target="_blank" title="Follow us on Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="openWishlist()">
+                            <i class="fas fa-heart"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="openCart()">
+                            <i class="fas fa-shopping-cart"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-outline-primary ms-2" onclick="openLoginModal()">Login</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="py-3 bg-light" style="margin-top: 80px;">
+        <div class="container">
+            <div class="row text-center">
+                <div class="col-lg-8 mx-auto">
+                    <h1 class="display-5 fw-bold mb-2">Our Fabric Collection</h1>
+                    <p class="lead text-muted mb-0">Discover premium fabrics from trusted suppliers worldwide</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search and Filter Section -->
+    <section class="search-filter-section">
+        <div class="container">
+            <div class="search-header">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="fabricSearch" class="form-control" placeholder="Search fabrics by name, type, or description...">
+                        <div id="searchSuggestions" class="search-suggestions"></div>
+                    </div>
+                <div class="sort-dropdown">
+                    <label for="sortSelect" class="form-label mb-0">Sort by:</label>
+                    <select id="sortSelect" class="form-control">
+                        <option value="featured">Featured</option>
+                        <option value="price-low">Price: Low to High</option>
+                        <option value="price-high">Price: High to Low</option>
+                        <option value="name">Name A-Z</option>
+                        <option value="rating">Highest Rated</option>
+                        <option value="newest">Newest First</option>
+                    </select>
+                </div>
+                <div class="results-info">
+                    <span id="resultsCount">17 fabrics found</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <section class="py-3">
+        <div class="container">
+            <div class="main-content">
+                <!-- Filter Sidebar -->
+                <div class="filter-sidebar">
+                    <h5 class="mb-3">Refine By</h5>
+                    
+                    <!-- Category Filter -->
+                    <div class="filter-section">
+                        <div class="filter-title" onclick="toggleFilterSection(this)">
+                            <span>Category</span>
+                            <i class="fas fa-chevron-up"></i>
+                        </div>
+                        <div class="filter-options show">
+                            <div class="filter-option">
+                                <input type="checkbox" id="cat-all" value="all" checked>
+                                <label for="cat-all">All Fabrics</label>
+                                <span class="filter-count">(17)</span>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="cat-cotton" value="cotton">
+                                <label for="cat-cotton">Cotton</label>
+                                <span class="filter-count">(1)</span>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="cat-silk" value="silk">
+                                <label for="cat-silk">Silk</label>
+                                <span class="filter-count">(6)</span>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="cat-linen" value="linen">
+                                <label for="cat-linen">Linen</label>
+                                <span class="filter-count">(0)</span>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="cat-denim" value="denim">
+                                <label for="cat-denim">Denim</label>
+                                <span class="filter-count">(0)</span>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="cat-organza" value="organza">
+                                <label for="cat-organza">Organza</label>
+                                <span class="filter-count">(0)</span>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="cat-velvet" value="velvet">
+                                <label for="cat-velvet">Velvet</label>
+                                <span class="filter-count">(2)</span>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="cat-chiffon" value="chiffon">
+                                <label for="cat-chiffon">Chiffon</label>
+                                <span class="filter-count">(0)</span>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="cat-lehenga" value="lehenga">
+                                <label for="cat-lehenga">Lehenga</label>
+                                <span class="filter-count">(3)</span>
+                            </div>
+                            <div class="filter-option">
+                                <input type="checkbox" id="cat-sarees" value="sarees">
+                                <label for="cat-sarees">Sarees</label>
+                                <span class="filter-count">(7)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Price Filter -->
+                    <div class="filter-section">
+                        <div class="filter-title" onclick="toggleFilterSection(this)">
+                            <span>Price Range</span>
+                            <i class="fas fa-chevron-up"></i>
+                        </div>
+                        <div class="filter-options show">
+                        <div class="price-range">
+                            <input type="range" id="priceRange" min="500" max="5000" value="5000" class="form-range">
+                            <div class="price-inputs">
+                                <input type="number" id="minPrice" placeholder="Min ₹" value="500">
+                                <input type="number" id="maxPrice" placeholder="Max ₹" value="5000">
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+
+                    <!-- Apply Filters Button -->
+                    <button id="applyFiltersBtn" class="apply-filters" onclick="applyFiltersFromButton()" style="display: none;">
+                        <i class="fas fa-check me-2"></i>Apply Filters
+                    </button>
+
+                    <button class="clear-filters" onclick="clearAllFilters()">Clear All Filters</button>
+                </div>
+
+                <!-- Products Grid -->
+                <div class="products-container">
+                    <div class="row" id="fabricGrid">
+                        <!-- Fabric cards will be dynamically generated here -->
+                    </div>
+                    
+                    <!-- Pagination -->
+                    <div class="pagination-container">
+                        <div class="pagination-info">
+                            Showing <span id="showingRange">1-17</span> of <span id="totalResults">17</span> fabrics
+                        </div>
+                        <div class="pagination" id="pagination">
+                            <!-- Pagination will be generated by JavaScript -->
+                        </div>
+                    </div>
+                    
+                    <!-- No Results Message -->
+                    <div id="noResults" class="text-center py-5" style="display: none;">
+                        <i class="fas fa-search text-muted" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                        <h4 class="text-muted">No fabrics found</h4>
+                        <p class="text-muted">Try adjusting your search criteria or browse all fabrics</p>
+                        <button class="btn btn-primary" onclick="clearAllFilters()">Clear All Filters</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="row text-center mb-5">
+                <div class="col-lg-8 mx-auto">
+                    <h2 class="section-title">Why Choose Our Fabrics?</h2>
+                    <p class="text-muted">Quality assurance and customer satisfaction guaranteed</p>
+                </div>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="feature-card text-center p-4 h-100">
+                        <div class="feature-icon mb-3">
+                            <i class="fas fa-certificate text-primary"></i>
+                        </div>
+                        <h5>Quality Certified</h5>
+                        <p class="text-muted">All fabrics are tested and certified for quality standards</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card text-center p-4 h-100">
+                        <div class="feature-icon mb-3">
+                            <i class="fas fa-shipping-fast text-primary"></i>
+                        </div>
+                        <h5>Fast Shipping</h5>
+                        <p class="text-muted">Quick delivery worldwide with tracking information</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card text-center p-4 h-100">
+                        <div class="feature-icon mb-3">
+                            <i class="fas fa-headset text-primary"></i>
+                        </div>
+                        <h5>Expert Support</h5>
+                        <p class="text-muted">Get help from our fabric experts for your projects</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-5 bg-primary text-white">
+        <div class="container text-center">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <h2 class="mb-4">Need Help Finding the Right Fabric?</h2>
+                    <p class="lead mb-4">Our experts are here to help you choose the perfect fabric for your project</p>
+                    <a href="contact.html" class="btn btn-warning btn-lg me-3">
+                        <i class="fas fa-phone me-2"></i>Contact Expert
+                    </a>
+                    <button class="btn btn-outline-light btn-lg" onclick="openInquiryModal()">
+                        <i class="fas fa-question-circle me-2"></i>Ask Question
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <h5 class="mb-3">
+                        <i class="fas fa-palette text-primary me-2"></i>BABISHA
+                    </h5>
+                    <p class="text-muted">Your premier destination for quality fabrics from trusted suppliers worldwide.</p>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/profile.php?id=61585423109557" target="_blank" class="text-muted me-3" title="Follow us on Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-muted me-3"><i class="fab fa-twitter"></i></a>
+                        <a href="https://www.instagram.com/babisha.by.btdesigners?igsh=dzg0cWFleDQ4anlj" target="_blank" class="text-muted me-3" title="Follow us on Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-muted me-3"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <h6 class="mb-3">Quick Links</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="index.html" class="text-muted text-decoration-none">Home</a></li>
+                        <li><a href="products.html" class="text-muted text-decoration-none">Products</a></li>
+                        <li><a href="about.html" class="text-muted text-decoration-none">About Us</a></li>
+                        <li><a href="contact.html" class="text-muted text-decoration-none">Contact</a></li>
+                        <li><a href="admin/index.html" class="text-muted text-decoration-none">Admin</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3">
+                    <h6 class="mb-3">Fabric Categories</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="products.html?category=cotton" class="text-muted text-decoration-none">Cotton</a></li>
+                        <li><a href="products.html?category=silk" class="text-muted text-decoration-none">Silk</a></li>
+                        <li><a href="products.html?category=linen" class="text-muted text-decoration-none">Linen</a></li>
+                        <li><a href="products.html?category=denim" class="text-muted text-decoration-none">Denim</a></li>
+                        <li><a href="products.html?category=lehengas" class="text-muted text-decoration-none">Lehengas</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3">
+                    <h6 class="mb-3">Contact Info</h6>
+                    <ul class="list-unstyled text-muted">
+                        <li><i class="fas fa-phone me-2"></i>+1 (555) 123-4567</li>
+                        <li><i class="fas fa-envelope me-2"></i>info@babisha.com</li>
+                        <li><i class="fas fa-map-marker-alt me-2"></i>123 Fabric Street, Textile City</li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <p class="mb-0 text-muted">&copy; 2024 BABISHA. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <a href="#" class="text-muted text-decoration-none me-3">Privacy Policy</a>
+                    <a href="#" class="text-muted text-decoration-none">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Login to BABISHA</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="loginForm">
+                        <div class="mb-3">
+                            <label for="loginEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="loginEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="loginPassword" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="loginPassword" required>
+                        </div>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="rememberMe">
+                            <label class="form-check-label" for="rememberMe">Remember me</label>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Login</button>
+                    </form>
+                    <div class="text-center mt-3">
+                        <p class="mb-0">Don't have an account? <a href="#" onclick="openRegisterModal()">Register here</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div class="modal fade" id="registerModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Register with BABISHA</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="registerForm">
+                        <div class="mb-3">
+                            <label for="registerName" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="registerName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="registerEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="registerEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="registerPassword" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="registerPassword" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="registerConfirmPassword" class="form-label">Confirm Password</label>
+                            <input type="password" class="form-control" id="registerConfirmPassword" required>
+                        </div>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="agreeTerms" required>
+                            <label class="form-check-label" for="agreeTerms">I agree to the Terms of Service</label>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Register</button>
+                    </form>
+                    <div class="text-center mt-3">
+                        <p class="mb-0">Already have an account? <a href="#" onclick="openLoginModal()">Login here</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Inquiry Modal -->
+    <div class="modal fade" id="inquiryModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Send Inquiry</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="inquiryForm">
+                        <div class="mb-3">
+                            <label for="inquiryName" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="inquiryName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="inquiryEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="inquiryEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="inquiryPhone" class="form-label">Phone</label>
+                            <input type="tel" class="form-control" id="inquiryPhone">
+                        </div>
+                        <div class="mb-3">
+                            <label for="inquiryMessage" class="form-label">Message</label>
+                            <textarea class="form-control" id="inquiryMessage" rows="4" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Send Inquiry</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="script.js?v=40"></script>
+    <script>
+        // Multiple aggressive fallbacks
+        function forceDisplayProducts() {
+            console.log('=== FORCING PRODUCT DISPLAY ===');
+            const grid = document.getElementById('fabricGrid');
+            if (!grid) {
+                console.error('fabricGrid element not found!');
+                return;
+            }
+            
+            console.log('Grid found, checking if empty...');
+            console.log('Grid children:', grid.children.length);
+            console.log('Grid innerHTML length:', grid.innerHTML.length);
+            
+            if (grid.children.length === 0 || grid.innerHTML.trim() === '' || 
+                grid.innerHTML.includes('Fabric cards will be dynamically generated')) {
+                
+                console.log('Grid is empty, attempting to display...');
+                
+                // Try method 1: Use displayFabrics if available
+                if (typeof window.displayFabrics === 'function') {
+                    console.log('Calling window.displayFabrics()...');
+                    try {
+                        window.displayFabrics();
+                        console.log('displayFabrics called');
+                    } catch(e) {
+                        console.error('Error calling displayFabrics:', e);
+                    }
+                }
+                
+                // Try method 2: Use fabricData directly
+                if (window.fabricData && window.fabricData.length > 0 && typeof window.createFabricCard === 'function') {
+                    console.log('Using fabricData directly, creating cards...');
+                    const fabricsToShow = window.fabricData.slice(0, 6);
+                    fabricsToShow.forEach(function(fabric, index) {
+                        try {
+                            const card = window.createFabricCard(fabric);
+                            if (card) {
+                                grid.appendChild(card);
+                                console.log('Card', index + 1, 'appended');
+                            }
+                        } catch(e) {
+                            console.error('Error creating card', index + 1, ':', e);
+                        }
+                    });
+                }
+                
+                // Try method 3: Use sampleFabrics if available
+                if (window.sampleFabrics && window.sampleFabrics.length > 0 && typeof window.createFabricCard === 'function') {
+                    console.log('Using sampleFabrics, creating cards...');
+                    const fabricsToShow = window.sampleFabrics.slice(0, 6);
+                    fabricsToShow.forEach(function(fabric, index) {
+                        try {
+                            const card = window.createFabricCard(fabric);
+                            if (card) {
+                                grid.appendChild(card);
+                                console.log('Card', index + 1, 'appended from sampleFabrics');
+                            }
+                        } catch(e) {
+                            console.error('Error creating card', index + 1, ':', e);
+                        }
+                    });
+                }
+                
+                console.log('After force display, grid children:', grid.children.length);
+            } else {
+                console.log('Grid already has content:', grid.children.length, 'children');
+            }
+        }
+        
+        // Run immediately when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function() {
+                setTimeout(forceDisplayProducts, 500);
+            });
+        } else {
+            setTimeout(forceDisplayProducts, 500);
+        }
+        
+        // Multiple fallbacks at different intervals
+        setTimeout(forceDisplayProducts, 1000);
+        setTimeout(forceDisplayProducts, 2000);
+        setTimeout(forceDisplayProducts, 3000);
+        setTimeout(forceDisplayProducts, 5000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>Basic Global Custom Cursor</title>
+	<link rel="stylesheet" href="./styles.css" />
+	<style>
+		/* Simple layout just for demo */
+		body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; padding: 2rem; line-height: 1.6; }
+		.container { max-width: 720px; margin: 0 auto; }
+		.demo { margin-top: 1.5rem; display: flex; gap: 1rem; flex-wrap: wrap; }
+		button { padding: 0.6rem 1rem; border-radius: 8px; border: 1px solid #ccc; background: #fafafa; cursor: pointer; }
+		a { color: #0b5ed7; text-decoration: none; }
+		a:hover { text-decoration: underline; }
+	</style>
+</head>
+<body>
+	<div class="container">
+		<h1>Basic: Global Custom Cursor</h1>
+		<p>
+			This page applies a custom cursor site-wide from <code>/assets/cursors/my-cursor.png</code> with a fallback of <code>auto</code>.
+			Interactive elements like links and buttons use the <code>pointer</code> cursor.
+		</p>
+		<p><strong>Note</strong>: Place your cursor image at <code>/assets/cursors/my-cursor.png</code> relative to your web root.</p>
+		<div class="demo">
+			<a href="#">Example link</a>
+			<button type="button">Example button</button>
+		</div>
+	</div>
+</body>
+</html>

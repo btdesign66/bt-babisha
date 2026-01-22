@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Public Transport System</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <header class="main-header">
+        <h1>Public Transport System</h1>
+        <p class="tagline">Book your journey with ease</p>
+    </header>
+
+    <nav class="main-nav">
+        <ul>
+            <li><a href="#search-section"><i class="fas fa-search"></i> Search Buses</a></li>
+            <li><a href="#schedule-section"><i class="fas fa-clock"></i> Schedule</a></li>
+            <li><a href="#my-tickets-section"><i class="fas fa-ticket-alt"></i> My Tickets</a></li>
+        </ul>
+    </nav>
+
+    <main class="container">
+        <section id="search-section" class="active-section">
+            <h2><i class="fas fa-search"></i> Search Buses</h2>
+            <form id="booking-form">
+                <div class="form-group">
+                    <label for="from">From:</label>
+                    <input type="text" id="from" required placeholder="Enter departure city">
+                </div>
+                <div class="form-group">
+                    <label for="to">To:</label>
+                    <input type="text" id="to" required placeholder="Enter destination city">
+                </div>
+                <div class="form-group">
+                    <label for="date">Date:</label>
+                    <input type="date" id="date" required>
+                </div>
+                <div class="form-group">
+                    <label for="passengers">Number of Passengers:</label>
+                    <input type="number" id="passengers" min="1" max="10" required>
+                </div>
+                <div class="form-group">
+                    <label for="class">Class:</label>
+                    <select id="class" required>
+                        <option value="AC">AC</option>
+                        <option value="Non-AC">Non-AC</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Search Buses</button>
+            </form>
+        </section>
+
+        <section id="schedule-section" class="hidden-section">
+            <h2><i class="fas fa-clock"></i> Bus Schedule</h2>
+            <div class="schedule-filters">
+                <select id="route-filter">
+                    <option value="">All Routes</option>
+                    <option value="Mumbai - Pune">Mumbai - Pune</option>
+                    <option value="Delhi - Jaipur">Delhi - Jaipur</option>
+                </select>
+            </div>
+            <div id="schedule-list" class="schedule-container"></div>
+        </section>
+
+        <section id="my-tickets-section" class="hidden-section">
+            <h2><i class="fas fa-ticket-alt"></i> My Tickets</h2>
+            <div id="tickets-list" class="tickets-container"></div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <p>&copy; 2024 Public Transport System. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html> 

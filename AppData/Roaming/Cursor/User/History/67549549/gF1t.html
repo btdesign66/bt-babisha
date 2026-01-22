@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algo-Wiz</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Algo-Wiz</h1>
+        <div class="control-panel">
+            <select id="algorithm-select">
+                <option value="bubble">Bubble Sort</option>
+                <!-- Add more algorithms here -->
+            </select>
+            <input type="text" id="array-input" placeholder="Enter array (e.g., 4,5,3,2,1)">
+            <button id="start-btn">Start</button>
+            <button id="pause-btn">Pause</button>
+            <button id="reset-btn">Reset</button>
+            <input type="range" id="speed-slider" min="1" max="10" value="5">
+            <span id="speed-value">5x</span>
+        </div>
+        <div id="visualization"></div>
+        <div id="complexity-display">
+            <p>Time Complexity: <span id="time-complexity">-</span></p>
+            <p>Space Complexity: <span id="space-complexity">-</span></p>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/api.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/visualizer.js') }}"></script>
+</body>
+</html> 

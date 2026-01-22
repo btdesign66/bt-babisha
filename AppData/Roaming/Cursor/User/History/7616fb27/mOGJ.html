@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>Animated Follower Cursor</title>
+	<link rel="stylesheet" href="./styles.css" />
+	<style>
+		/* Simple layout just for demo */
+		body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; padding: 2rem; line-height: 1.6; }
+		.container { max-width: 720px; margin: 0 auto; }
+		.demo { margin-top: 1.5rem; display: flex; gap: 1rem; flex-wrap: wrap; }
+		button { padding: 0.6rem 1rem; border-radius: 8px; border: 1px solid #ccc; background: #fafafa; }
+		a { color: #0b5ed7; text-decoration: none; }
+		a:hover { text-decoration: underline; }
+		.box { width: 140px; height: 80px; border-radius: 12px; border: 1px dashed #bbb; display: grid; place-content: center; }
+		.cursor-grow { background: #f5f7ff; }
+	</style>
+</head>
+<body>
+	<div class="container">
+		<h1>Animated Follower Cursor</h1>
+		<p>The system cursor is hidden; a dot and ring follow the mouse. Hover over links, buttons, or anything with <code>.cursor-grow</code> to enlarge the ring and shrink the dot.</p>
+		<div class="demo">
+			<a href="#">Link target</a>
+			<button type="button">Button target</button>
+			<div class="box cursor-grow">.cursor-grow</div>
+			<div class="box">Regular box</div>
+		</div>
+	</div>
+
+	<!-- Cursor elements -->
+	<div class="cursor-dot"></div>
+	<div class="cursor-ring"></div>
+
+	<script src="./script.js"></script>
+</body>
+</html>
