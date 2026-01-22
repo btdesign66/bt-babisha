@@ -4985,6 +4985,11 @@ function closeNotification() {
     }
 }
 
+// Virtual Try-On Coming Soon Function
+function showVirtualTryOnComingSoon() {
+    showNotification('info', 'Coming Soon!', 'Virtual Try-On feature is coming soon. Stay tuned for updates!');
+}
+
 // Form Handlers
 function handleLogin(e) {
     e.preventDefault();
@@ -5612,6 +5617,7 @@ window.openRegisterModal = openRegisterModal;
 window.openInquiryModal = openInquiryModal;
 window.closeNotification = closeNotification;
 window.showNotification = showNotification;
+window.showVirtualTryOnComingSoon = showVirtualTryOnComingSoon;
 window.handleLogout = handleLogout;
 
 // Hero Carousel Functionality

@@ -190,9 +190,9 @@
                             <button class="btn btn-warning btn-lg me-3" id="orderNowBtn" onclick="orderNowFromDetailPage()">
                                 <i class="fab fa-whatsapp me-2"></i>Order Now
                             </button>
-                            <a href="virtual-tryon.html" class="btn btn-primary btn-lg me-3">
+                            <button class="btn btn-primary btn-lg me-3" onclick="showVirtualTryOnComingSoon()">
                                 <i class="fas fa-magic me-2"></i>Virtual Try-On
-                            </a>
+                            </button>
                             <button class="btn btn-outline-primary btn-lg" onclick="addToFavorites()">
                                 <i class="fas fa-heart me-2"></i>Add to Favorites
                             </button>
@@ -411,6 +411,16 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="notificationToast" class="notification-toast">
+        <div class="notification-icon"></div>
+        <div class="notification-content">
+            <div class="notification-title"></div>
+            <div class="notification-message"></div>
+        </div>
+        <div class="notification-close" onclick="closeNotification()">&times;</div>
     </div>
 
     <!-- Bootstrap JS -->
