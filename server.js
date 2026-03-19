@@ -11,6 +11,7 @@ const fs = require('fs').promises;
 const crypto = require('crypto');
 const axios = require('axios');
 const dotenv = require('dotenv');
+const { createClient } = require('@supabase/supabase-js');
 
 dotenv.config();
 
@@ -39,6 +40,10 @@ const RESULT_DIR = isVercel
     : path.join(__dirname, 'public', 'results');
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 const IMAGE_RETENTION_HOURS = 24;
+const SUPABASE_URL = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+const SUPABASE_TRYON_BUCKET = process.env.SUPABASE_TRYON_BUCKET || 'tryon-results';
+let supabaseAdmin = null;
 
 // Ensure directories exist (skip on Vercel - uses /tmp)
 async function ensureDirectories() {
@@ -54,6 +59,59 @@ async function ensureDirectories() {
     }
 }
 ensureDirectories();
+
+function getSupabaseAdmin() {
+    if (supabaseAdmin) return supabaseAdmin;
+    if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) return null;
+    supabaseAdmin = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
+        auth: { persistSession: false }
+    });
+    return supabaseAdmin;
+}
+
+async function saveTryOnToSupabase(buffer, mimeType, ext, metadata = {}) {
+    const client = getSupabaseAdmin();
+    if (!client) return null;
+
+    const datePrefix = new Date().toISOString().slice(0, 10);
+    const fileName = `tryon-${Date.now()}-${crypto.randomBytes(6).toString('hex')}.${ext}`;
+    const objectPath = `${datePrefix}/${fileName}`;
+
+    const { error: uploadError } = await client.storage
+        .from(SUPABASE_TRYON_BUCKET)
+        .upload(objectPath, buffer, {
+            contentType: mimeType,
+            upsert: false
+        });
+
+    if (uploadError) {
+        throw new Error(`Supabase upload failed: ${uploadError.message}`);
+    }
+
+    const { data: publicUrlData } = client.storage
+        .from(SUPABASE_TRYON_BUCKET)
+        .getPublicUrl(objectPath);
+
+    const imageUrl = publicUrlData?.publicUrl || null;
+
+    // Best-effort metadata insert. If table does not exist, skip without failing generation.
+    try {
+        await client.from('tryon_results').insert({
+            image_url: imageUrl,
+            storage_path: objectPath,
+            mime_type: mimeType,
+            product_type: metadata.productType || null,
+            product_name: metadata.productName || null
+        });
+    } catch (e) {
+        // Ignore table insert errors to keep image generation path resilient.
+    }
+
+    return {
+        imageUrl,
+        storagePath: objectPath
+    };
+}
 
 // Multer configuration for file uploads
 const storage = multer.diskStorage({
@@ -606,10 +664,22 @@ async function generateWithGemini(userPhotoPath, productImagePath, productType, 
         `result-${Date.now()}-${crypto.randomBytes(4).toString('hex')}.${ext}`
     );
 
+    // Persist result in database-backed storage (Supabase) when configured.
+    // Falls back to local file storage for local development.
+    let remote = null;
+    try {
+        remote = await saveTryOnToSupabase(output.buffer, output.mimeType, ext, {
+            productType,
+            productName
+        });
+    } catch (e) {
+        console.error('Supabase persistence warning:', e.message);
+    }
+
     await fs.writeFile(resultPath, output.buffer);
     return {
         imagePath: resultPath,
-        imageUrl: `/results/${path.basename(resultPath)}`
+        imageUrl: remote?.imageUrl || `/results/${path.basename(resultPath)}`
     };
 }
 

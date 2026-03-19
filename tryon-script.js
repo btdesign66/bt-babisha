@@ -305,7 +305,10 @@ async function generateTryOn() {
         const contentType = response.headers.get('content-type');
         if (!contentType || !contentType.includes('application/json')) {
             if (!response.ok) {
-                throw new Error(`Server error: ${response.status} ${response.statusText}. Make sure the backend server is running on http://localhost:3000`);
+                const hostText = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+                    ? 'Make sure the backend server is running on http://localhost:3000'
+                    : 'Hosted API route failed. Check Vercel function logs and API environment variables.';
+                throw new Error(`Server error: ${response.status} ${response.statusText}. ${hostText}`);
             }
             throw new Error('Server returned non-JSON response. Please check if the backend server is running correctly.');
         }
@@ -336,7 +339,11 @@ async function generateTryOn() {
         
         // Check if it's a connection error
         if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError') || error.name === 'TypeError') {
-            errorMessage = 'Cannot connect to the server. Please make sure the backend server is running on http://localhost:3000. Run "npm start" in the terminal to start the server.';
+            if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                errorMessage = 'Cannot connect to the server. Please make sure the backend server is running on http://localhost:3000. Run "npm start" in the terminal to start the server.';
+            } else {
+                errorMessage = 'Cannot connect to hosted API. Check deployment status and Vercel function logs.';
+            }
         }
         
         showError(errorMessage);
