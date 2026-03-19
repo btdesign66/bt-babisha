@@ -4,10 +4,6 @@
   "outputDirectory": ".",
   "routes": [
     {
-      "src": "/api/(.*)",
-      "dest": "/api/[...].js"
-    },
-    {
       "src": "/(.*\\.(html|css|js|png|jpg|jpeg|gif|svg|ico|pdf|json))",
       "dest": "/$1"
     },
@@ -17,8 +13,11 @@
     }
   ],
   "functions": {
-    "api/[...].js": {
+    "api/try-on.js": {
       "maxDuration": 60
+    },
+    "api/health.js": {
+      "maxDuration": 10
     }
   }
 }
