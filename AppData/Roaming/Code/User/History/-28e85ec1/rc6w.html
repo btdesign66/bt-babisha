@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Navio - Smarter Routes, Faster Deliveries</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header>
+    <h1>Navio</h1>
+    <p>Smarter Routes, Faster Deliveries</p>
+    {% if current_user %}
+    <nav>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/profile">Profile</a>
+        <a href="/support">Support</a>
+        <span>Welcome, {{ current_user }}</span>
+        <a href="/logout">Logout</a>
+    </nav>
+    {% else %}
+    <nav>
+        <a href="/login">Login</a>
+        <a href="/register">Signup</a>
+    </nav>
+    {% endif %}
+</header>
+
+<main>
+    {% if show_main %}
+    <section>
+        <h2>Project Overview</h2>
+        <p><strong>Team Name:</strong> UTOPIANS</p>
+        <ul>
+            <li>Mayank Karki (Lead) – 2319098 – karkimayank955@gmail.com</li>
+            <li>Nitin Kandpal – 2319188 – nitinkandpalco@gmail.com</li>
+            <li>Swarit Kumar – 2319713 – swarit16102005@gmail.com</li>
+        </ul>
+        <p><strong>Project Title:</strong> Navio: Smarter Routes, Faster Deliveries</p>
+    </section>
+
+    <section>
+        <h2>Motivation</h2>
+        <p>With businesses relying on timely deliveries, navigating real-time traffic while minimizing cost and delays is essential. Navio introduces intelligent routing to replace static or GPS-only solutions with smart, AI-driven optimization.</p>
+    </section>
+
+    <section>
+        <h2>Technology Stack</h2>
+        <ul>
+            <li><strong>Frontend:</strong> HTML, JS, Google Maps API</li>
+            <li><strong>Backend:</strong> Python (Flask / FastAPI)</li>
+            <li><strong>Algorithms:</strong> A*, Prim’s, Dijkstra</li>
+            <li><strong>API Integration:</strong> Google Maps, OpenRouteService</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Features</h2>
+        <ul>
+            <li>Real-time route optimization</li>
+            <li>Dynamic re-routing based on traffic</li>
+            <li>Live tracking of delivery vehicles</li>
+            <li>Multiple delivery stop optimization</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>System Architecture</h2>
+        <p>Coming Soon - High-Level Diagram</p>
+    </section>
+
+    <section>
+        <h2>Project Milestones</h2>
+        <ol>
+            <li>Research & Algorithm Selection</li>
+            <li>Backend Algorithm Implementation</li>
+            <li>Frontend UI Development</li>
+            <li>API Integration & Testing</li>
+            <li>Simulation & Optimization</li>
+        </ol>
+    </section>
+
+    <section>
+        <h2>References & Assumptions</h2>
+        <ul>
+            <li>Google Maps API Documentation</li>
+            <li>OpenRouteService API</li>
+            <li>Research on A*, Dijkstra, Prim’s Algorithms</li>
+        </ul>
+        <p>Designed for urban environments with dynamic traffic and moderate delivery constraints.</p>
+    </section>
+    {% endif %}
+</main>
+
+<footer>
+    <p>&copy; 2025 Team UTOPIANS. All rights reserved.</p>
+    <p>Contact: support@navioapp.com | +1-800-NAVIO-HELP</p>
+</footer>
+</body>
+</html>

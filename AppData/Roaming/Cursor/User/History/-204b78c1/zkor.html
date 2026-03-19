@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delivery Boy Registration</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background-color: #f8f9fa;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .register-card {
+            max-width: 500px;
+            width: 100%;
+            padding: 2rem;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            background: white;
+        }
+        .logo {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 1.5rem;
+        }
+        .form-control {
+            border-radius: 5px;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        .btn-register {
+            background-color: #0d6efd;
+            color: white;
+            padding: 0.75rem;
+            border-radius: 5px;
+            width: 100%;
+            font-weight: 600;
+            margin-top: 1rem;
+        }
+        .btn-register:hover {
+            background-color: #0b5ed7;
+            color: white;
+        }
+        .login-link {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+        .form-label {
+            font-weight: 500;
+            color: #495057;
+        }
+        .password-requirements {
+            font-size: 0.85rem;
+            color: #6c757d;
+            margin-top: -0.5rem;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="register-card">
+            <div class="text-center mb-4">
+                <img src="https://cdn-icons-png.flaticon.com/512/3081/3081559.png" alt="Delivery Logo" class="logo">
+                <h2 class="mb-3">Delivery Boy Registration</h2>
+                <p class="text-muted">Join our delivery team today!</p>
+            </div>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <form action="{{ url_for('register') }}" method="POST" class="needs-validation" novalidate>
+                <div class="mb-3">
+                    <label for="name" class="form-label">Full Name</label>
+                    <input type="text" class="form-control" id="name" name="name" required
+                           placeholder="Enter your full name">
+                    <div class="invalid-feedback">
+                        Please enter your full name.
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email Address</label>
+                    <input type="email" class="form-control" id="email" name="email" required
+                           placeholder="Enter your email address">
+                    <div class="invalid-feedback">
+                        Please enter a valid email address.
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" required
+                           placeholder="Create a password">
+                    <div class="password-requirements">
+                        Password must be at least 8 characters long and include numbers and special characters.
+                    </div>
+                    <div class="invalid-feedback">
+                        Please enter a valid password.
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-register">Create Account</button>
+            </form>
+
+            <div class="login-link">
+                <p class="mb-0">Already have an account? <a href="{{ url_for('login') }}" class="text-decoration-none">Login here</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Form validation script -->
+    <script>
+        (function () {
+            'use strict'
+            var forms = document.querySelectorAll('.needs-validation')
+            Array.prototype.slice.call(forms).forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        })()
+    </script>
+</body>
+</html>

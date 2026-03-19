@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Public Transport System</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header class="main-header">
+        <h1><i class="fas fa-bus"></i> Public Transport System</h1>
+        <p class="tagline">Your Journey, Our Priority</p>
+    </header>
+
+    <nav class="main-nav">
+        <ul>
+            <li><a href="#booking-section"><i class="fas fa-ticket-alt"></i> Book Ticket</a></li>
+            <li><a href="#schedule-section"><i class="fas fa-clock"></i> Schedule</a></li>
+            <li><a href="#routes-section"><i class="fas fa-route"></i> Routes</a></li>
+            <li><a href="#my-tickets-section"><i class="fas fa-ticket"></i> My Tickets</a></li>
+        </ul>
+    </nav>
+
+    <main class="container">
+        <section id="booking-section" class="active-section">
+            <h2><i class="fas fa-ticket-alt"></i> Book Your Ticket</h2>
+            <form id="booking-form">
+                <div class="form-group">
+                    <label for="from"><i class="fas fa-map-marker-alt"></i> From:</label>
+                    <select id="from" required>
+                        <option value="">Select Departure</option>
+                        <option value="kashipur">Kashipur</option>
+                        <option value="ramnagar">Ramnagar</option>
+                        <option value="nainital">Nainital</option>
+                        <option value="haldwani">Haldwani</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="to"><i class="fas fa-map-marker-alt"></i> To:</label>
+                    <select id="to" required>
+                        <option value="">Select Destination</option>
+                        <option value="kashipur">Kashipur</option>
+                        <option value="ramnagar">Ramnagar</option>
+                        <option value="nainital">Nainital</option>
+                        <option value="haldwani">Haldwani</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="date"><i class="fas fa-calendar"></i> Date:</label>
+                    <input type="date" id="date" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="passengers"><i class="fas fa-users"></i> Number of Passengers:</label>
+                    <input type="number" id="passengers" min="1" max="6" value="1" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="class"><i class="fas fa-chair"></i> Class:</label>
+                    <select id="class" required>
+                        <option value="economy">Economy</option>
+                        <option value="business">Business</option>
+                        <option value="premium">Premium</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-search"></i> Search Buses
+                </button>
+            </form>
+        </section>
+
+        <section id="schedule-section" class="hidden-section">
+            <h2><i class="fas fa-clock"></i> Bus Schedule</h2>
+            <div class="schedule-container">
+                <div class="schedule-filters">
+                    <select id="route-filter">
+                        <option value="all">All Routes</option>
+                        <option value="kashipur-nainital">Kashipur - Nainital</option>
+                        <option value="ramnagar-haldwani">Ramnagar - Haldwani</option>
+                    </select>
+                </div>
+                <div id="schedule-list" class="schedule-list">
+                    <!-- Schedule items will be added dynamically -->
+                </div>
+            </div>
+        </section>
+
+        <section id="routes-section" class="hidden-section">
+            <h2><i class="fas fa-route"></i> Available Routes</h2>
+            <div class="routes-container">
+                <div class="route-card">
+                    <h3>Kashipur - Nainital</h3>
+                    <p><i class="fas fa-clock"></i> Duration: 2 hours</p>
+                    <p><i class="fas fa-money-bill"></i> Fare: ₹200</p>
+                    <button class="btn btn-secondary">View Details</button>
+                </div>
+                <!-- More route cards will be added dynamically -->
+            </div>
+        </section>
+
+        <section id="my-tickets-section" class="hidden-section">
+            <h2><i class="fas fa-ticket"></i> My Tickets</h2>
+            <div class="tickets-container">
+                <div class="ticket-filters">
+                    <button class="btn btn-secondary active">Active</button>
+                    <button class="btn btn-secondary">Past</button>
+                    <button class="btn btn-secondary">Cancelled</button>
+                </div>
+                <div id="tickets-list" class="tickets-list">
+                    <!-- Tickets will be added dynamically -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <p>&copy; 2024 Public Transport System. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html> 

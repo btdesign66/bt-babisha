@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block title %}Home - AI Bovine Identifier{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="jumbotron bg-primary text-white rounded p-5 mb-4">
+            <h1 class="display-4">
+                <i class="fas fa-cow"></i> Welcome to AI Bovine Breed Identifier
+            </h1>
+            <p class="lead">Upload an image of a bovine (cow/bull) and let our AI identify the Indian breed with confidence scores and detailed information.</p>
+            <hr class="my-4">
+            <p>Our system can identify 6 major Indian bovine breeds: Gir, Sahiwal, Red Sindhi, Tharparkar, Kankrej, and Ongole.</p>
+            <a class="btn btn-light btn-lg" href="{{ url_for('upload') }}" role="button">
+                <i class="fas fa-upload"></i> Start Identifying
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <i class="fas fa-upload fa-3x text-primary mb-3"></i>
+                <h5 class="card-title">Upload Image</h5>
+                <p class="card-text">Upload a clear image of a bovine to get started with breed identification.</p>
+                <a href="{{ url_for('upload') }}" class="btn btn-primary">Upload Now</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <i class="fas fa-brain fa-3x text-success mb-3"></i>
+                <h5 class="card-title">AI Analysis</h5>
+                <p class="card-text">Our advanced AI model analyzes the image and predicts the breed with confidence scores.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <i class="fas fa-info-circle fa-3x text-info mb-3"></i>
+                <h5 class="card-title">Breed Information</h5>
+                <p class="card-text">Get detailed information about the identified breed including origin, temperament, and characteristics.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-5">
+    <div class="col-12">
+        <h3 class="text-center mb-4">Supported Indian Bovine Breeds</h3>
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-title">Gir</h6>
+                        <p class="card-text small">Origin: Gujarat, India<br>Known for distinctive hump and large ears</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-title">Sahiwal</h6>
+                        <p class="card-text small">Origin: Punjab, Pakistan/India<br>High milk production and heat tolerance</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-title">Red Sindhi</h6>
+                        <p class="card-text small">Origin: Sindh, Pakistan<br>Distinctive red color and excellent milk production</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-title">Tharparkar</h6>
+                        <p class="card-text small">Origin: Rajasthan, India<br>Hardy and resilient in arid conditions</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-title">Kankrej</h6>
+                        <p class="card-text small">Origin: Gujarat, India<br>Large, powerful animals for draft work</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-title">Ongole</h6>
+                        <p class="card-text small">Origin: Andhra Pradesh, India<br>Large, muscular with distinctive white color</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

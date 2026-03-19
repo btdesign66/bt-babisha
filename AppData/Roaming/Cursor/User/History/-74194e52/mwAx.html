@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Traffic Control</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f0f2f5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+    header {
+      background: linear-gradient(135deg, #1a237e, #0d47a1);
+      color: #fff;
+      text-align: center;
+      width: 100%;
+      padding: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    main {
+      background: #fff;
+      margin: 20px;
+      padding: 25px;
+      border-radius: 12px;
+      max-width: 800px;
+      width: 90%;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #333;
+      font-weight: 500;
+    }
+    input {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: border-color 0.3s;
+    }
+    input:focus {
+      border-color: #1a237e;
+      outline: none;
+    }
+    .button-group {
+      display: flex;
+      gap: 15px;
+      margin: 20px 0;
+    }
+    button {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      background: #1a237e;
+      color: white;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.3s;
+      flex: 1;
+    }
+    button:hover {
+      background: #0d47a1;
+      transform: translateY(-1px);
+    }
+    button:active {
+      transform: translateY(1px);
+    }
+    table {
+      width: 100%;
+      margin-top: 20px;
+      border-collapse: separate;
+      border-spacing: 0;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    th {
+      background: #1a237e;
+      color: white;
+      font-weight: 500;
+    }
+    tr:nth-child(even) {
+      background: #f5f5f5;
+    }
+    tr:hover {
+      background: #e3f2fd;
+    }
+    .log {
+      margin-top: 20px;
+      padding: 15px;
+      background: #f8f9fa;
+      height: 150px;
+      overflow-y: auto;
+      font-family: 'Consolas', monospace;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    .log b {
+      color: #1a237e;
+    }
+    .status {
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 8px;
+      display: none;
+    }
+    .status.success {
+      background: #e8f5e9;
+      color: #2e7d32;
+      border: 1px solid #a5d6a7;
+    }
+    .status.error {
+      background: #ffebee;
+      color: #c62828;
+      border: 1px solid #ef9a9a;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h2>🚦 Traffic Control System</h2>
+  </header>
+  <main>
+    <div class="form-group">
+      <label for="id">Vehicle ID:</label>
+      <input type="text" id="id" placeholder="Enter vehicle ID (e.g., Ambulance1)" />
+    </div>
+    <div class="form-group">
+      <label for="priority">Priority (1-5):</label>
+      <input type="number" id="priority" min="1" max="5" placeholder="Enter priority level" />
+    </div>
+    <div class="form-group">
+      <label for="lane">Lane:</label>
+      <input type="text" id="lane" placeholder="Enter lane (e.g., Lane A)" />
+    </div>
+    <div class="button-group">
+      <button onclick="addVehicle()">Add Vehicle</button>
+      <button onclick="startFlow()">Start Traffic Flow</button>
+    </div>
+    <div id="status" class="status"></div>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Priority</th>
+          <th>Lane</th>
+        </tr>
+      </thead>
+      <tbody id="queueBody"></tbody>
+    </table>
+    <div class="log" id="log"></div>
+  </main>
+  <script>
+    const queue = [];
+    const API_URL = 'http://localhost:5000';
+
+    function showStatus(message, type) {
+      const status = document.getElementById('status');
+      status.textContent = message;
+      status.className = `status ${type}`;
+      status.style.display = 'block';
+      setTimeout(() => {
+        status.style.display = 'none';
+      }, 3000);
+    }
+
+    async function addVehicle() {
+      const id = document.getElementById('id').value.trim();
+      const priority = parseInt(document.getElementById('priority').value);
+      const lane = document.getElementById('lane').value.trim();
+
+      if (!id || isNaN(priority) || !lane || priority < 1 || priority > 5) {
+        showStatus('Please fill in all fields correctly.', 'error');
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_URL}/add_vehicle`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ id, priority, lane }),
+        });
+
+        const data = await response.json();
+        
+        if (data.status === 'success') {
+          queue.push({ id, priority, lane });
+          queue.sort((a, b) => a.priority - b.priority);
+          renderQueue();
+          document.getElementById('id').value = '';
+          document.getElementById('priority').value = '';
+          document.getElementById('lane').value = '';
+          
+          const log = document.getElementById('log');
+          log.innerHTML += `${data.message}<br>`;
+          showStatus('Vehicle added successfully!', 'success');
+        } else {
+          showStatus('Error adding vehicle: ' + data.message, 'error');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        showStatus('Error communicating with server', 'error');
+      }
+    }
+
+    function renderQueue() {
+      const tbody = document.getElementById('queueBody');
+      tbody.innerHTML = '';
+      queue.forEach(vehicle => {
+        const row = `<tr>
+          <td>${vehicle.id}</td>
+          <td>${vehicle.priority}</td>
+          <td>${vehicle.lane}</td>
+        </tr>`;
+        tbody.innerHTML += row;
+      });
+    }
+
+    async function startFlow() {
+      const log = document.getElementById('log');
+      log.innerHTML = '';
+      if (queue.length === 0) {
+        showStatus('Queue is empty.', 'error');
+        return;
+      }
+      
+      showStatus('Starting traffic flow...', 'success');
+      
+      for (const vehicle of queue) {
+        log.innerHTML += `Vehicle <b>${vehicle.id}</b> from lane <b>${vehicle.lane}</b> (Priority ${vehicle.priority}) is passing.<br>`;
+        await new Promise(resolve => setTimeout(resolve, 1500));
+      }
+      
+      log.innerHTML += '<br>All vehicles have passed.';
+      queue.length = 0;
+      renderQueue();
+      showStatus('Traffic flow completed!', 'success');
+    }
+  </script>
+</body>
+</html>

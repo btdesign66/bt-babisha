@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Route Planner</title>
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <!-- Bootstrap CSS for consistent styling -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4f6f8;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        #map {
+            height: 100%;
+            width: 100%;
+            border-radius: 8px;
+        }
+        .sidebar {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            height: 100%;
+            overflow-y: auto;
+        }
+        .sidebar h3 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: #1a1a1a;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            transition: background-color 0.3s, transform 0.1s;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            transform: translateY(-1px);
+        }
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+        .btn-primary.active {
+            background-color: #28a745;
+        }
+        .form-check {
+            margin-bottom: 0.75rem;
+        }
+        .form-control {
+            border-radius: 6px;
+            border: 1px solid #ced4da;
+        }
+        .list-group-item {
+            border: none;
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+            background-color: #f8f9fa;
+        }
+        .btn-remove {
+            cursor: pointer;
+            color: #dc3545;
+            font-weight: bold;
+            float: right;
+        }
+        .search-container {
+            position: relative;
+        }
+        #searchResults {
+            position: absolute;
+            background: white;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            z-index: 1000;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .search-result-item {
+            padding: 10px;
+            cursor: pointer;
+        }
+        .search-result-item:hover {
+            background-color: #f1f3f5;
+        }
+        .route-info {
+            background: #e9ecef;
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 1rem;
+        }
+        .directions-list {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .direction-step {
+            padding: 10px;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .direction-step.active {
+            background-color: #e7f1ff;
+        }
+        .map-container {
+            position: relative;
+            height: 100%;
+        }
+        .map-overlay {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .sidebar {
+                height: auto;
+                max-height: 50vh;
+                margin-bottom: 10px;
+            }
+            #map {
+                height: 50vh;
+            }
+        }
+        /* Accessibility */
+        button:focus, input:focus {
+            outline: 2px solid #007bff;
+            outline-offset: 2px;
+        }
+        /* Custom marker styling */
+        .current-location-marker {
+            background: #007bff;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.5); opacity: 0.7; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid h-100">
+        <div class="row h-100">
+            <!-- Sidebar -->
+            <div class="col-md-4 col-lg-3 sidebar">
+                <h3>Route Settings</h3>
+                <div class="search-container">
+                    <input type="text" class="form-control mb-2" id="searchInput" placeholder="Search location..." aria-label="Search location">
+                    <div id="searchResults" class="search-results" style="display: none;"></div>
+                </div>
+
+                <h4>Route Preferences</h4>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="trafficCheck" aria-label="Consider Traffic">
+                    <label class="form-check-label" for="trafficCheck">Consider Traffic</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="avoidTolls" aria-label="Avoid Tolls">
+                    <label class="form-check-label" for="avoidTolls">Avoid Tolls</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="useHighways" aria-label="Use Highways">
+                    <label class="form-check-label" for="useHighways">Use Highways</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="roundTrip" aria-label="Round Trip">
+                    <label class="form-check-label" for="roundTrip">Round Trip</label>
+                </div>
+
+                <h4>Route Details</h4>
+                <div>
+                    <label for="startLocation">Start Location</label>
+                    <input type="text" class="form-control mb-2" id="startLocation" placeholder="Enter start location" aria-label="Start Location">
+                </div>
+                <div>
+                    <label for="locationList">Delivery Points</label>
+                    <ul class="list-group" id="locationList"></ul>
+                    <button type="button" class="btn btn-outline-secondary btn-sm mt-2" onclick="addCurrentLocation()">Add Current Location</button>
+                </div>
+                <div class="mt-3">
+                    <button type="button" class="btn btn-primary me-2" onclick="optimizeRoute()">Optimize Route</button>
+                    <button type="button" class="btn btn-outline-danger" onclick="clearMap()">Clear Route</button>
+                </div>
+                <div class="mt-3">
+                    <button type="button" class="btn btn-primary start-navigation me-2">Start Navigation</button>
+                    <button type="button" class="btn btn-primary live-tracking">Live Tracking</button>
+                </div>
+                <div class="route-info" id="routeOutput"></div>
+            </div>
+
+            <!-- Map -->
+            <div class="col-md-8 col-lg-9 map-container">
+                <div id="map"></div>
+                <div class="map-overlay">
+                    <button type="button" class="btn btn-outline-primary me-2" onclick="addCurrentLocation()">Set Current Location</button>
+                    <button type="button" class="btn btn-outline-primary" onclick="clearMap()">Clear</button>
+                </div>
+                <div class="map-overlay mt-2" id="directionsContainer">
+                    <h4>Turn-by-Turn Navigation</h4>
+                    <button type="button" class="btn btn-danger btn-sm mb-2" onclick="stopGPS()">Stop</button>
+                    <div class="direction-step active">
+                        <div class="step-content">
+                            <div class="step-instruction">Current Step</div>
+                            <div class="step-details">0 m to next turn</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="map-overlay mt-2 route-info">
+                    <div>Total Distance: <span class="total-distance">0 km</span></div>
+                    <div>Estimated Time: <span class="estimated-time">0 min</span></div>
+                    <div>Fuel Cost: <span class="fuel-cost">$0</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Creating New Route -->
+    <div class="modal fade" id="createRouteModal" tabindex="-1" aria-labelledby="createRouteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createRouteModalLabel">Create New Route</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="routeName" class="form-label">Route Name</label>
+                        <input type="text" class="form-control" id="routeName" aria-label="Route Name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="modalStartLocation" class="form-label">Start Location</label>
+                        <input type="text" class="form-control" id="modalStartLocation" aria-label="Start Location">
+                    </div>
+                    <div class="mb-3">
+                        <label for="waypoints" class="form-label">Waypoints</label>
+                        <ul class="list-group" id="waypoints"></ul>
+                        <button type="button" class="btn btn-outline-secondary btn-sm mt-2">Add Waypoint</button>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Optimization Preferences</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="modalRoundTrip" aria-label="Round Trip">
+                            <label class="form-check-label" for="modalRoundTrip">Round Trip</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="modalTraffic" aria-label="Consider Traffic">
+                            <label class="form-check-label" for="modalTraffic">Consider Traffic</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="modalAvoidTolls" aria-label="Avoid Tolls">
+                            <label class="form-check-label" for="modalAvoidTolls">Avoid Tolls</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="modalHighways" aria-label="Use Highways">
+                            <label class="form-check-label" for="modalHighways">Use Highways</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary">Save Route</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Route Details -->
+    <div class="modal fade" id="routeDetailsModal" tabindex="-1" aria-labelledby="routeDetailsModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="routeDetailsModalLabel">Route Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="routeOutput"></div>
+                    <div class="route-info mt-3">
+                        <div>Total Distance: <span class="total-distance">0 km</span></div>
+                        <div>Estimated Time: <span class="estimated-time">0 min</span></div>
+                        <div>Fuel Cost: <span class="fuel-cost">$0</span></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Delete Route</button>
+                    <button type="button" class="btn btn-primary">Start Route</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

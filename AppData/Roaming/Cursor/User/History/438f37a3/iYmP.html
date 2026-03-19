@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add YouTube Video - Babisha Admin</title>
+    <link rel="stylesheet" href="styles/dashboard.css">
+    <link rel="stylesheet" href="styles/admin-pages.css">
+    <link rel="stylesheet" href="styles/forms.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <img src="../babishatmlogo.png" alt="BABISHA Logo">
+                </div>
+                <p class="admin-panel-text">Admin Panel</p>
+                <button class="sidebar-toggle" id="sidebarToggle" title="Collapse Sidebar">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M12 6l-4 4 4 4" stroke="currentColor" stroke-width="2" fill="none"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M3 10l7-7 7 7M6 10v7h8v-7" stroke="currentColor" stroke-width="2" fill="none"/>
+                    </svg>
+                    <span>Dashboard</span>
+                </a>
+                <a href="products.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M5 5h10v10H5V5z" stroke="currentColor" stroke-width="2" fill="none"/>
+                        <path d="M7.5 8.5l2 2 3-3" stroke="currentColor" stroke-width="2" fill="none"/>
+                    </svg>
+                    <span>Products</span>
+                </a>
+                <a href="blogs.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <rect x="4" y="4" width="12" height="12" rx="1" stroke="currentColor" stroke-width="2" fill="none"/>
+                        <path d="M7 8h6M7 11h4" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                    <span>Blogs</span>
+                </a>
+                <a href="videos.html" class="nav-item active">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <rect x="3" y="5" width="14" height="10" rx="2" stroke="currentColor" stroke-width="2" fill="none"/>
+                        <path d="M8 10l3 2-3 2V10z" fill="currentColor"/>
+                    </svg>
+                    <span>YouTube Videos</span>
+                </a>
+                <a href="#" class="nav-item" id="viewWebsite">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="2" fill="none"/>
+                        <path d="M6 10h8M10 6v8" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                    <span>View Website</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="content-header">
+                <div class="header-left">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                    <h1>Add YouTube Video</h1>
+                </div>
+                <div class="header-right">
+                    <span class="admin-label">Admin</span>
+                    <a href="videos.html" class="btn-secondary">Cancel</a>
+                    <button class="logout-btn" id="logoutBtn">
+                        <span>Logout</span>
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" fill="none"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <div class="page-content">
+                <div class="form-container">
+                    <form id="videoForm">
+                        <div class="form-grid">
+                            <div class="form-group full-width">
+                                <label for="youtubeUrl">YouTube URL or Video ID *</label>
+                                <input type="text" id="youtubeUrl" name="youtubeUrl" required 
+                                       placeholder="https://www.youtube.com/watch?v=VIDEO_ID or just VIDEO_ID">
+                                <small class="form-help">Enter the full YouTube URL or just the video ID</small>
+                            </div>
+
+                            <div class="form-group full-width">
+                                <label for="title">Video Title *</label>
+                                <input type="text" id="title" name="title" required 
+                                       placeholder="Enter video title">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="category">Category *</label>
+                                <select id="category" name="category" required>
+                                    <option value="">Select category</option>
+                                    <option value="fashion">Fashion</option>
+                                    <option value="tutorial">Tutorial</option>
+                                    <option value="collection">Collection</option>
+                                    <option value="behind-scenes">Behind the Scenes</option>
+                                    <option value="testimonial">Testimonial</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="status">Status *</label>
+                                <select id="status" name="status" required>
+                                    <option value="active">Active</option>
+                                    <option value="inactive">Inactive</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group full-width">
+                                <label for="description">Description</label>
+                                <textarea id="description" name="description" rows="4" 
+                                          placeholder="Enter video description"></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="featured">Featured Video</label>
+                                <select id="featured" name="featured">
+                                    <option value="false">No</option>
+                                    <option value="true">Yes</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="order">Display Order</label>
+                                <input type="number" id="order" name="order" value="0" 
+                                       placeholder="0">
+                                <small class="form-help">Lower numbers appear first</small>
+                            </div>
+                        </div>
+
+                        <div id="videoPreview" class="video-preview" style="display: none;">
+                            <h3>Video Preview</h3>
+                            <div id="previewContainer"></div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn-primary">
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                    <path d="M13 3L6 10l-3-3" stroke="currentColor" stroke-width="2" fill="none"/>
+                                </svg>
+                                Save Video
+                            </button>
+                            <a href="videos.html" class="btn-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script src="../admin/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/add-video.js"></script>
+</body>
+</html>
+
+

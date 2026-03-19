@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+
+{% block title %}Navio - Smarter Routes, Faster Delivery{% endblock %}
+
+{% block extra_css %}
+<style>
+    .hero-gradient {
+        background: linear-gradient(135deg, #1976d2 0%, #42a5f5 100%);
+        color: #fff;
+        min-height: 60vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+    .hero-gradient .hero-icon {
+        font-size: 5rem;
+        margin-bottom: 1rem;
+        animation: float 2.5s ease-in-out infinite;
+    }
+    @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-18px); }
+    }
+    .feature-icon {
+        font-size: 2.5rem;
+        background: #e3f2fd;
+        color: #1976d2;
+        border-radius: 50%;
+        width: 70px;
+        height: 70px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1rem auto;
+        box-shadow: 0 2px 8px rgba(25, 118, 210, 0.08);
+        transition: background 0.3s, color 0.3s;
+    }
+    .feature-icon:hover {
+        background: #1976d2;
+        color: #fff;
+    }
+    .how-it-works-step {
+        background: #fff;
+        border-radius: 1rem;
+        box-shadow: 0 2px 12px rgba(25, 118, 210, 0.07);
+        padding: 2rem 1.5rem;
+        margin-bottom: 2rem;
+        text-align: center;
+        transition: transform 0.2s;
+    }
+    .how-it-works-step:hover {
+        transform: translateY(-8px) scale(1.03);
+        box-shadow: 0 6px 24px rgba(25, 118, 210, 0.13);
+    }
+    .how-it-works-icon {
+        font-size: 2.2rem;
+        color: #1976d2;
+        margin-bottom: 1rem;
+    }
+    .cta-section {
+        background: linear-gradient(90deg, #1976d2 60%, #42a5f5 100%);
+        color: #fff;
+        text-align: center;
+        padding: 3rem 1rem;
+        border-radius: 1rem;
+        margin-top: 3rem;
+        box-shadow: 0 2px 12px rgba(25, 118, 210, 0.10);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="hero-gradient py-5">
+    <div class="hero-icon mb-2">
+        <i class="fas fa-shipping-fast"></i>
+    </div>
+    <h1 class="display-3 fw-bold mb-3">Smarter Routes, Faster Delivery</h1>
+    <p class="lead mb-4">Optimize your delivery routes with AI-powered technology and real-time tracking.</p>
+    <a href="{{ url_for('register') }}" class="btn btn-lg btn-light px-5 shadow fw-semibold">Get Started</a>
+</div>
+
+<!-- Features Section -->
+<div class="container py-5">
+    <h2 class="text-center mb-5 fw-bold">Why Choose Navio?</h2>
+    <div class="row g-4 justify-content-center">
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm border-0 text-center">
+                <div class="card-body">
+                    <div class="feature-icon mb-3">
+                        <i class="fas fa-route"></i>
+                    </div>
+                    <h5 class="card-title fw-bold">Optimized Routes</h5>
+                    <p class="card-text">AI-powered algorithms find the most efficient paths, saving time and fuel costs.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm border-0 text-center">
+                <div class="card-body">
+                    <div class="feature-icon mb-3">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <h5 class="card-title fw-bold">Real-time Tracking</h5>
+                    <p class="card-text">Monitor your deliveries in real-time with live updates and notifications.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm border-0 text-center">
+                <div class="card-body">
+                    <div class="feature-icon mb-3">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h5 class="card-title fw-bold">Analytics &amp; History</h5>
+                    <p class="card-text">Detailed insights and route history to improve your delivery performance.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- How It Works Section -->
+<div class="container pb-5">
+    <h2 class="text-center mb-5 fw-bold">How It Works</h2>
+    <div class="row justify-content-center">
+        <div class="col-md-3">
+            <div class="how-it-works-step">
+                <div class="how-it-works-icon"><i class="fas fa-user-plus"></i></div>
+                <h5 class="fw-bold">1. Sign Up</h5>
+                <p>Create your free Navio account in seconds.</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="how-it-works-step">
+                <div class="how-it-works-icon"><i class="fas fa-map-marked-alt"></i></div>
+                <h5 class="fw-bold">2. Plan Routes</h5>
+                <p>Enter your delivery points and let Navio optimize the best route for you.</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="how-it-works-step">
+                <div class="how-it-works-icon"><i class="fas fa-truck-moving"></i></div>
+                <h5 class="fw-bold">3. Track &amp; Deliver</h5>
+                <p>Follow your route in real-time and deliver efficiently.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Call to Action -->
+<div class="container cta-section">
+    <h2 class="fw-bold mb-3">Ready to optimize your delivery routes?</h2>
+    <a href="{{ url_for('register') }}" class="btn btn-lg btn-light px-5 shadow fw-semibold">Sign Up Free</a>
+</div>
+{% endblock %} 

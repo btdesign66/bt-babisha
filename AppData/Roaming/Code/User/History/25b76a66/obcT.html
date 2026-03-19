@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Delivery Route Optimizer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+      background-color: #111;
+      color: #eee;
+    }
+    h2 {
+      color: #d0a0ff;
+    }
+    input, textarea, button {
+      margin: 10px 0;
+      padding: 10px;
+      width: 100%;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: none;
+    }
+    button {
+      background-color: #7b4bff;
+      color: white;
+      cursor: pointer;
+    }
+    pre {
+      background-color: #222;
+      padding: 1rem;
+      border-radius: 8px;
+      overflow-x: auto;
+    }
+  </style>
+</head>
+<body>
+  <h2>Delivery Route Optimizer</h2>
+  
+  <label for="addresses">Enter Delivery Addresses (one per line):</label>
+  <textarea id="addresses" rows="6" placeholder="123 Main St, City A&#10;456 Park Ave, City B"></textarea>
+  
+  <button onclick="submitAddresses()">Optimize Route</button>
+  
+  <h3>Optimized Route Output:</h3>
+  <pre id="output">Waiting for input...</pre>
+
+  <script>
+    async function submitAddresses() {
+      const raw = document.getElementById('addresses').value;
+      const addresses = raw.trim().split('\n').map(addr => addr.trim()).filter(Boolean);
+
+      const response = await fetch('/optimize_route', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ addresses })
+      });
+
+      const result = await response.json();
+      document.getElementById('output').textContent = JSON.stringify(result, null, 2);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Graph - Algo-Wiz</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Graph</h1>
+            <button id="dark-mode-toggle"><i class="fas fa-moon"></i></button>
+        </header>
+        <main>
+            <section class="algorithm-section">
+                <h2>Graph Algorithms</h2>
+                <div class="graph-control-panel">
+                    <select id="graph-algorithm-select">
+                        <option value="dijkstra">Dijkstra's Algorithm</option>
+                        <option value="prim">Prim's Algorithm</option>
+                        <option value="kruskal">Kruskal's Algorithm</option>
+                        <option value="dfs">Depth-First Search</option>
+                        <option value="bfs">Breadth-First Search</option>
+                    </select>
+                    <textarea id="graph-input" placeholder="Enter adjacency matrix (e.g., [[0,1,0],[1,0,1],[0,1,0]])"></textarea>
+                    <input type="number" id="start-node-input" placeholder="Start Node (0-indexed)">
+                    <button id="graph-start-btn"><i class="fas fa-play"></i> Start</button>
+                    <button id="graph-pause-btn"><i class="fas fa-pause"></i> Pause</button>
+                    <button id="graph-reset-btn"><i class="fas fa-redo"></i> Reset</button>
+                </div>
+                <div id="graph-visualization" class="visualization-area"></div>
+            </section>
+        </main>
+    </div>
+    <script src="{{ url_for('static', filename='js/api.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/graphUI.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/darkMode.js') }}"></script>
+</body>
+</html> 

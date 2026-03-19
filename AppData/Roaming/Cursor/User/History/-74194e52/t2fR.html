@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Traffic Control</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #e8f0fe;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    header {
+      background: #003366;
+      color: #fff;
+      text-align: center;
+      width: 100%;
+      padding: 15px;
+    }
+    main {
+      background: #fff;
+      margin: 20px;
+      padding: 15px;
+      border-radius: 8px;
+      max-width: 600px;
+      width: 90%;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    .form-group {
+      margin-bottom: 10px;
+    }
+    label, input {
+      display: block;
+      width: 100%;
+      font-size: 14px;
+    }
+    input {
+      padding: 6px;
+      margin-top: 4px;
+    }
+    button {
+      padding: 10px;
+      margin: 10px 2px 0 0;
+      border: none;
+      border-radius: 4px;
+      background: #003366;
+      color: white;
+      cursor: pointer;
+      width: 48%;
+    }
+    button:hover {
+      background: #0055a5;
+    }
+    table {
+      width: 100%;
+      margin-top: 15px;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 8px;
+      border: 1px solid #ccc;
+    }
+    th {
+      background: #003366;
+      color: white;
+    }
+    .log {
+      margin-top: 15px;
+      padding: 10px;
+      background: #f9f9f9;
+      height: 120px;
+      overflow-y: auto;
+      font-family: monospace;
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h2>🚦 Traffic Control</h2>
+  </header>
+  <main>
+    <div class="form-group">
+      <label for="id">Vehicle ID:</label>
+      <input type="text" id="id" />
+    </div>
+    <div class="form-group">
+      <label for="priority">Priority (1-5):</label>
+      <input type="number" id="priority" min="1" max="5" />
+    </div>
+    <div class="form-group">
+      <label for="lane">Lane:</label>
+      <input type="text" id="lane" />
+    </div>
+    <div style="display: flex; justify-content: space-between;">
+      <button onclick="addVehicle()">Add</button>
+      <button onclick="startFlow()">Start</button>
+    </div>
+    <table>
+      <thead>
+        <tr><th>ID</th><th>Priority</th><th>Lane</th></tr>
+      </thead>
+      <tbody id="queueBody"></tbody>
+    </table>
+    <div class="log" id="log"></div>
+  </main>
+  <script>
+    const queue = [];
+    const API_URL = 'http://localhost:5000';
+
+    async function addVehicle() {
+      const id = document.getElementById('id').value.trim();
+      const priority = parseInt(document.getElementById('priority').value);
+      const lane = document.getElementById('lane').value.trim();
+
+      if (!id || isNaN(priority) || !lane || priority < 1 || priority > 5) {
+        alert("Please fill in all fields correctly.");
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_URL}/add_vehicle`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ id, priority, lane }),
+        });
+
+        const data = await response.json();
+        
+        if (data.status === 'success') {
+          queue.push({ id, priority, lane });
+          queue.sort((a, b) => a.priority - b.priority);
+          renderQueue();
+          document.getElementById('id').value = '';
+          document.getElementById('priority').value = '';
+          document.getElementById('lane').value = '';
+          
+          // Add message to log
+          const log = document.getElementById('log');
+          log.innerHTML += `${data.message}<br>`;
+        } else {
+          alert('Error adding vehicle: ' + data.message);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Error communicating with server');
+      }
+    }
+
+    function renderQueue() {
+      const tbody = document.getElementById('queueBody');
+      tbody.innerHTML = '';
+      queue.forEach(vehicle => {
+        const row = `<tr><td>${vehicle.id}</td><td>${vehicle.priority}</td><td>${vehicle.lane}</td></tr>`;
+        tbody.innerHTML += row;
+      });
+    }
+
+    async function startFlow() {
+      const log = document.getElementById('log');
+      log.innerHTML = '';
+      if (queue.length === 0) {
+        log.innerHTML = 'Queue is empty.';
+        return;
+      }
+      
+      for (const vehicle of queue) {
+        log.innerHTML += `Vehicle <b>${vehicle.id}</b> from lane <b>${vehicle.lane}</b> (Priority ${vehicle.priority}) is passing.<br>`;
+        await new Promise(resolve => setTimeout(resolve, 1500));
+      }
+      
+      log.innerHTML += '<br>All vehicles have passed.';
+      queue.length = 0;
+      renderQueue();
+    }
+  </script>
+</body>
+</html>

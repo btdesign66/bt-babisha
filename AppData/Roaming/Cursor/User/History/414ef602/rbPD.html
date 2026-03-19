@@ -1,0 +1,310 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - NAVIO{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/navigation.css') }}">
+<style>
+    #map {
+        height: calc(100vh - 200px);
+        min-height: 500px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .route-controls {
+        background: white;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        margin-bottom: 20px;
+    }
+    
+    .navigation-panel {
+        position: fixed;
+        top: 80px;
+        right: 20px;
+        width: 300px;
+        max-height: calc(100vh - 100px);
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        z-index: 1000;
+        display: none;
+    }
+    
+    .navigation-panel.active {
+        display: block;
+    }
+    
+    .navigation-instruction {
+        padding: 15px;
+        border-bottom: 1px solid #eee;
+    }
+    
+    .navigation-instruction.active {
+        background: #e3f2fd;
+        border-left: 4px solid #2196f3;
+    }
+    
+    .vehicle-marker {
+        background: none;
+        border: none;
+    }
+    
+    .vehicle-marker img {
+        width: 32px;
+        height: 32px;
+        transform-origin: center;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- Route Controls -->
+    <div class="col-md-4">
+        <div class="route-controls">
+            <h4 class="mb-3">
+                <i class="fas fa-route me-2"></i>Create New Route
+            </h4>
+            
+            <form id="route-form" onsubmit="return handleRouteSubmit(event)">
+                <div class="mb-3">
+                    <label for="route-name" class="form-label">Route Name</label>
+                    <input type="text" class="form-control" id="route-name" required>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label">Start Point</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="start-address" placeholder="Enter address or click on map">
+                        <button class="btn btn-outline-secondary" type="button" onclick="clearPoint('start')">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label">End Point</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="end-address" placeholder="Enter address or click on map">
+                        <button class="btn btn-outline-secondary" type="button" onclick="clearPoint('end')">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label">Waypoints</label>
+                    <div id="waypoints-container"></div>
+                    <button type="button" class="btn btn-outline-primary btn-sm mt-2" onclick="addWaypoint()">
+                        <i class="fas fa-plus me-1"></i>Add Waypoint
+                    </button>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label">Optimization Algorithm</label>
+                    <select class="form-select" id="algorithm">
+                        <option value="dijkstra">Dijkstra's Algorithm</option>
+                        <option value="astar">A* Algorithm</option>
+                    </select>
+                </div>
+                
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-calculator me-2"></i>Optimize Route
+                    </button>
+                </div>
+            </form>
+        </div>
+        
+        <!-- Route List -->
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-list me-2"></i>My Routes
+                </h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="list-group list-group-flush" id="routes-list">
+                    <!-- Routes will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Map -->
+    <div class="col-md-8">
+        <div id="map"></div>
+    </div>
+</div>
+
+<!-- Navigation Panel -->
+<div class="navigation-panel" id="navigation-panel">
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">
+                <i class="fas fa-directions me-2"></i>Navigation
+                <button type="button" class="btn-close btn-close-white float-end" onclick="stopNavigation()"></button>
+            </h5>
+        </div>
+        <div class="card-body p-0">
+            <div id="navigation-instructions">
+                <!-- Instructions will be loaded here -->
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="d-grid gap-2">
+                <button class="btn btn-primary" onclick="toggleNavigation()">
+                    <i class="fas fa-pause me-2"></i><span id="nav-toggle-text">Pause</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/map.js') }}"></script>
+<script src="{{ url_for('static', filename='js/route.js') }}"></script>
+<script src="{{ url_for('static', filename='js/navigation.js') }}"></script>
+
+<script>
+// Initialize map and load routes on page load
+document.addEventListener('DOMContentLoaded', function() {
+    // Check authentication
+    const token = localStorage.getItem('access_token');
+    if (!token) {
+        window.location.href = '/login';
+        return;
+    }
+    
+    // Initialize map
+    initMap();
+    
+    // Load user's routes
+    loadRoutes();
+});
+
+// Add waypoint input field
+function addWaypoint() {
+    const container = document.getElementById('waypoints-container');
+    const waypointDiv = document.createElement('div');
+    waypointDiv.className = 'input-group mb-2';
+    waypointDiv.innerHTML = `
+        <input type="text" class="form-control waypoint-input" placeholder="Enter address or click on map">
+        <button class="btn btn-outline-danger" type="button" onclick="this.parentElement.remove()">
+            <i class="fas fa-times"></i>
+        </button>
+    `;
+    container.appendChild(waypointDiv);
+}
+
+// Clear map point
+function clearPoint(type) {
+    if (type === 'start') {
+        document.getElementById('start-address').value = '';
+        if (startMarker) {
+            map.removeLayer(startMarker);
+            startMarker = null;
+        }
+    } else if (type === 'end') {
+        document.getElementById('end-address').value = '';
+        if (endMarker) {
+            map.removeLayer(endMarker);
+            endMarker = null;
+        }
+    }
+    updateRouteLine();
+}
+
+// Handle route form submission
+async function handleRouteSubmit(event) {
+    event.preventDefault();
+    
+    const name = document.getElementById('route-name').value;
+    const startAddress = document.getElementById('start-address').value;
+    const endAddress = document.getElementById('end-address').value;
+    const algorithm = document.getElementById('algorithm').value;
+    
+    // Get waypoints
+    const waypointInputs = document.querySelectorAll('.waypoint-input');
+    const waypoints = Array.from(waypointInputs)
+        .map(input => input.value)
+        .filter(value => value.trim() !== '');
+    
+    // Validate required fields
+    if (!startAddress || !endAddress) {
+        showFlashMessage('Please set both start and end points', 'warning');
+        return false;
+    }
+    
+    try {
+        const response = await axios.post('/api/optimize/route', {
+            name: name,
+            start_point: startAddress,
+            end_point: endAddress,
+            waypoints: waypoints,
+            algorithm: algorithm
+        }, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+            }
+        });
+        
+        // Show success message
+        showFlashMessage('Route optimized successfully!', 'success');
+        
+        // Reload routes list
+        loadRoutes();
+        
+        // Display optimized route on map
+        displayOptimizedRoute(response.data.route);
+        
+    } catch (error) {
+        const message = error.response?.data?.error || 'An error occurred during route optimization';
+        showFlashMessage(message, 'danger');
+    }
+    
+    return false;
+}
+
+// Load user's routes
+async function loadRoutes() {
+    try {
+        const response = await axios.get('/api/routes', {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+            }
+        });
+        
+        const routesList = document.getElementById('routes-list');
+        routesList.innerHTML = '';
+        
+        response.data.routes.forEach(route => {
+            const routeItem = document.createElement('a');
+            routeItem.href = '#';
+            routeItem.className = 'list-group-item list-group-item-action';
+            routeItem.innerHTML = `
+                <div class="d-flex w-100 justify-content-between">
+                    <h6 class="mb-1">${route.name}</h6>
+                    <small class="text-muted">${route.status}</small>
+                </div>
+                <p class="mb-1">
+                    <small>
+                        <i class="fas fa-road me-1"></i>${route.total_distance.toFixed(1)} km
+                        <i class="fas fa-clock ms-2 me-1"></i>${route.estimated_time} min
+                    </small>
+                </p>
+            `;
+            routeItem.onclick = () => displayOptimizedRoute(route);
+            routesList.appendChild(routeItem);
+        });
+        
+    } catch (error) {
+        showFlashMessage('Error loading routes', 'danger');
+    }
+}
+</script>
+{% endblock %} 

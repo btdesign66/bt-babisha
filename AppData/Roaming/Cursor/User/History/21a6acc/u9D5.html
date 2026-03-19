@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Analytics - Babisha Admin</title>
+    <link rel="stylesheet" href="styles/dashboard.css">
+    <link rel="stylesheet" href="styles/admin-pages.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <img src="../babishatmlogo.png" alt="BABISHA Logo">
+                </div>
+                <p class="admin-panel-text">Admin Panel</p>
+                <button class="sidebar-toggle" id="sidebarToggle" title="Collapse Sidebar">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M12 6l-4 4 4 4" stroke="currentColor" stroke-width="2" fill="none"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M3 10l7-7 7 7M6 10v7h8v-7" stroke="currentColor" stroke-width="2" fill="none"/>
+                    </svg>
+                    <span>Dashboard</span>
+                </a>
+                <a href="analytics.html" class="nav-item active">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M3 3v14h14M3 10l14-7" stroke="currentColor" stroke-width="2" fill="none"/>
+                    </svg>
+                    <span>Analytics</span>
+                </a>
+                <a href="products.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M5 5h10v10H5V5z" stroke="currentColor" stroke-width="2" fill="none"/>
+                        <path d="M7.5 8.5l2 2 3-3" stroke="currentColor" stroke-width="2" fill="none"/>
+                    </svg>
+                    <span>Products</span>
+                </a>
+                <a href="blogs.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <rect x="4" y="4" width="12" height="12" rx="1" stroke="currentColor" stroke-width="2" fill="none"/>
+                        <path d="M7 8h6M7 11h4" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                    <span>Blogs</span>
+                </a>
+                <a href="videos.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <rect x="3" y="5" width="14" height="10" rx="2" stroke="currentColor" stroke-width="2" fill="none"/>
+                        <path d="M8 10l3 2-3 2V10z" fill="currentColor"/>
+                    </svg>
+                    <span>YouTube Videos</span>
+                </a>
+                <a href="activity-logs.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M10 2v16M2 10h16" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                    <span>Activity Logs</span>
+                </a>
+                <a href="settings.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <circle cx="10" cy="10" r="3" stroke="currentColor" stroke-width="2" fill="none"/>
+                        <path d="M10 1v3M10 16v3M19 10h-3M4 10H1M16.66 3.34l-2.12 2.12M5.46 14.54l-2.12 2.12M16.66 16.66l-2.12-2.12M5.46 5.46l-2.12-2.12" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                    <span>Settings</span>
+                </a>
+                <a href="#" class="nav-item" id="viewWebsite">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="2" fill="none"/>
+                        <path d="M6 10h8M10 6v8" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                    <span>View Website</span>
+                </a>
+            </nav>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="content-header">
+                <div class="header-left">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M3 3v14h14M3 10l14-7" stroke="currentColor" stroke-width="2" fill="none"/>
+                    </svg>
+                    <h1>Advanced Analytics & Reporting</h1>
+                </div>
+                <div class="header-right">
+                    <div class="date-range-selector">
+                        <select id="dateRange" class="form-control-sm">
+                            <option value="7">Last 7 Days</option>
+                            <option value="30" selected>Last 30 Days</option>
+                            <option value="90">Last 90 Days</option>
+                            <option value="365">Last Year</option>
+                            <option value="custom">Custom Range</option>
+                        </select>
+                    </div>
+                    <button class="btn-export" id="exportReport">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M8 2v12M2 8l6-6 6 6" stroke="currentColor" stroke-width="2" fill="none"/>
+                        </svg>
+                        Export Report
+                    </button>
+                    <span class="admin-label">Admin</span>
+                    <button class="logout-btn" id="logoutBtn">Logout</button>
+                </div>
+            </header>
+            
+            <!-- Advanced Metrics Grid -->
+            <section class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <h3>Total Products</h3>
+                        <span class="metric-trend up">+12.5%</span>
+                    </div>
+                    <div class="metric-value" id="totalProducts">0</div>
+                    <div class="metric-chart-mini">
+                        <canvas id="productsChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <h3>Active Products</h3>
+                        <span class="metric-trend up">+8.3%</span>
+                    </div>
+                    <div class="metric-value" id="activeProducts">0</div>
+                    <div class="metric-chart-mini">
+                        <canvas id="activeChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <h3>Total Revenue</h3>
+                        <span class="metric-trend up">+23.1%</span>
+                    </div>
+                    <div class="metric-value" id="totalRevenue">₹0</div>
+                    <div class="metric-chart-mini">
+                        <canvas id="revenueChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <h3>Conversion Rate</h3>
+                        <span class="metric-trend down">-2.1%</span>
+                    </div>
+                    <div class="metric-value" id="conversionRate">0%</div>
+                    <div class="metric-chart-mini">
+                        <canvas id="conversionChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <h3>Average Order Value</h3>
+                        <span class="metric-trend up">+5.7%</span>
+                    </div>
+                    <div class="metric-value" id="avgOrderValue">₹0</div>
+                    <div class="metric-chart-mini">
+                        <canvas id="aovChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <h3>Customer Retention</h3>
+                        <span class="metric-trend up">+4.2%</span>
+                    </div>
+                    <div class="metric-value" id="retentionRate">0%</div>
+                    <div class="metric-chart-mini">
+                        <canvas id="retentionChart"></canvas>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Charts Section -->
+            <section class="charts-section">
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h2>Product Performance Over Time</h2>
+                        <div class="chart-controls">
+                            <button class="chart-btn active" data-metric="views">Views</button>
+                            <button class="chart-btn" data-metric="sales">Sales</button>
+                            <button class="chart-btn" data-metric="revenue">Revenue</button>
+                        </div>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="performanceChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h2>Category Distribution</h2>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="categoryChart"></canvas>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Data Tables -->
+            <section class="data-tables-section">
+                <div class="table-container">
+                    <div class="table-header">
+                        <h2>Top Performing Products</h2>
+                        <div class="table-filters">
+                            <select class="form-control-sm">
+                                <option>All Categories</option>
+                                <option>Lehenga</option>
+                                <option>Kurta</option>
+                                <option>Dress</option>
+                            </select>
+                            <select class="form-control-sm">
+                                <option>Sort by Revenue</option>
+                                <option>Sort by Views</option>
+                                <option>Sort by Sales</option>
+                            </select>
+                        </div>
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Product Name</th>
+                                <th>Category</th>
+                                <th>Views</th>
+                                <th>Sales</th>
+                                <th>Revenue</th>
+                                <th>Conversion</th>
+                                <th>Trend</th>
+                            </tr>
+                        </thead>
+                        <tbody id="topProductsTable">
+                            <tr><td colspan="7" class="loading">Loading analytics data...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+    
+    <script src="config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/analytics.js"></script>
+</body>
+</html>
+

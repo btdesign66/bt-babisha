@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linked List - Algo-Wiz</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Linked List</h1>
+            <button id="dark-mode-toggle"><i class="fas fa-moon"></i></button>
+        </header>
+        <main>
+            <section class="algorithm-section">
+                <h2>Linked List Operations</h2>
+                <div class="linkedlist-control-panel">
+                    <select id="linkedlist-operation-select">
+                        <option value="insert_beginning">Insert at Beginning</option>
+                        <option value="insert_end">Insert at End</option>
+                        <option value="delete">Delete by Value</option>
+                        <option value="search">Search</option>
+                        <option value="reverse">Reverse</option>
+                    </select>
+                    <input type="text" id="linkedlist-input" placeholder="Enter linked list (e.g., 1,2,3)">
+                    <input type="number" id="linkedlist-value-input" placeholder="Value">
+                    <button id="linkedlist-start-btn"><i class="fas fa-play"></i> Start</button>
+                    <button id="linkedlist-pause-btn"><i class="fas fa-pause"></i> Pause</button>
+                    <button id="linkedlist-reset-btn"><i class="fas fa-redo"></i> Reset</button>
+                </div>
+                <div id="linkedlist-visualization" class="visualization-area"></div>
+            </section>
+        </main>
+    </div>
+    <script src="{{ url_for('static', filename='js/api.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/linkedlistUI.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/darkMode.js') }}"></script>
+</body>
+</html> 

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - Babisha Admin</title>
+    <link rel="stylesheet" href="styles/dashboard.css">
+    <link rel="stylesheet" href="styles/admin-pages.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <img src="../logo.png" alt="BABISHA Logo">
+                </div>
+                <p class="admin-panel-text">Admin Panel</p>
+                <button class="sidebar-toggle" id="sidebarToggle" title="Collapse Sidebar">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M12 6l-4 4 4 4" stroke="currentColor" stroke-width="2" fill="none"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M3 10l7-7 7 7M6 10v7h8v-7" stroke="currentColor" stroke-width="2" fill="none"/>
+                    </svg>
+                    <span>Dashboard</span>
+                </a>
+                <a href="products.html" class="nav-item active">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M5 5h10v10H5V5z" stroke="currentColor" stroke-width="2" fill="none"/>
+                        <path d="M7.5 8.5l2 2 3-3" stroke="currentColor" stroke-width="2" fill="none"/>
+                    </svg>
+                    <span>Products</span>
+                </a>
+                <a href="blogs.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <rect x="4" y="4" width="12" height="12" rx="1" stroke="currentColor" stroke-width="2" fill="none"/>
+                        <path d="M7 8h6M7 11h4" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                    <span>Blogs</span>
+                </a>
+                <a href="videos.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <rect x="3" y="5" width="14" height="10" rx="2" stroke="currentColor" stroke-width="2" fill="none"/>
+                        <path d="M8 10l3 2-3 2V10z" fill="currentColor"/>
+                    </svg>
+                    <span>YouTube Videos</span>
+                </a>
+                <a href="analytics.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M3 3v14h14M3 10l14-7" stroke="currentColor" stroke-width="2" fill="none"/>
+                    </svg>
+                    <span>Analytics</span>
+                </a>
+                <a href="activity-logs.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M10 2v16M2 10h16" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                    <span>Activity Logs</span>
+                </a>
+                <a href="settings.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <circle cx="10" cy="10" r="3" stroke="currentColor" stroke-width="2" fill="none"/>
+                        <path d="M10 1v3M10 16v3M19 10h-3M4 10H1M16.66 3.34l-2.12 2.12M5.46 14.54l-2.12 2.12M16.66 16.66l-2.12-2.12M5.46 5.46l-2.12-2.12" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                    <span>Settings</span>
+                </a>
+                <a href="#" class="nav-item" id="viewWebsite">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="2" fill="none"/>
+                        <path d="M6 10h8M10 6v8" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                    <span>View Website</span>
+                </a>
+            </nav>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="content-header">
+                <div class="header-left">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M5 5h14v14H5V5z" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                    <h1>Products</h1>
+                </div>
+                <div class="header-right">
+                    <a href="add-product.html" class="btn-primary">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                        Add Product
+                    </a>
+                    <span class="admin-label">Admin</span>
+                    <button class="logout-btn" id="logoutBtn">
+                        Logout
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" fill="none"/>
+                        </svg>
+                    </button>
+                </div>
+            </header>
+            
+            <div class="page-content">
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Image</th>
+                                <th>Name</th>
+                                <th>Price</th>
+                                <th>Category</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productsTableBody">
+                            <tr>
+                                <td colspan="6" class="loading">Loading products...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script src="config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/products.js"></script>
+</body>
+</html>

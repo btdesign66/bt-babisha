@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BDS PRO - Test Authentication</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #0f172a;
+            color: #e2e8f0;
+        }
+        .container {
+            background: #1e293b;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+        }
+        .btn {
+            background: #3b82f6;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px;
+        }
+        .btn:hover {
+            background: #2563eb;
+        }
+        .status {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 8px;
+            background: #334155;
+        }
+        .success { background: #10b981; }
+        .error { background: #ef4444; }
+        .info { background: #3b82f6; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>BDS PRO Authentication Test</h1>
+        <p>Test Google OAuth integration and API connectivity</p>
+        
+        <div class="status info">
+            <h3>Backend Status</h3>
+            <p id="backendStatus">Checking...</p>
+        </div>
+        
+        <div class="status info">
+            <h3>Authentication Status</h3>
+            <p id="authStatus">Not authenticated</p>
+        </div>
+        
+        <div class="status info">
+            <h3>User Data</h3>
+            <pre id="userData">No user data</pre>
+        </div>
+        
+        <button class="btn" onclick="testBackend()">Test Backend</button>
+        <button class="btn" onclick="loginWithGoogle()">Login with Google</button>
+        <button class="btn" onclick="testAuth()">Test Authentication</button>
+        <button class="btn" onclick="clearAuth()">Clear Auth</button>
+        <button class="btn" onclick="goToDashboard()">Go to Dashboard</button>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:5000/api';
+        
+        // Test backend connectivity
+        async function testBackend() {
+            try {
+                const response = await fetch('http://localhost:5000/health');
+                const data = await response.json();
+                
+                document.getElementById('backendStatus').innerHTML = 
+                    `✅ Backend is running<br>Status: ${data.message}<br>Version: ${data.version}`;
+            } catch (error) {
+                document.getElementById('backendStatus').innerHTML = 
+                    `❌ Backend is not running<br>Error: ${error.message}`;
+            }
+        }
+        
+        // Login with Google
+        function loginWithGoogle() {
+            window.location.href = `${API_BASE}/auth/google`;
+        }
+        
+        // Test authentication
+        async function testAuth() {
+            const token = localStorage.getItem('authToken');
+            
+            if (!token) {
+                document.getElementById('authStatus').innerHTML = '❌ No token found';
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE}/auth/verify`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    document.getElementById('authStatus').innerHTML = 
+                        `✅ Authenticated<br>User: ${data.user.name}<br>Email: ${data.user.email}`;
+                } else {
+                    document.getElementById('authStatus').innerHTML = '❌ Invalid token';
+                }
+            } catch (error) {
+                document.getElementById('authStatus').innerHTML = 
+                    `❌ Auth test failed<br>Error: ${error.message}`;
+            }
+        }
+        
+        // Clear authentication
+        function clearAuth() {
+            localStorage.removeItem('authToken');
+            localStorage.removeItem('userData');
+            document.getElementById('authStatus').innerHTML = 'Not authenticated';
+            document.getElementById('userData').innerHTML = 'No user data';
+        }
+        
+        // Go to dashboard
+        function goToDashboard() {
+            window.location.href = 'dashboard.html';
+        }
+        
+        // Check for token in URL (from Google callback)
+        function checkUrlToken() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const token = urlParams.get('token');
+            const userData = urlParams.get('user');
+            
+            if (token) {
+                localStorage.setItem('authToken', token);
+                if (userData) {
+                    try {
+                        const user = JSON.parse(decodeURIComponent(userData));
+                        localStorage.setItem('userData', JSON.stringify(user));
+                        document.getElementById('userData').innerHTML = JSON.stringify(user, null, 2);
+                        document.getElementById('authStatus').innerHTML = 
+                            `✅ Token received from Google<br>User: ${user.name}`;
+                    } catch (error) {
+                        console.error('Error parsing user data:', error);
+                    }
+                }
+                // Clean URL
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            testBackend();
+            checkUrlToken();
+            
+            // Check if user is already authenticated
+            const token = localStorage.getItem('authToken');
+            if (token) {
+                testAuth();
+            }
+        });
+    </script>
+</body>
+</html>

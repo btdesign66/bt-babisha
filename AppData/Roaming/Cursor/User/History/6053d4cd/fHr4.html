@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block title %}Login - NAVIO{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-4">
+        <div class="card shadow">
+            <div class="card-body">
+                <h2 class="card-title text-center mb-4">
+                    <i class="fas fa-sign-in-alt me-2"></i>Login
+                </h2>
+                
+                <form id="login-form" onsubmit="return handleLogin(event)">
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email address</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="fas fa-envelope"></i>
+                            </span>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="fas fa-lock"></i>
+                            </span>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                            <button class="btn btn-outline-secondary" type="button" onclick="togglePassword()">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-sign-in-alt me-2"></i>Login
+                        </button>
+                    </div>
+                </form>
+                
+                <div class="text-center mt-3">
+                    <p class="mb-0">Don't have an account? 
+                        <a href="/register" class="text-decoration-none">Register here</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+async function handleLogin(event) {
+    event.preventDefault();
+    
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    
+    try {
+        const response = await axios.post('/api/login', {
+            email: email,
+            password: password
+        });
+        
+        // Store token and user data
+        localStorage.setItem('access_token', response.data.access_token);
+        localStorage.setItem('user', JSON.stringify(response.data.user));
+        
+        // Show success message
+        showFlashMessage('Login successful! Redirecting...', 'success');
+        
+        // Redirect to dashboard
+        setTimeout(() => {
+            window.location.href = '/dashboard';
+        }, 1000);
+        
+    } catch (error) {
+        const message = error.response?.data?.error || 'An error occurred during login';
+        showFlashMessage(message, 'danger');
+    }
+    
+    return false;
+}
+
+function togglePassword() {
+    const passwordInput = document.getElementById('password');
+    const icon = document.querySelector('.fa-eye');
+    
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+    } else {
+        passwordInput.type = 'password';
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+    }
+}
+
+// Check if user is already logged in
+document.addEventListener('DOMContentLoaded', function() {
+    const token = localStorage.getItem('access_token');
+    if (token) {
+        window.location.href = '/dashboard';
+    }
+});
+</script>
+{% endblock %} 

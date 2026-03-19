@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algo-Wiz</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Algo-Wiz</h1>
+            <button id="dark-mode-toggle"><i class="fas fa-moon"></i></button>
+        </header>
+        <main>
+            <section class="module-links">
+                <h2>Choose a Module</h2>
+                <div class="module-buttons">
+                    <a href="/sorting" class="module-button">Sorting</a>
+                    <a href="/searching" class="module-button">Searching</a>
+                    <a href="/graph" class="module-button">Graph</a>
+                    <a href="/linkedlist" class="module-button">Linked List</a>
+                </div>
+            </section>
+            <section class="random-input-section">
+                <h2>Random Input Generator</h2>
+                <button id="random-input-btn"><i class="fas fa-random"></i> Generate Random Input</button>
+                <div id="random-input-display" class="random-input-display"></div>
+            </section>
+        </main>
+    </div>
+    <script src="{{ url_for('static', filename='js/darkMode.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/randomInput.js') }}"></script>
+</body>
+</html> 

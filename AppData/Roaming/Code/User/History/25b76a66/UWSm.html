@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Multi-Route Delivery Optimizer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      padding: 2rem;
+      background-color: #0d0d0d;
+      color: #f0f0f0;
+      max-width: 900px;
+      margin: auto;
+    }
+
+    h2 {
+      color: #c59fff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    textarea {
+      width: 100%;
+      padding: 12px;
+      font-size: 1rem;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: none;
+      box-sizing: border-box;
+      background-color: #1a1a1a;
+      color: #eee;
+    }
+
+    .button-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 1rem;
+    }
+
+    button {
+      padding: 10px 16px;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    .btn-primary {
+      background-color: #824dff;
+      color: white;
+    }
+
+    .btn-secondary {
+      background-color: #444;
+      color: #ccc;
+    }
+
+    .btn-primary:hover {
+      background-color: #6a3fe0;
+    }
+
+    .btn-secondary:hover {
+      background-color: #666;
+    }
+
+    .route-container {
+      margin-top: 20px;
+    }
+
+    .route-box {
+      background-color: #1e1e2e;
+      border-left: 6px solid #9d6cff;
+      padding: 1rem;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+    }
+
+    .route-box h4 {
+      margin-top: 0;
+      color: #ffd580;
+    }
+
+    .error {
+      color: #ff5e5e;
+      font-weight: bold;
+    }
+
+    .loading {
+      color: #7fbfff;
+      font-style: italic;
+    }
+
+    img.icon {
+      width: 32px;
+      height: 32px;
+    }
+
+    @media (max-width: 600px) {
+      .button-group {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h2>
+    <img src="https://img.icons8.com/emoji/48/delivery-truck.png" class="icon" alt="truck" />
+    Multi-Route Delivery Optimizer
+  </h2>
+
+  <label for="addresses">Enter Delivery Addresses (one per line):</label>
+  <textarea id="addresses" rows="8" placeholder="123 Main St, City A&#10;456 Park Ave, City B&#10;789 Oak Rd, City C"></textarea>
+
+  <div class="button-group">
+    <button class="btn-primary" onclick="submitAddresses()">🚀 Optimize Routes</button>
+    <button class="btn-secondary" onclick="clearInput()">🧹 Clear</button>
+    <button class="btn-secondary" onclick="sampleInput()">📥 Sample Input</button>
+  </div>
+
+  <div id="output" class="route-container">
+    <p>Waiting for input...</p>
+  </div>
+
+  <script>
+    function clearInput() {
+      document.getElementById('addresses').value = '';
+      document.getElementById('output').innerHTML = '<p>Waiting for input...</p>';
+    }
+
+    function sampleInput() {
+      document.getElementById('addresses').value = `221B Baker St, London
+10 Downing St, London
+Tower of London, London
+Buckingham Palace, London
+London Eye, London`;
+    }
+
+    async function submitAddresses() {
+      const raw = document.getElementById('addresses').value;
+      const addresses = raw.trim().split('\n').map(addr => addr.trim()).filter(Boolean);
+
+      const output = document.getElementById('output');
+      output.innerHTML = '<p class="loading">🧠 Processing routes...</p>';
+
+      try {
+        const response = await fetch('/optimize_route', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ addresses })
+        });
+
+        const result = await response.json();
+
+        if (result.error) {
+          output.innerHTML = `<p class="error">❌ ${result.error}</p>`;
+          return;
+        }
+
+        output.innerHTML = '';
+        result.routes.forEach((route, index) => {
+          const div = document.createElement('div');
+          div.className = 'route-box';
+          div.innerHTML = `
+            <h4>🛣️ Route ${index + 1}</h4>
+            <ul>${route.addresses.map(addr => `<li>${addr}</li>`).join('')}</ul>
+            <p><strong>Total Distance:</strong> ${route.total_distance_km} km</p>
+          `;
+          output.appendChild(div);
+        });
+
+      } catch (err) {
+        output.innerHTML = `<p class="error">❌ Error fetching routes. Please try again.</p>`;
+        console.error(err);
+      }
+    }
+  </script>
+</body>
+</html>

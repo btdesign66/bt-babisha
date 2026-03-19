@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bus Booking - MakeMyTrip Style</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="fonts/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body { background: #f6f8fb; }
+        .search-bar { background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.04); border-radius: 12px; padding: 24px 32px; margin-top: 32px; }
+        .search-bar .form-control, .search-bar .btn { height: 56px; font-size: 1.1rem; }
+        .search-bar .btn-primary { background: linear-gradient(90deg,#2b6be6,#0a4bb1); border: none; }
+        .sidebar { background: #fff; border-radius: 12px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+        .date-selector { background: #fff; border-radius: 12px; margin: 24px 0; padding: 16px 24px; display: flex; overflow-x: auto; }
+        .date-selector .date-btn { min-width: 110px; margin-right: 12px; border: none; background: #eaf1fb; color: #0a4bb1; border-radius: 8px; padding: 8px 0; font-weight: 500; }
+        .date-selector .date-btn.active, .date-selector .date-btn:hover { background: #2b6be6; color: #fff; }
+        .bus-card { background: #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); margin-bottom: 20px; padding: 24px; display: flex; align-items: center; }
+        .bus-card .bus-logo { width: 60px; height: 60px; margin-right: 24px; }
+        .bus-card .bus-info { flex: 1; }
+        .bus-card .bus-ops { text-align: right; }
+        .filter-title { font-weight: 600; margin-top: 24px; margin-bottom: 12px; }
+        .sidebar label { font-weight: 400; }
+        .sidebar .form-check { margin-bottom: 8px; }
+        .sidebar .form-control { border-radius: 8px; }
+        @media (max-width: 991px) { .search-bar { padding: 16px; } .sidebar { padding: 16px; } }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Search Bar -->
+        <form class="search-bar row align-items-center" id="busSearchForm">
+            <div class="col-md-3 mb-2 mb-md-0">
+                <label class="mb-1">From</label>
+                <select class="form-control" id="fromStation" required>
+                    <option value="">Select City</option>
+                    <option>Delhi, Delhi</option>
+                    <option>Dehradun, Uttarakhand</option>
+                    <option>Haridwar, Uttarakhand</option>
+                    <option>Rishikesh, Uttarakhand</option>
+                    <option>Nainital, Uttarakhand</option>
+                    <option>Mussoorie, Uttarakhand</option>
+                    <option>Haldwani, Uttarakhand</option>
+                    <option>Roorkee, Uttarakhand</option>
+                    <option>Meerut, Uttar Pradesh</option>
+                    <option>Kanpur, Uttar Pradesh</option>
+                    <option>Lucknow, Uttar Pradesh</option>
+                    <option>Chandigarh, Chandigarh</option>
+                    <option>Agra, Uttar Pradesh</option>
+                    <option>Moradabad, Uttar Pradesh</option>
+                </select>
+            </div>
+            <div class="col-md-3 mb-2 mb-md-0">
+                <label class="mb-1">To</label>
+                <select class="form-control" id="toStation" required>
+                    <option value="">Select City</option>
+                    <option>Delhi, Delhi</option>
+                    <option>Dehradun, Uttarakhand</option>
+                    <option>Haridwar, Uttarakhand</option>
+                    <option>Rishikesh, Uttarakhand</option>
+                    <option>Nainital, Uttarakhand</option>
+                    <option>Mussoorie, Uttarakhand</option>
+                    <option>Haldwani, Uttarakhand</option>
+                    <option>Roorkee, Uttarakhand</option>
+                    <option>Meerut, Uttar Pradesh</option>
+                    <option>Kanpur, Uttar Pradesh</option>
+                    <option>Lucknow, Uttar Pradesh</option>
+                    <option>Chandigarh, Chandigarh</option>
+                    <option>Agra, Uttar Pradesh</option>
+                    <option>Moradabad, Uttar Pradesh</option>
+                </select>
+            </div>
+            <div class="col-md-3 mb-2 mb-md-0">
+                <label class="mb-1">Depart</label>
+                <input type="text" class="form-control" id="searchDate" placeholder="Select date" autocomplete="off" required>
+            </div>
+            <div class="col-md-3 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary btn-block w-100">SEARCH</button>
+            </div>
+        </form>
+        <div class="row mt-4">
+            <!-- Sidebar Filters -->
+            <div class="col-lg-3 mb-4">
+                <div class="sidebar">
+                    <div class="filter-title">Filters</div>
+                    <div class="mb-3">
+                        <div class="filter-title">AC</div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="acFilter">
+                            <label class="form-check-label" for="acFilter">AC</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="nonAcFilter">
+                            <label class="form-check-label" for="nonAcFilter">Non-AC</label>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="filter-title">Seat type</div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="seaterFilter">
+                            <label class="form-check-label" for="seaterFilter">Seater</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="sleeperFilter">
+                            <label class="form-check-label" for="sleeperFilter">Sleeper</label>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="singleSeatFilter">
+                            <label class="form-check-label" for="singleSeatFilter">Single Seats</label>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="filter-title">Pick up point</div>
+                        <input type="text" class="form-control mb-2" id="pickupSearch" placeholder="Search">
+                        <div style="max-height:120px;overflow-y:auto;">
+                            <div class="form-check"><input class="form-check-input" type="checkbox" id="isbt"><label class="form-check-label" for="isbt">ISBT Kashmiri Gate</label></div>
+                            <div class="form-check"><input class="form-check-input" type="checkbox" id="akshardham"><label class="form-check-label" for="akshardham">Akshardham Metro Station</label></div>
+                            <div class="form-check"><input class="form-check-input" type="checkbox" id="dehradunISBT"><label class="form-check-label" for="dehradunISBT">Dehradun ISBT</label></div>
+                            <div class="form-check"><input class="form-check-input" type="checkbox" id="haridwarRail"><label class="form-check-label" for="haridwarRail">Haridwar Railway Station</label></div>
+                            <div class="form-check"><input class="form-check-input" type="checkbox" id="rishikeshBus"><label class="form-check-label" for="rishikeshBus">Rishikesh Bus Stand</label></div>
+                            <div class="form-check"><input class="form-check-input" type="checkbox" id="nainitalBus"><label class="form-check-label" for="nainitalBus">Nainital Bus Stand</label></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Main Content -->
+            <div class="col-lg-9">
+                <!-- Date Selector -->
+                <div class="date-selector mb-3" id="dateSelector">
+                    <!-- JS will populate dates here -->
+                </div>
+                <!-- Sort Bar -->
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div><b id="resultsTitle">Buses Found</b></div>
+                    <div>
+                        <span class="mr-2">SORT BY</span>
+                        <button class="btn btn-light btn-sm sort-btn" data-sort="relevance">Relevance</button>
+                        <button class="btn btn-light btn-sm sort-btn" data-sort="price">Price</button>
+                        <button class="btn btn-light btn-sm sort-btn" data-sort="rating">Rating</button>
+                        <button class="btn btn-light btn-sm sort-btn" data-sort="departure">Departure</button>
+                    </div>
+                </div>
+                <!-- Bus Results -->
+                <div id="busResults">
+                    <!-- JS will populate bus cards here -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Login/Signup Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loginModalLabel">Login / Sign Up</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="loginForm">
+                        <div class="form-group">
+                            <label for="loginEmail">Email address</label>
+                            <input type="email" class="form-control" id="loginEmail" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="loginPassword">Password</label>
+                            <input type="password" class="form-control" id="loginPassword" name="password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Login</button>
+                    </form>
+                    <hr>
+                    <form id="signupForm">
+                        <div class="form-group">
+                            <label for="signupName">Full Name</label>
+                            <input type="text" class="form-control" id="signupName" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="signupEmail">Email address</label>
+                            <input type="email" class="form-control" id="signupEmail" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="signupPassword">Password</label>
+                            <input type="password" class="form-control" id="signupPassword" name="password" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="signupConfirmPassword">Confirm Password</label>
+                            <input type="password" class="form-control" id="signupConfirmPassword" name="confirm_password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="plugins/material-datetimepicker/bootstrap-material-datetimepicker.js"></script>
+    <script>
+    // Date picker for search
+    $(function() {
+        $('#searchDate').bootstrapMaterialDatePicker({
+            weekStart: 0,
+            time: false,
+            format: 'YYYY-MM-DD',
+            clearButton: true,
+            color: '#007bff'
+        });
+    });
+    // Populate date selector (7 days from selected date)
+    function populateDateSelector(baseDate) {
+        const $ds = $('#dateSelector');
+        $ds.empty();
+        let d = baseDate ? new Date(baseDate) : new Date();
+        for(let i=-1;i<6;i++) {
+            let date = new Date(d); date.setDate(d.getDate()+i);
+            let label = date.toLocaleDateString('en-US', { day:'2-digit', month:'short', weekday:'short' });
+            let val = date.toISOString().slice(0,10);
+            $ds.append(`<button class="date-btn${i===0?' active':''}" data-date="${val}">${label}</button>`);
+        }
+    }
+    $('#searchDate').on('change', function(){
+        populateDateSelector(this.value);
+    });
+    $(document).on('click', '.date-btn', function(){
+        $('.date-btn').removeClass('active');
+        $(this).addClass('active');
+        $('#searchDate').val($(this).data('date'));
+        $('#busSearchForm').submit();
+    });
+    // Dummy bus data
+    const buses = [
+        { operator:'UPSRTC', type:'A/C Seater', dep:'21:45', arr:'07:00', duration:'09h 15m', price:660, seats:25, rating:4.2, ac:true, sleeper:false, single:true, pickup:'ISBT Kashmiri Gate' },
+        { operator:'IntrCity SmartBus', type:'Benz A/C Sleeper', dep:'22:30', arr:'06:30', duration:'08h 00m', price:950, seats:12, rating:4.5, ac:true, sleeper:true, single:false, pickup:'Dehradun ISBT' },
+        { operator:'RedBus', type:'Non-AC Seater', dep:'20:00', arr:'05:00', duration:'09h 00m', price:500, seats:40, rating:3.9, ac:false, sleeper:false, single:true, pickup:'Haridwar Railway Station' },
+        { operator:'Smart Travels', type:'A/C Sleeper', dep:'23:00', arr:'07:30', duration:'08h 30m', price:1200, seats:8, rating:4.7, ac:true, sleeper:true, single:true, pickup:'Rishikesh Bus Stand' },
+    ];
+    function renderBuses(filter={}) {
+        let html = '';
+        let filtered = buses.filter(bus => {
+            if(filter.ac && !bus.ac) return false;
+            if(filter.nonac && bus.ac) return false;
+            if(filter.seater && !bus.type.toLowerCase().includes('seater')) return false;
+            if(filter.sleeper && !bus.type.toLowerCase().includes('sleeper')) return false;
+            if(filter.single && !bus.single) return false;
+            if(filter.pickup && filter.pickup.length && !filter.pickup.includes(bus.pickup)) return false;
+            return true;
+        });
+        $('#resultsTitle').text(filtered.length+" Buses Found");
+        filtered.forEach(bus => {
+            html += `<div class="bus-card d-flex align-items-center">
+                <img src="images/bus.png" class="bus-logo" alt="bus">
+                <div class="bus-info">
+                    <div><b>${bus.operator}</b> <span class="text-muted">(${bus.type})</span></div>
+                    <div class="text-muted">${bus.pickup}</div>
+                    <div class="mt-2"><span class="mr-3"><i class="fa fa-clock-o"></i> ${bus.dep} - ${bus.arr}</span> <span class="mr-3"><i class="fa fa-hourglass-half"></i> ${bus.duration}</span> <span class="mr-3"><i class="fa fa-star text-warning"></i> ${bus.rating}</span></div>
+                </div>
+                <div class="bus-ops">
+                    <div class="h4 mb-2">₹${bus.price}</div>
+                    <div class="mb-2">${bus.seats} Seats Left</div>
+                    <button class="btn btn-primary btn-sm">Book</button>
+                </div>
+            </div>`;
+        });
+        $('#busResults').html(html);
+    }
+    $('#busSearchForm').on('submit', function(e){
+        e.preventDefault();
+        renderBuses({
+            ac: $('#acFilter').is(':checked'),
+            nonac: $('#nonAcFilter').is(':checked'),
+            seater: $('#seaterFilter').is(':checked'),
+            sleeper: $('#sleeperFilter').is(':checked'),
+            single: $('#singleSeatFilter').is(':checked'),
+            pickup: $(".sidebar input[type='checkbox']:checked").map(function(){
+                return $(this).next('label').text();
+            }).get()
+        });
+    });
+    $('.sort-btn').on('click', function(){
+        // Sorting logic can be added here
+    });
+    // Initial load
+    $(function(){
+        populateDateSelector();
+        renderBuses();
+    });
+    // Login/Signup logic can be added here
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product - Babisha Admin</title>
+    <link rel="stylesheet" href="styles/dashboard.css">
+    <link rel="stylesheet" href="styles/admin-pages.css">
+    <link rel="stylesheet" href="styles/forms.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <span class="logo-b">B</span><span class="logo-text">abisha</span>
+                </div>
+                <p class="admin-panel-text">Admin Panel</p>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M3 10l7-7 7 7M6 10v7h8v-7" stroke="currentColor" stroke-width="2" fill="none"/>
+                    </svg>
+                    <span>Dashboard</span>
+                </a>
+                <a href="products.html" class="nav-item active">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M5 5h10v10H5V5z" stroke="currentColor" stroke-width="2" fill="none"/>
+                        <path d="M7.5 8.5l2 2 3-3" stroke="currentColor" stroke-width="2" fill="none"/>
+                    </svg>
+                    <span>Products</span>
+                </a>
+                <a href="blogs.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <rect x="4" y="4" width="12" height="12" rx="1" stroke="currentColor" stroke-width="2" fill="none"/>
+                        <path d="M7 8h6M7 11h4" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                    <span>Blogs</span>
+                </a>
+                <a href="#" class="nav-item" id="viewWebsite">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="2" fill="none"/>
+                        <path d="M6 10h8M10 6v8" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                    <span>View Website</span>
+                </a>
+            </nav>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="content-header">
+                <div class="header-left">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M8 3v14M3 8h10" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                    <h1>Add New Product</h1>
+                </div>
+                <div class="header-right">
+                    <a href="products.html" class="btn-secondary">Cancel</a>
+                    <span class="admin-label">Admin</span>
+                    <button class="logout-btn" id="logoutBtn">
+                        Logout
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" fill="none"/>
+                        </svg>
+                    </button>
+                </div>
+            </header>
+            
+            <div class="page-content">
+                <form id="productForm" class="form-container">
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label for="productName">Product Name *</label>
+                            <input type="text" id="productName" name="name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="productPrice">Price (₹) *</label>
+                            <input type="number" id="productPrice" name="price" step="0.01" min="0" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="productCategory">Category *</label>
+                            <select id="productCategory" name="category" required>
+                                <option value="">Select Category</option>
+                                <option value="dress">Dress</option>
+                                <option value="saree">Saree</option>
+                                <option value="kurta">Kurta</option>
+                                <option value="lehenga">Lehenga</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group full-width">
+                            <label for="productDescription">Description</label>
+                            <textarea id="productDescription" name="description" rows="5"></textarea>
+                        </div>
+                        
+                        <div class="form-group full-width">
+                            <label for="productImage">Product Image *</label>
+                            <input type="file" id="productImage" name="image" accept="image/*" required>
+                            <div id="imagePreview" class="image-preview"></div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="productStatus">Status</label>
+                            <select id="productStatus" name="status">
+                                <option value="active">Active</option>
+                                <option value="inactive">Inactive</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="productStock">Stock Quantity</label>
+                            <input type="number" id="productStock" name="stock" min="0" value="0">
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" onclick="window.location.href='products.html'">Cancel</button>
+                        <button type="submit" class="btn-primary">Save Product</button>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+    
+    <script src="config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/add-product.js"></script>
+</body>
+</html>

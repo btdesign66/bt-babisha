@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navio - My Routes</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6sNWP3otKrfEc5_YcCwwPVs_DaYZhKNc&libraries=places"></script>
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #1e40af;
+            --accent-color: #3b82f6;
+            --background-color: #f8fafc;
+            --card-background: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --success-color: #22c55e;
+            --danger-color: #ef4444;
+            --warning-color: #f59e0b;
+            --header-height: 64px;
+            --sidebar-width: 360px;
+            --sidebar-collapsed-width: 80px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-primary);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        /* Header Styles */
+        .app-header {
+            height: var(--header-height);
+            background-color: var(--card-background);
+            border-bottom: 1px solid var(--border-color);
+            position: fixed;
+            top: 0;
+            left: var(--sidebar-width);
+            right: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 1.5rem;
+            transition: left 0.3s cubic-bezier(.4,0,.2,1);
+        }
+
+        .app-header.expanded {
+            left: var(--sidebar-collapsed-width);
+        }
+
+        .header-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: var(--sidebar-width);
+            min-width: var(--sidebar-collapsed-width);
+            background-color: var(--card-background);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            transition: width 0.3s cubic-bezier(.4,0,.2,1);
+            position: fixed;
+            height: 100vh;
+            z-index: 1001;
+            left: 0;
+            top: 0;
+            overflow: hidden;
+        }
+
+        .sidebar.collapsed {
+            width: var(--sidebar-collapsed-width);
+        }
+
+        .sidebar-header {
+            height: var(--header-height);
+            padding: 0 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .sidebar-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.5rem;
+            margin-top: var(--header-height);
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            margin-top: var(--header-height);
+            padding: 1.5rem;
+            transition: margin-left 0.3s cubic-bezier(.4,0,.2,1);
+            min-height: calc(100vh - var(--header-height));
+        }
+
+        .main-content.expanded {
+            margin-left: var(--sidebar-collapsed-width);
+        }
+
+        /* Card Styles */
+        .card {
+            background-color: var(--card-background);
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1.5rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            background-color: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card-header h5 {
+            margin: 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* Route List Styles */
+        .route-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .route-item {
+            background: var(--card-background);
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem;
+            padding: 1rem;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .route-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary-color);
+        }
+
+        .route-item.active {
+            border-color: var(--primary-color);
+            background-color: rgba(37, 99, 235, 0.05);
+        }
+
+        .route-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .route-title {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .route-status {
+            font-size: 0.875rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-weight: 500;
+        }
+
+        .status-active {
+            background-color: rgba(34, 197, 94, 0.1);
+            color: var(--success-color);
+        }
+
+        .status-completed {
+            background-color: rgba(100, 116, 139, 0.1);
+            color: var(--text-secondary);
+        }
+
+        .status-pending {
+            background-color: rgba(245, 158, 11, 0.1);
+            color: var(--warning-color);
+        }
+
+        .route-details {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 0.75rem;
+        }
+
+        .route-stat {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .route-stat i {
+            color: var(--primary-color);
+        }
+
+        /* Map Styles */
+        .map-container {
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            height: 600px;
+            position: relative;
+        }
+
+        .map-overlay {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .map-control {
+            background: var(--card-background);
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem;
+            padding: 0.75rem;
+            display: flex;
+            gap: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Modal Styles */
+        .modal-content {
+            border-radius: 1rem;
+            border: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-header {
+            border-bottom: 1px solid var(--border-color);
+            padding: 1.25rem 1.5rem;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .modal-footer {
+            border-top: 1px solid var(--border-color);
+            padding: 1.25rem 1.5rem;
+        }
+
+        /* Form Styles */
+        .form-control, .form-select {
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem;
+            padding: 0.875rem 1rem;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Button Styles */
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+            transform: translateY(-1px);
+        }
+
+        /* Loading States */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .loading-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .loading-spinner {
+            width: 48px;
+            height: 48px;
+            border: 4px solid var(--border-color);
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            :root {
+                --sidebar-width: 100%;
+                --sidebar-collapsed-width: 0;
+            }
+
+            .app-header {
+                left: 0;
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+            }
+
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .route-details {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="app-header" id="appHeader">
+        <h1 class="header-title">My Routes</h1>
+        <div class="header-actions">
+            <div class="user-profile" id="userProfile">
+                <div class="user-avatar" id="userAvatar">U</div>
+                <div class="user-info d-none d-md-block">
+                    <div class="user-name" id="userName">User</div>
+                    <div class="user-role text-muted small">Driver</div>
+                </div>
+            </div>
+            <button class="btn btn-outline-primary" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i>
+                <span class="d-none d-md-inline">Logout</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h4>Navio</h4>
+            <button class="toggle-btn icon-only" id="sidebarToggle" title="Toggle sidebar">
+                <i class="fas fa-angle-double-left" id="sidebarToggleIcon"></i>
+            </button>
+        </div>
+        <div class="sidebar-content">
+            <div class="sidebar-section">
+                <h6>Navigation</h6>
+                <div class="d-grid gap-2">
+                    <a href="home.html" class="btn btn-outline-primary">
+                        <i class="fas fa-home"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="routes.html" class="btn btn-primary active">
+                        <i class="fas fa-route"></i>
+                        <span>My Routes</span>
+                    </a>
+                    <a href="#" class="btn btn-outline-primary">
+                        <i class="fas fa-history"></i>
+                        <span>History</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-content" id="mainContent">
+        <div class="container-fluid px-0">
+            <div class="row g-4">
+                <!-- Routes List Panel -->
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">My Routes</h5>
+                            <button class="btn btn-primary btn-sm" onclick="showNewRouteModal()">
+                                <i class="fas fa-plus"></i>
+                                <span>New Route</span>
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div class="route-list" id="routesList">
+                                <!-- Route items will be loaded here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Map Panel -->
+                <div class="col-lg-8">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">Route Map</h5>
+                            <div class="btn-group">
+                                <button class="btn btn-outline-primary btn-sm" id="toggleLiveTracking">
+                                    <i class="fas fa-location-arrow"></i>
+                                    <span>Live Tracking</span>
+                                </button>
+                                <button class="btn btn-outline-primary btn-sm" id="toggleDirections">
+                                    <i class="fas fa-directions"></i>
+                                    <span>Directions</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="map-container" id="routeMap">
+                                <div class="map-overlay">
+                                    <div class="map-control">
+                                        <button class="btn btn-sm btn-light" id="zoomIn">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-light" id="zoomOut">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-light" id="centerMap">
+                                            <i class="fas fa-crosshairs"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Route Details Card -->
+                    <div class="card mt-4" id="routeDetailsCard" style="display: none;">
+                        <div class="card-header">
+                            <h5 class="mb-0">Route Details</h5>
+                            <div class="btn-group">
+                                <button class="btn btn-outline-primary btn-sm" onclick="editRoute()">
+                                    <i class="fas fa-edit"></i>
+                                    <span>Edit</span>
+                                </button>
+                                <button class="btn btn-outline-danger btn-sm" onclick="deleteRoute()">
+                                    <i class="fas fa-trash"></i>
+                                    <span>Delete</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-4">
+                                <div class="col-md-6">
+                                    <div class="route-stat">
+                                        <i class="fas fa-road"></i>
+                                        <div>
+                                            <small class="text-muted">Total Distance</small>
+                                            <div><strong id="totalDistance">0</strong> km</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="route-stat">
+                                        <i class="fas fa-clock"></i>
+                                        <div>
+                                            <small class="text-muted">Estimated Time</small>
+                                            <div><strong id="estimatedTime">0</strong> min</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="route-stat">
+                                        <i class="fas fa-gas-pump"></i>
+                                        <div>
+                                            <small class="text-muted">Fuel Cost</small>
+                                            <div>$<strong id="fuelCost">0</strong></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="route-stat">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        <div>
+                                            <small class="text-muted">Stops</small>
+                                            <div><strong id="totalStops">0</strong></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- New Route Modal -->
+    <div class="modal fade" id="newRouteModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Create New Route</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="newRouteForm">
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="routeName" class="form-label">Route Name</label>
+                                    <input type="text" class="form-control" id="routeName" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="routeType" class="form-label">Route Type</label>
+                                    <select class="form-select" id="routeType">
+                                        <option value="delivery">Delivery</option>
+                                        <option value="pickup">Pickup</option>
+                                        <option value="service">Service</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="startLocation" class="form-label">Start Location</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="startLocation" required>
+                                        <button class="btn btn-outline-primary" type="button" id="startLocationGPS">
+                                            <i class="fas fa-location-arrow"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="endLocation" class="form-label">End Location</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="endLocation" required>
+                                        <button class="btn btn-outline-primary" type="button" id="endLocationGPS">
+                                            <i class="fas fa-location-arrow"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">Waypoints</label>
+                            <div id="waypointsList" class="list-group mb-3">
+                                <!-- Waypoints will be added here -->
+                            </div>
+                            <button type="button" class="btn btn-outline-primary" onclick="addWaypoint()">
+                                <i class="fas fa-plus"></i>
+                                <span>Add Waypoint</span>
+                            </button>
+                        </div>
+
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h6 class="mb-0">Optimization Preferences</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="form-check mb-3">
+                                            <input class="form-check-input" type="checkbox" id="isRoundTrip">
+                                            <label class="form-check-label" for="isRoundTrip">
+                                                Round Trip
+                                            </label>
+                                        </div>
+                                        <div class="form-check mb-3">
+                                            <input class="form-check-input" type="checkbox" id="considerTraffic">
+                                            <label class="form-check-label" for="considerTraffic">
+                                                Consider Traffic
+                                            </label>
+                                        </div>
+                                        <div class="form-check mb-3">
+                                            <input class="form-check-input" type="checkbox" id="avoidTolls">
+                                            <label class="form-check-label" for="avoidTolls">
+                                                Avoid Tolls
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="useHighways">
+                                            <label class="form-check-label" for="useHighways">
+                                                Use Highways
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h6 class="mb-0">Vehicle Settings</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="mb-3">
+                                            <label class="form-label">Vehicle Type</label>
+                                            <select class="form-select" id="vehicleType">
+                                                <option value="car">Car</option>
+                                                <option value="truck">Truck</option>
+                                                <option value="van">Van</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Fuel Efficiency</label>
+                                            <div class="input-group">
+                                                <input type="number" class="form-control" id="fuelEfficiency" value="10">
+                                                <span class="input-group-text">km/L</span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Optimization Priority</label>
+                                            <select class="form-select" id="optimizationPriority">
+                                                <option value="balanced">Balanced</option>
+                                                <option value="time">Time Priority</option>
+                                                <option value="distance">Distance Priority</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="routeMap" style="height: 400px; width: 100%; margin-top: 1.5rem; border-radius: 0.75rem;"></div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="createNewRoute()">
+                        <i class="fas fa-save"></i>
+                        <span>Create Route</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Initialize variables
+        let map;
+        let directionsService;
+        let directionsRenderer;
+        let markers = [];
+        let currentRoute = null;
+        let liveTracking = false;
+        let watchId = null;
+
+        // Initialize map
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('routeMap'), {
+                center: { lat: 20.5937, lng: 78.9629 }, // Center on India
+                zoom: 5,
+                mapTypeControl: true,
+                streetViewControl: true,
+                fullscreenControl: true,
+                zoomControl: true,
+                scaleControl: true
+            });
+
+            directionsService = new google.maps.DirectionsService();
+            directionsRenderer = new google.maps.DirectionsRenderer({
+                map: map,
+                suppressMarkers: true
+            });
+
+            // Initialize map controls
+            document.getElementById('zoomIn').addEventListener('click', () => {
+                map.setZoom(map.getZoom() + 1);
+            });
+
+            document.getElementById('zoomOut').addEventListener('click', () => {
+                map.setZoom(map.getZoom() - 1);
+            });
+
+            document.getElementById('centerMap').addEventListener('click', () => {
+                if (currentRoute) {
+                    directionsRenderer.setMap(map);
+                } else {
+                    map.setCenter({ lat: 20.5937, lng: 78.9629 });
+                    map.setZoom(5);
+                }
+            });
+        }
+
+        // Load routes
+        async function loadRoutes() {
+            showLoading();
+            try {
+                const response = await fetch('/api/routes');
+                const routes = await response.json();
+                
+                const routesList = document.getElementById('routesList');
+                routesList.innerHTML = '';
+
+                routes.forEach(route => {
+                    const routeElement = createRouteElement(route);
+                    routesList.appendChild(routeElement);
+                });
+            } catch (error) {
+                console.error('Error loading routes:', error);
+                alert('Failed to load routes. Please try again.');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        // Create route element
+        function createRouteElement(route) {
+            const div = document.createElement('div');
+            div.className = 'route-item';
+            div.innerHTML = `
+                <div class="route-header">
+                    <h6 class="route-title">${route.name}</h6>
+                    <span class="route-status status-${route.status.toLowerCase()}">${route.status}</span>
+                </div>
+                <div class="route-details">
+                    <div class="route-stat">
+                        <i class="fas fa-road"></i>
+                        <span>${route.distance} km</span>
+                    </div>
+                    <div class="route-stat">
+                        <i class="fas fa-clock"></i>
+                        <span>${route.duration} min</span>
+                    </div>
+                    <div class="route-stat">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>${route.stops} stops</span>
+                    </div>
+                </div>
+            `;
+
+            div.addEventListener('click', () => selectRoute(route));
+            return div;
+        }
+
+        // Select route
+        function selectRoute(route) {
+            currentRoute = route;
+            
+            // Update UI
+            document.querySelectorAll('.route-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+
+            // Show route details
+            document.getElementById('routeDetailsCard').style.display = 'block';
+            document.getElementById('totalDistance').textContent = route.distance;
+            document.getElementById('estimatedTime').textContent = route.duration;
+            document.getElementById('totalStops').textContent = route.stops;
+            document.getElementById('fuelCost').textContent = calculateFuelCost(route.distance);
+
+            // Display route on map
+            displayRoute(route);
+        }
+
+        // Display route on map
+        function displayRoute(route) {
+            const request = {
+                origin: route.start,
+                destination: route.end,
+                waypoints: route.waypoints.map(wp => ({
+                    location: wp,
+                    stopover: true
+                })),
+                optimizeWaypoints: true,
+                travelMode: google.maps.TravelMode.DRIVING
+            };
+
+            directionsService.route(request, (result, status) => {
+                if (status === 'OK') {
+                    directionsRenderer.setDirections(result);
+                    
+                    // Add markers for start, waypoints, and end
+                    addRouteMarkers(result);
+                } else {
+                    alert('Failed to display route: ' + status);
+                }
+            });
+        }
+
+        // Add route markers
+        function addRouteMarkers(result) {
+            // Clear existing markers
+            markers.forEach(marker => marker.setMap(null));
+            markers = [];
+
+            // Add start marker
+            const startMarker = new google.maps.Marker({
+                position: result.routes[0].legs[0].start_location,
+                map: map,
+                icon: {
+                    path: google.maps.SymbolPath.CIRCLE,
+                    scale: 10,
+                    fillColor: '#4CAF50',
+                    fillOpacity: 1,
+                    strokeColor: '#FFFFFF',
+                    strokeWeight: 2
+                },
+                label: {
+                    text: 'S',
+                    color: '#FFFFFF',
+                    fontSize: '12px',
+                    fontWeight: 'bold'
+                }
+            });
+            markers.push(startMarker);
+
+            // Add waypoint markers
+            result.routes[0].legs.forEach((leg, index) => {
+                if (index < result.routes[0].legs.length - 1) {
+                    const marker = new google.maps.Marker({
+                        position: leg.end_location,
+                        map: map,
+                        icon: {
+                            path: google.maps.SymbolPath.CIRCLE,
+                            scale: 8,
+                            fillColor: '#FF0000',
+                            fillOpacity: 1,
+                            strokeColor: '#FFFFFF',
+                            strokeWeight: 2
+                        },
+                        label: {
+                            text: (index + 1).toString(),
+                            color: '#FFFFFF',
+                            fontSize: '12px',
+                            fontWeight: 'bold'
+                        }
+                    });
+                    markers.push(marker);
+                }
+            });
+
+            // Add end marker if not round trip
+            if (!document.getElementById('isRoundTrip').checked) {
+                const endMarker = new google.maps.Marker({
+                    position: result.routes[0].legs[result.routes[0].legs.length - 1].end_location,
+                    map: map,
+                    icon: {
+                        path: google.maps.SymbolPath.CIRCLE,
+                        scale: 10,
+                        fillColor: '#F44336',
+                        fillOpacity: 1,
+                        strokeColor: '#FFFFFF',
+                        strokeWeight: 2
+                    },
+                    label: {
+                        text: 'E',
+                        color: '#FFFFFF',
+                        fontSize: '12px',
+                        fontWeight: 'bold'
+                    }
+                });
+                markers.push(endMarker);
+            }
+        }
+
+        // Toggle live tracking
+        function toggleLiveTracking() {
+            const button = document.getElementById('toggleLiveTracking');
+            if (!liveTracking) {
+                startLiveTracking();
+                button.classList.add('active');
+            } else {
+                stopLiveTracking();
+                button.classList.remove('active');
+            }
+        }
+
+        // Start live tracking
+        function startLiveTracking() {
+            if ("geolocation" in navigator) {
+                liveTracking = true;
+                watchId = navigator.geolocation.watchPosition(
+                    position => {
+                        const { latitude, longitude } = position.coords;
+                        updateCurrentLocation(latitude, longitude);
+                    },
+                    error => {
+                        console.error('Error getting location:', error);
+                        alert('Error getting your location. Please check your GPS settings.');
+                        stopLiveTracking();
+                    },
+                    {
+                        enableHighAccuracy: true,
+                        maximumAge: 0,
+                        timeout: 5000
+                    }
+                );
+            } else {
+                alert('Geolocation is not supported by your browser');
+            }
+        }
+
+        // Stop live tracking
+        function stopLiveTracking() {
+            if (watchId) {
+                navigator.geolocation.clearWatch(watchId);
+                watchId = null;
+            }
+            liveTracking = false;
+            if (currentLocationMarker) {
+                currentLocationMarker.setMap(null);
+                currentLocationMarker = null;
+            }
+        }
+
+        // Update current location
+        function updateCurrentLocation(lat, lng) {
+            if (currentLocationMarker) {
+                currentLocationMarker.setPosition({ lat, lng });
+            } else {
+                currentLocationMarker = new google.maps.Marker({
+                    position: { lat, lng },
+                    map: map,
+                    icon: {
+                        path: google.maps.SymbolPath.CIRCLE,
+                        scale: 8,
+                        fillColor: '#2563eb',
+                        fillOpacity: 1,
+                        strokeColor: '#FFFFFF',
+                        strokeWeight: 2
+                    }
+                });
+            }
+            map.setCenter({ lat, lng });
+        }
+
+        // Calculate fuel cost
+        function calculateFuelCost(distance) {
+            const fuelEfficiency = parseFloat(document.getElementById('fuelEfficiency').value);
+            const fuelPrice = 1.5; // $ per liter
+            return ((distance / fuelEfficiency) * fuelPrice).toFixed(2);
+        }
+
+        // Show loading overlay
+        function showLoading() {
+            document.getElementById('loadingOverlay').classList.add('active');
+        }
+
+        // Hide loading overlay
+        function hideLoading() {
+            document.getElementById('loadingOverlay').classList.remove('active');
+        }
+
+        // Initialize sidebar
+        function initSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+            const toggle = document.getElementById('sidebarToggle');
+            const toggleIcon = document.getElementById('sidebarToggleIcon');
+
+            toggle.addEventListener('click', function() {
+                sidebar.classList.toggle('collapsed');
+                mainContent.classList.toggle('expanded');
+                document.getElementById('appHeader').classList.toggle('expanded');
+                
+                if (sidebar.classList.contains('collapsed')) {
+                    toggleIcon.classList.remove('fa-angle-double-left');
+                    toggleIcon.classList.add('fa-angle-double-right');
+                } else {
+                    toggleIcon.classList.remove('fa-angle-double-right');
+                    toggleIcon.classList.add('fa-angle-double-left');
+                }
+            });
+        }
+
+        // Update user profile
+        function updateUserProfile() {
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            const avatar = document.getElementById('userAvatar');
+            const name = document.getElementById('userName');
+            
+            if (user.name) {
+                avatar.textContent = user.name.charAt(0).toUpperCase();
+                name.textContent = user.name;
+            }
+        }
+
+        // Initialize page
+        window.onload = function() {
+            // Check authentication
+            if (!handleAuthError()) return;
+            
+            // Initialize components
+            initMap();
+            initSidebar();
+            loadRoutes();
+            updateUserProfile();
+            
+            // Add event listeners
+            document.getElementById('toggleLiveTracking').addEventListener('click', toggleLiveTracking);
+            document.getElementById('logoutBtn').addEventListener('click', handleLogout);
+            
+            // Add user profile click handler
+            const userProfile = document.getElementById('userProfile');
+            if (userProfile) {
+                userProfile.addEventListener('click', function() {
+                    // Add user profile dropdown or modal here
+                    alert('User profile clicked');
+                });
+            }
+        };
+    </script>
+</body>
+</html> 
