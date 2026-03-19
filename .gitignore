@@ -10,10 +10,6 @@ package-lock.json
 # Uploads and generated files
 uploads/
 public/results/
-*.jpg
-*.jpeg
-*.png
-*.webp
 
 # Logs
 logs/
@@ -30,6 +26,16 @@ Thumbs.db
 *.swp
 *.swo
 
+# Cursor / editor state
+.codeium/
+.cursor/
+.p2/
+AppData/
+ion/
+
 # Temporary files
 tmp/
 temp/
+
+# Large, non-runtime attachments
+*.docx
