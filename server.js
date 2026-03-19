@@ -88,11 +88,24 @@ async function saveTryOnToSupabase(buffer, mimeType, ext, metadata = {}) {
         throw new Error(`Supabase upload failed: ${uploadError.message}`);
     }
 
-    const { data: publicUrlData } = client.storage
-        .from(SUPABASE_TRYON_BUCKET)
-        .getPublicUrl(objectPath);
+    let imageUrl = null;
+    try {
+        const { data: signedData, error: signedError } = await client.storage
+            .from(SUPABASE_TRYON_BUCKET)
+            .createSignedUrl(objectPath, 60 * 60 * 24 * 7); // 7 days
+        if (!signedError && signedData?.signedUrl) {
+            imageUrl = signedData.signedUrl;
+        }
+    } catch (e) {
+        // Ignore and try public URL fallback below.
+    }
 
-    const imageUrl = publicUrlData?.publicUrl || null;
+    if (!imageUrl) {
+        const { data: publicUrlData } = client.storage
+            .from(SUPABASE_TRYON_BUCKET)
+            .getPublicUrl(objectPath);
+        imageUrl = publicUrlData?.publicUrl || null;
+    }
 
     // Best-effort metadata insert. If table does not exist, skip without failing generation.
     try {
@@ -677,9 +690,11 @@ async function generateWithGemini(userPhotoPath, productImagePath, productType, 
     }
 
     await fs.writeFile(resultPath, output.buffer);
+    const dataUrl = `data:${output.mimeType};base64,${output.buffer.toString('base64')}`;
+
     return {
         imagePath: resultPath,
-        imageUrl: remote?.imageUrl || `/results/${path.basename(resultPath)}`
+        imageUrl: remote?.imageUrl || (isVercel ? dataUrl : `/results/${path.basename(resultPath)}`)
     };
 }
 
