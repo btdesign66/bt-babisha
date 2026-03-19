@@ -314,12 +314,26 @@ async function generateTryOn() {
         }
         
         if (!response.ok) {
+            let detailedMessage = '';
             try {
                 const errorData = await response.json();
-                throw new Error(errorData.message || 'Failed to generate try-on image');
+                detailedMessage = errorData?.message || '';
             } catch (parseError) {
-                throw new Error(`Server error: ${response.status} ${response.statusText}`);
+                // If response is not JSON, ignore parse error and use fallback text below.
             }
+
+            if (!detailedMessage) {
+                try {
+                    const rawText = await response.text();
+                    detailedMessage = rawText ? rawText.slice(0, 300) : '';
+                } catch (readError) {
+                    // Ignore text read failure and use generic fallback.
+                }
+            }
+
+            throw new Error(
+                detailedMessage || `Server error: ${response.status} ${response.statusText}`
+            );
         }
         
         const result = await response.json();
