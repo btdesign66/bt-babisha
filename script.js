@@ -5581,31 +5581,6 @@ function orderNowFromDetailPage() {
 }
 
 window.orderNowFromDetailPage = orderNowFromDetailPage;
-
-function payNowFromDetailPage() {
-    // Get product from currentProductId and redirect to payment page with amount prefilled
-    const urlParams = new URLSearchParams(window.location.search);
-    const productId = currentProductId || parseInt(urlParams.get('id'));
-    if (!productId) {
-        alert('Product information not available. Please refresh the page.');
-        return;
-    }
-
-    const allFabrics = fabricData && fabricData.length > 0 ? fabricData : (sampleFabrics || []);
-    const fabric = allFabrics.find(f => f.id === productId);
-    if (!fabric) {
-        alert('Sorry, there was an error finding this product. Please try again.');
-        return;
-    }
-
-    const qp = new URLSearchParams();
-    qp.set('amount', String(fabric.price));
-    qp.set('productId', String(fabric.id));
-    qp.set('productName', fabric.name);
-    window.location.href = `payment.html?${qp.toString()}`;
-}
-
-window.payNowFromDetailPage = payNowFromDetailPage;
 window.testOrderNow = testOrderNow;
 window.testClick = testClick;
 window.testWhatsApp = testWhatsApp;
