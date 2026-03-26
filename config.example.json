@@ -1,0 +1,8 @@
+{
+  "MERCHANT_ID": "YOUR_MERCHANT_ID",
+  "BASE_URL": "https://smartgateway.hdfc.bank.in",
+  "RESELLER_ID": "hdfc_reseller",
+  "ENABLE_LOGGING": true,
+  "PAYMENT_PAGE_CLIENT_ID": "your_client_id_if_applicable"
+}
+

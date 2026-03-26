@@ -1,0 +1,7 @@
+{
+  "MERCHANT_ID": "SG4720",
+  "ENABLE_LOGGING": false,
+  "PAYMENT_PAGE_CLIENT_ID": "hdfcmaster",
+  "BASE_URL": "https://smartgateway.hdfcuat.bank.in",
+  "RESELLER_ID": "hdfc_reseller"
+}
