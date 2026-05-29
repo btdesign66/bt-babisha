@@ -20,6 +20,7 @@ create table if not exists public.payment_orders (
   customer_phone text null,
   customer_name text null,
   customer_location text null,
+  product_name text null,
 
   status text null,
   status_id integer null,

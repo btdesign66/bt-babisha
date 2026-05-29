@@ -395,6 +395,7 @@
             customerId: ensureCustomerId(),
             description: `BABISHA Order - ${orderData.productName}`,
             productId: orderData.productId,
+            productName: orderData.productName,
             returnUrl: `${window.location.origin}/api/payments/hdfc/return`,
             customerName,
             customerEmail,

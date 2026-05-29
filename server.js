@@ -126,6 +126,76 @@ function pickFirstValue(...values) {
     return '';
 }
 
+function buildPaymentAuditRaw(payload = {}) {
+    if (payload.raw !== undefined && payload.raw !== null && typeof payload.raw === 'object') {
+        return payload.raw;
+    }
+    return {
+        stage: pickFirstValue(payload.stage) || 'snapshot',
+        capturedAt: new Date().toISOString(),
+        payload
+    };
+}
+
+function mergePaymentAuditRaw(existingRaw, incomingRaw) {
+    const base =
+        existingRaw && typeof existingRaw === 'object' && !Array.isArray(existingRaw)
+            ? existingRaw
+            : {};
+    const addition =
+        incomingRaw && typeof incomingRaw === 'object' && !Array.isArray(incomingRaw)
+            ? incomingRaw
+            : { event: incomingRaw };
+
+    const stages = Array.isArray(base.stages) ? [...base.stages] : [];
+    if (addition.stage) {
+        stages.push({
+            stage: addition.stage,
+            at: new Date().toISOString(),
+            ...(addition.request ? { request: addition.request } : {}),
+            ...(addition.response ? { response: addition.response } : {}),
+            ...(addition.payload ? { gatewayPayload: addition.payload } : {})
+        });
+    }
+
+    return {
+        ...base,
+        ...addition,
+        stages,
+        lastUpdated: new Date().toISOString()
+    };
+}
+
+function mergePaymentFields(existing, incoming) {
+    if (!existing) return incoming;
+
+    const merged = { ...incoming };
+    const preserveIfEmpty = [
+        'customer_email',
+        'customer_phone',
+        'customer_name',
+        'customer_location',
+        'customer_id',
+        'merchant_id',
+        'product_id',
+        'product_name',
+        'amount',
+        'currency',
+        'return_url'
+    ];
+
+    for (const key of preserveIfEmpty) {
+        const newVal = merged[key];
+        const oldVal = existing[key];
+        if ((!newVal || String(newVal).trim() === '') && oldVal != null && String(oldVal).trim() !== '') {
+            merged[key] = oldVal;
+        }
+    }
+
+    merged.raw = mergePaymentAuditRaw(existing.raw, incoming.raw);
+    return merged;
+}
+
 function buildPaymentRecord(payload = {}) {
     const rawStatus = pickFirstValue(
         payload.status,
@@ -152,7 +222,14 @@ function buildPaymentRecord(payload = {}) {
         customer_email: pickFirstValue(payload.customer_email, payload.customerEmail),
         customer_phone: pickFirstValue(payload.customer_phone, payload.customerPhone),
         customer_name: pickFirstValue(payload.customer_name, payload.customerName),
-        customer_location: pickFirstValue(payload.customer_location, payload.customerAddress, payload.customerLocation),
+        customer_location: pickFirstValue(
+            payload.customer_location,
+            payload.customerAddress,
+            payload.customerLocation,
+            payload.delivery_address,
+            payload.deliveryAddress
+        ),
+        product_name: pickFirstValue(payload.product_name, payload.productName),
         status,
         status_id: Number.isFinite(parsedStatusId) ? parsedStatusId : null,
         amount: Number.isFinite(parsedAmount) ? parsedAmount.toFixed(2) : null,
@@ -169,8 +246,28 @@ function buildPaymentRecord(payload = {}) {
         refunded: refundedValue ? ['true', '1', 'yes'].includes(String(refundedValue).toLowerCase()) : null,
         amount_refunded: Number.isFinite(Number(payload.amount_refunded)) ? Number(payload.amount_refunded).toFixed(2) : null,
         effective_amount: Number.isFinite(Number(payload.effective_amount)) ? Number(payload.effective_amount).toFixed(2) : null,
-        raw: payload
+        raw: buildPaymentAuditRaw(payload)
     };
+}
+
+function stripMissingPaymentColumns(record, errorMessage = '') {
+    const msg = String(errorMessage).toLowerCase();
+    const stripped = { ...record };
+    const optionalColumns = [
+        'product_name',
+        'customer_location',
+        'customer_name',
+        'customer_email',
+        'customer_phone'
+    ];
+
+    for (const column of optionalColumns) {
+        if (msg.includes(column)) {
+            delete stripped[column];
+        }
+    }
+
+    return stripped;
 }
 
 async function upsertPaymentOrder(payload = {}) {
@@ -181,35 +278,43 @@ async function upsertPaymentOrder(payload = {}) {
         );
     }
 
-    const record = buildPaymentRecord(payload);
+    let record = buildPaymentRecord(payload);
     if (!record.order_id) {
         throw new Error('Cannot save payment order without order_id.');
     }
 
-    // Attempt upsert with all columns
-    const { data, error } = await client
+    const existing = await fetchPaymentOrder(record.order_id);
+    if (existing) {
+        record = mergePaymentFields(existing, record);
+    }
+
+    let { data, error } = await client
         .from(SUPABASE_PAYMENTS_TABLE)
         .upsert(record, { onConflict: 'order_id' })
         .select()
         .single();
-        
+
     if (error) {
-        // If upsert fails (e.g. columns not found in cache), retry without customer_name and customer_location columns
-        console.warn(`Initial upsert failed: ${error.message}. Retrying fallback without custom fields.`);
-        const fallbackRecord = { ...record };
-        delete fallbackRecord.customer_name;
-        delete fallbackRecord.customer_location;
-        const { data: fallbackData, error: fallbackError } = await client
-            .from(SUPABASE_PAYMENTS_TABLE)
-            .upsert(fallbackRecord, { onConflict: 'order_id' })
-            .select()
-            .single();
-        if (fallbackError) {
-            throw new Error(`Supabase payment save failed (fallback): ${fallbackError.message}`);
+        const fallbackRecord = stripMissingPaymentColumns(record, error.message);
+        const removedColumns = Object.keys(record).filter((key) => !(key in fallbackRecord));
+        if (removedColumns.length > 0) {
+            console.warn(
+                `Payment upsert retry without columns [${removedColumns.join(', ')}]: ${error.message}`
+            );
+            ({ data, error } = await client
+                .from(SUPABASE_PAYMENTS_TABLE)
+                .upsert(fallbackRecord, { onConflict: 'order_id' })
+                .select()
+                .single());
         }
-        return fallbackData;
     }
 
+    if (error) {
+        console.error('Supabase payment save failed:', error.message, { order_id: record.order_id });
+        throw new Error(`Supabase payment save failed: ${error.message}`);
+    }
+
+    console.log('Payment order saved:', record.order_id, record.status);
     return data;
 }
 
@@ -500,40 +605,38 @@ app.post('/api/payments/hdfc/create-order', async (req, res) => {
 
         const normalizedAuth = auth.startsWith('Basic ') ? auth : `Basic ${auth}`;
 
-        try {
-            await upsertPaymentOrder({
-                order_id: orderId,
-                merchant_id: merchantId,
-                customer_id: customerId,
-                customer_email: body.customerEmail || '',
-                customer_phone: body.customerPhone || '',
-                customer_name: body.customerName || '',
-                customer_location: body.customerAddress || '',
-                status: 'initiated',
-                amount: amountFixed,
-                currency: 'INR',
-                return_url: returnUrl,
-                product_id: body.productId || '',
-                raw: {
-                    stage: 'initiated',
-                    request: {
-                        amount: amountFixed,
-                        currency: 'INR',
-                        customerId,
-                        customerEmail: body.customerEmail || null,
-                        customerPhone: body.customerPhone || null,
-                        customerName: body.customerName || null,
-                        customerAddress: body.customerAddress || null,
-                        customerLocation: body.customerAddress || null,
-                        description,
-                        productId: body.productId || null,
-                        returnUrl
-                    }
+        await upsertPaymentOrder({
+            order_id: orderId,
+            merchant_id: merchantId,
+            customer_id: customerId,
+            customer_email: body.customerEmail || '',
+            customer_phone: body.customerPhone || '',
+            customer_name: body.customerName || '',
+            customer_location: body.customerAddress || '',
+            product_name: body.productName || description || '',
+            status: 'initiated',
+            amount: amountFixed,
+            currency: 'INR',
+            return_url: returnUrl,
+            product_id: body.productId || '',
+            raw: {
+                stage: 'initiated',
+                request: {
+                    amount: amountFixed,
+                    currency: 'INR',
+                    customerId,
+                    customerEmail: body.customerEmail || null,
+                    customerPhone: body.customerPhone || null,
+                    customerName: body.customerName || null,
+                    customerAddress: body.customerAddress || null,
+                    customerLocation: body.customerAddress || null,
+                    productName: body.productName || null,
+                    description,
+                    productId: body.productId || null,
+                    returnUrl
                 }
-            });
-        } catch (saveError) {
-            console.warn('Supabase payment log failed (continuing to HDFC):', saveError.message);
-        }
+            }
+        });
 
         const result = await axios.post(url, form.toString(), {
             headers: {
@@ -564,6 +667,7 @@ app.post('/api/payments/hdfc/create-order', async (req, res) => {
                 customer_phone: body.customerPhone || '',
                 customer_name: body.customerName || '',
                 customer_location: body.customerAddress || '',
+                product_name: body.productName || description || '',
                 status: pickFirstValue(data.status, 'created'),
                 status_id: data.status_id || null,
                 amount: amountFixed,
@@ -664,8 +768,23 @@ async function handleHdfcReturn(req, res) {
         const orderId = pickFirstValue(payload.order_id, payload.orderId);
         if (orderId) {
             await upsertPaymentOrder({
-                ...payload,
                 order_id: orderId,
+                sg_internal_id: pickFirstValue(payload.sg_internal_id, payload.id),
+                status: pickFirstValue(
+                    payload.status,
+                    payload.order_status,
+                    payload.payment_status,
+                    payload.txn_status
+                ),
+                status_id: payload.status_id || payload.order_status_id || null,
+                amount: pickFirstValue(payload.amount, payload.effective_amount),
+                currency: pickFirstValue(payload.currency, payload.order_currency),
+                txn_id: pickFirstValue(payload.txn_id, payload.txnId),
+                txn_uuid: pickFirstValue(payload.txn_uuid, payload.txnUuid),
+                payment_method_type: pickFirstValue(payload.payment_method_type),
+                payment_method: pickFirstValue(payload.payment_method),
+                gateway_id: payload.gateway_id || null,
+                gateway_reference_id: pickFirstValue(payload.gateway_reference_id),
                 raw: {
                     stage: 'return',
                     payload
