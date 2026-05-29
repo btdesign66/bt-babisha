@@ -413,6 +413,10 @@
               errMsg = typeof data.error === 'string' ? data.error : (data.error.message || JSON.stringify(data.error));
             }
           }
+          if (errMsg === "Unable to start the payment right now." && response.status) {
+            errMsg += ` (HTTP ${response.status})`;
+          }
+          console.error("Payment create-order failed:", response.status, data);
           showStatus(errMsg, "error");
           payButtonEl.disabled = false;
           return;

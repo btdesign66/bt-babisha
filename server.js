@@ -40,11 +40,16 @@ const RESULT_DIR = isVercel
     : path.join(__dirname, 'public', 'results');
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 const IMAGE_RETENTION_HOURS = 24;
-const SUPABASE_URL = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+const SUPABASE_URL =
+    process.env.SUPABASE_URL ||
+    process.env.NEXT_PUBLIC_SUPABASE_URL ||
+    process.env.VITE_SUPABASE_URL ||
+    '';
 const SUPABASE_SERVER_KEY =
     process.env.SUPABASE_SERVICE_ROLE_KEY ||
     process.env.SUPABASE_ANON_KEY ||
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+    process.env.VITE_SUPABASE_PUBLISHABLE_KEY ||
     '';
 const SUPABASE_TRYON_BUCKET = process.env.SUPABASE_TRYON_BUCKET || 'tryon-results';
 const SUPABASE_PAYMENTS_TABLE = process.env.SUPABASE_PAYMENTS_TABLE || 'payment_orders';
@@ -487,36 +492,40 @@ app.post('/api/payments/hdfc/create-order', async (req, res) => {
 
         const normalizedAuth = auth.startsWith('Basic ') ? auth : `Basic ${auth}`;
 
-        await upsertPaymentOrder({
-            order_id: orderId,
-            merchant_id: merchantId,
-            customer_id: customerId,
-            customer_email: body.customerEmail || '',
-            customer_phone: body.customerPhone || '',
-            customer_name: body.customerName || '',
-            customer_location: body.customerAddress || '',
-            status: 'initiated',
-            amount: amountFixed,
-            currency: 'INR',
-            return_url: returnUrl,
-            product_id: body.productId || '',
-            raw: {
-                stage: 'initiated',
-                request: {
-                    amount: amountFixed,
-                    currency: 'INR',
-                    customerId,
-                    customerEmail: body.customerEmail || null,
-                    customerPhone: body.customerPhone || null,
-                    customerName: body.customerName || null,
-                    customerAddress: body.customerAddress || null,
-                    customerLocation: body.customerAddress || null,
-                    description,
-                    productId: body.productId || null,
-                    returnUrl
+        try {
+            await upsertPaymentOrder({
+                order_id: orderId,
+                merchant_id: merchantId,
+                customer_id: customerId,
+                customer_email: body.customerEmail || '',
+                customer_phone: body.customerPhone || '',
+                customer_name: body.customerName || '',
+                customer_location: body.customerAddress || '',
+                status: 'initiated',
+                amount: amountFixed,
+                currency: 'INR',
+                return_url: returnUrl,
+                product_id: body.productId || '',
+                raw: {
+                    stage: 'initiated',
+                    request: {
+                        amount: amountFixed,
+                        currency: 'INR',
+                        customerId,
+                        customerEmail: body.customerEmail || null,
+                        customerPhone: body.customerPhone || null,
+                        customerName: body.customerName || null,
+                        customerAddress: body.customerAddress || null,
+                        customerLocation: body.customerAddress || null,
+                        description,
+                        productId: body.productId || null,
+                        returnUrl
+                    }
                 }
-            }
-        });
+            });
+        } catch (saveError) {
+            console.warn('Supabase payment log failed (continuing to HDFC):', saveError.message);
+        }
 
         const result = await axios.post(url, form.toString(), {
             headers: {
