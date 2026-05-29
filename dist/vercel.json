@@ -1,20 +1,5 @@
 {
   "version": 2,
-  "outputDirectory": "dist",
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/api/[...path].js"
-    },
-    {
-      "src": "/((?!api/).*\\.(html|css|js|png|jpg|jpeg|gif|svg|ico|pdf|json))",
-      "dest": "/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
-    }
-  ],
   "functions": {
     "api/[...path].js": {
       "maxDuration": 60

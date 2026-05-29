@@ -8,4 +8,4 @@ process.env.VERCEL_ENV = process.env.VERCEL_ENV || 'production';
 
 const app = require('../server');
 
-module.exports = app;
+module.exports = (req, res) => app(req, res);
