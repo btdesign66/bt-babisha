@@ -63,6 +63,24 @@ const SUPABASE_TRYON_BUCKET = process.env.SUPABASE_TRYON_BUCKET || 'tryon-result
 const SUPABASE_PAYMENTS_TABLE = process.env.SUPABASE_PAYMENTS_TABLE || 'payment_orders';
 let supabaseAdmin = null;
 
+const {
+    pickFirstValue,
+    mapGatewayStatusToDb,
+    isPaymentSuccessful,
+    resolvePositiveAmount,
+    loadHdfcConfig,
+    buildHdfcHeaders,
+    fetchHdfcOrderStatus,
+    mapGatewayResponseToPaymentRecord
+} = require('./lib/hdfc-smartgateway');
+
+const {
+    getSupabaseAdmin: getPaymentSupabaseAdmin,
+    fetchPaymentOrder,
+    upsertPaymentOrder,
+    verifyAndPersistPaymentFromGateway
+} = require('./lib/payment-orders');
+
 // Ensure directories exist (skip on Vercel - uses /tmp)
 async function ensureDirectories() {
     try {
@@ -79,261 +97,14 @@ async function ensureDirectories() {
 ensureDirectories();
 
 function getSupabaseAdmin() {
+    const paymentClient = getPaymentSupabaseAdmin();
+    if (paymentClient) return paymentClient;
     if (supabaseAdmin) return supabaseAdmin;
     if (!SUPABASE_URL || !SUPABASE_SERVER_KEY) return null;
     supabaseAdmin = createClient(SUPABASE_URL, SUPABASE_SERVER_KEY, {
         auth: { persistSession: false }
     });
     return supabaseAdmin;
-}
-
-function normalizePaymentStatus(input) {
-    const value = String(input || '').trim().toLowerCase();
-    if (!value) return 'pending';
-
-    if (
-        value.includes('success') ||
-        value.includes('charged') ||
-        value.includes('captured') ||
-        value === 'ok'
-    ) {
-        return 'success';
-    }
-
-    if (
-        value.includes('fail') ||
-        value.includes('declin') ||
-        value.includes('cancel') ||
-        value.includes('abort') ||
-        value.includes('error')
-    ) {
-        return 'failed';
-    }
-
-    if (value.includes('pending') || value.includes('created') || value.includes('initiated')) {
-        return 'pending';
-    }
-
-    return value;
-}
-
-function pickFirstValue(...values) {
-    for (const value of values) {
-        if (value === undefined || value === null) continue;
-        const trimmed = String(value).trim();
-        if (trimmed) return trimmed;
-    }
-    return '';
-}
-
-function buildPaymentAuditRaw(payload = {}) {
-    if (payload.raw !== undefined && payload.raw !== null && typeof payload.raw === 'object') {
-        return payload.raw;
-    }
-    return {
-        stage: pickFirstValue(payload.stage) || 'snapshot',
-        capturedAt: new Date().toISOString(),
-        payload
-    };
-}
-
-function mergePaymentAuditRaw(existingRaw, incomingRaw) {
-    const base =
-        existingRaw && typeof existingRaw === 'object' && !Array.isArray(existingRaw)
-            ? existingRaw
-            : {};
-    const addition =
-        incomingRaw && typeof incomingRaw === 'object' && !Array.isArray(incomingRaw)
-            ? incomingRaw
-            : { event: incomingRaw };
-
-    const stages = Array.isArray(base.stages) ? [...base.stages] : [];
-    if (addition.stage) {
-        stages.push({
-            stage: addition.stage,
-            at: new Date().toISOString(),
-            ...(addition.request ? { request: addition.request } : {}),
-            ...(addition.response ? { response: addition.response } : {}),
-            ...(addition.payload ? { gatewayPayload: addition.payload } : {})
-        });
-    }
-
-    return {
-        ...base,
-        ...addition,
-        stages,
-        lastUpdated: new Date().toISOString()
-    };
-}
-
-function mergePaymentFields(existing, incoming) {
-    if (!existing) return incoming;
-
-    const merged = { ...incoming };
-    const preserveIfEmpty = [
-        'customer_email',
-        'customer_phone',
-        'customer_name',
-        'customer_location',
-        'customer_id',
-        'merchant_id',
-        'product_id',
-        'product_name',
-        'amount',
-        'currency',
-        'return_url'
-    ];
-
-    for (const key of preserveIfEmpty) {
-        const newVal = merged[key];
-        const oldVal = existing[key];
-        if ((!newVal || String(newVal).trim() === '') && oldVal != null && String(oldVal).trim() !== '') {
-            merged[key] = oldVal;
-        }
-    }
-
-    merged.raw = mergePaymentAuditRaw(existing.raw, incoming.raw);
-    return merged;
-}
-
-function buildPaymentRecord(payload = {}) {
-    const rawStatus = pickFirstValue(
-        payload.status,
-        payload.order_status,
-        payload.txn_status,
-        payload.payment_status,
-        payload.status_description
-    );
-
-    const status = normalizePaymentStatus(rawStatus);
-    const amountValue = pickFirstValue(payload.amount, payload.order_amount, payload.effective_amount);
-    const parsedAmount = Number(amountValue);
-    const statusIdValue = pickFirstValue(payload.status_id, payload.order_status_id);
-    const parsedStatusId = statusIdValue === '' ? null : Number(statusIdValue);
-    const gatewayIdValue = pickFirstValue(payload.gateway_id);
-    const parsedGatewayId = gatewayIdValue === '' ? null : Number(gatewayIdValue);
-    const refundedValue = pickFirstValue(payload.refunded);
-
-    return {
-        order_id: pickFirstValue(payload.order_id, payload.orderId),
-        sg_internal_id: pickFirstValue(payload.sg_internal_id, payload.sgInternalId, payload.internal_order_id, payload.internalOrderId),
-        merchant_id: pickFirstValue(payload.merchant_id, payload.merchantId),
-        customer_id: pickFirstValue(payload.customer_id, payload.customerId),
-        customer_email: pickFirstValue(payload.customer_email, payload.customerEmail),
-        customer_phone: pickFirstValue(payload.customer_phone, payload.customerPhone),
-        customer_name: pickFirstValue(payload.customer_name, payload.customerName),
-        customer_location: pickFirstValue(
-            payload.customer_location,
-            payload.customerAddress,
-            payload.customerLocation,
-            payload.delivery_address,
-            payload.deliveryAddress
-        ),
-        product_name: pickFirstValue(payload.product_name, payload.productName),
-        status,
-        status_id: Number.isFinite(parsedStatusId) ? parsedStatusId : null,
-        amount: Number.isFinite(parsedAmount) ? parsedAmount.toFixed(2) : null,
-        currency: pickFirstValue(payload.currency, payload.order_currency) || 'INR',
-        txn_id: pickFirstValue(payload.txn_id, payload.txnId),
-        txn_uuid: pickFirstValue(payload.txn_uuid, payload.txnUuid),
-        payment_method_type: pickFirstValue(payload.payment_method_type, payload.paymentMethodType),
-        payment_method: pickFirstValue(payload.payment_method, payload.paymentMethod),
-        auth_type: pickFirstValue(payload.auth_type, payload.authType),
-        return_url: pickFirstValue(payload.return_url, payload.returnUrl),
-        product_id: pickFirstValue(payload.product_id, payload.productId),
-        gateway_id: Number.isFinite(parsedGatewayId) ? parsedGatewayId : null,
-        gateway_reference_id: pickFirstValue(payload.gateway_reference_id, payload.gatewayReferenceId),
-        refunded: refundedValue ? ['true', '1', 'yes'].includes(String(refundedValue).toLowerCase()) : null,
-        amount_refunded: Number.isFinite(Number(payload.amount_refunded)) ? Number(payload.amount_refunded).toFixed(2) : null,
-        effective_amount: Number.isFinite(Number(payload.effective_amount)) ? Number(payload.effective_amount).toFixed(2) : null,
-        raw: buildPaymentAuditRaw(payload)
-    };
-}
-
-function stripMissingPaymentColumns(record, errorMessage = '') {
-    const msg = String(errorMessage).toLowerCase();
-    const stripped = { ...record };
-    const optionalColumns = [
-        'product_name',
-        'customer_location',
-        'customer_name',
-        'customer_email',
-        'customer_phone'
-    ];
-
-    for (const column of optionalColumns) {
-        if (msg.includes(column)) {
-            delete stripped[column];
-        }
-    }
-
-    return stripped;
-}
-
-async function upsertPaymentOrder(payload = {}) {
-    const client = getSupabaseAdmin();
-    if (!client) {
-        throw new Error(
-            'Supabase payments are not configured. Set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY or SUPABASE_ANON_KEY in .env.'
-        );
-    }
-
-    let record = buildPaymentRecord(payload);
-    if (!record.order_id) {
-        throw new Error('Cannot save payment order without order_id.');
-    }
-
-    const existing = await fetchPaymentOrder(record.order_id);
-    if (existing) {
-        record = mergePaymentFields(existing, record);
-    }
-
-    let { data, error } = await client
-        .from(SUPABASE_PAYMENTS_TABLE)
-        .upsert(record, { onConflict: 'order_id' })
-        .select()
-        .single();
-
-    if (error) {
-        const fallbackRecord = stripMissingPaymentColumns(record, error.message);
-        const removedColumns = Object.keys(record).filter((key) => !(key in fallbackRecord));
-        if (removedColumns.length > 0) {
-            console.warn(
-                `Payment upsert retry without columns [${removedColumns.join(', ')}]: ${error.message}`
-            );
-            ({ data, error } = await client
-                .from(SUPABASE_PAYMENTS_TABLE)
-                .upsert(fallbackRecord, { onConflict: 'order_id' })
-                .select()
-                .single());
-        }
-    }
-
-    if (error) {
-        console.error('Supabase payment save failed:', error.message, { order_id: record.order_id });
-        throw new Error(`Supabase payment save failed: ${error.message}`);
-    }
-
-    console.log('Payment order saved:', record.order_id, record.status);
-    return data;
-}
-
-async function fetchPaymentOrder(orderId) {
-    const client = getSupabaseAdmin();
-    if (!client) return null;
-    if (!orderId) return null;
-
-    const { data, error } = await client
-        .from(SUPABASE_PAYMENTS_TABLE)
-        .select('*')
-        .eq('order_id', orderId)
-        .maybeSingle();
-
-    if (error) {
-        throw new Error(`Supabase payment lookup failed: ${error.message}`);
-    }
-
-    return data;
 }
 
 function buildReturnUrl(req) {
@@ -347,9 +118,14 @@ function buildStatusPageUrl(req, payload = {}) {
     const protocol = req.headers['x-forwarded-proto'] || req.protocol || 'http';
     const params = new URLSearchParams();
     const orderId = pickFirstValue(payload.order_id, payload.orderId);
-    const status = normalizePaymentStatus(
-        pickFirstValue(payload.status, payload.order_status, payload.payment_status, payload.txn_status)
+    const gatewayStatus = pickFirstValue(
+        payload.gateway_status,
+        payload.status,
+        payload.order_status,
+        payload.payment_status,
+        payload.txn_status
     );
+    const status = mapGatewayStatusToDb(gatewayStatus);
     const amount = pickFirstValue(payload.amount, payload.effective_amount);
     const message = pickFirstValue(payload.message, payload.status_description);
 
@@ -539,35 +315,8 @@ app.post('/api/payments/hdfc/create-order', async (req, res) => {
             });
         }
 
-        const configPath = path.join(__dirname, 'config.json');
-        let config = {};
-        try {
-            const raw = await fs.readFile(configPath, 'utf8');
-            config = JSON.parse(raw);
-        } catch {
-            // Ignore if config.json isn't present; we'll rely on env vars.
-        }
-
-        const baseUrl =
-            process.env.HDFC_SMARTGATEWAY_BASE_URL ||
-            config?.BASE_URL ||
-            config?.HDFC_SMARTGATEWAY_BASE_URL ||
-            '';
-
-        const merchantId =
-            process.env.HDFC_SMARTGATEWAY_MERCHANT_ID ||
-            config?.MERCHANT_ID ||
-            '';
-
-        const resellerId =
-            process.env.HDFC_SMARTGATEWAY_RESELLER_ID ||
-            config?.RESELLER_ID ||
-            '';
-
-        const auth =
-            process.env.HDFC_SMARTGATEWAY_AUTH ||
-            config?.HDFC_SMARTGATEWAY_AUTH ||
-            '';
+        const hdfcConfig = await loadHdfcConfig();
+        const { baseUrl, merchantId, resellerId, auth } = hdfcConfig;
 
         if (!baseUrl || !merchantId || !resellerId || !auth) {
             return res.status(500).json({
@@ -601,36 +350,37 @@ app.post('/api/payments/hdfc/create-order', async (req, res) => {
         const description = body.description || `BABISHA Order - ${customerId}`;
         form.append('description', description);
 
-        const url = `${baseUrl.replace(/\/$/, '')}/orders`;
-
-        const normalizedAuth = auth.startsWith('Basic ') ? auth : `Basic ${auth}`;
+        const url = `${baseUrl}/orders`;
+        const checkoutContext = {
+            customerName: body.customerName || '',
+            customerEmail: body.customerEmail || '',
+            customerPhone: body.customerPhone || '',
+            customerAddress: body.customerAddress || '',
+            productName: body.productName || description || ''
+        };
 
         await upsertPaymentOrder({
             order_id: orderId,
             merchant_id: merchantId,
             customer_id: customerId,
-            customer_email: body.customerEmail || '',
-            customer_phone: body.customerPhone || '',
-            customer_name: body.customerName || '',
-            customer_location: body.customerAddress || '',
-            product_name: body.productName || description || '',
-            status: 'initiated',
+            customer_email: checkoutContext.customerEmail,
+            customer_phone: checkoutContext.customerPhone,
+            customer_name: checkoutContext.customerName,
+            customer_location: checkoutContext.customerAddress,
+            product_name: checkoutContext.productName,
+            gateway_status: 'CREATED',
+            status: 'pending',
             amount: amountFixed,
             currency: 'INR',
             return_url: returnUrl,
             product_id: body.productId || '',
-            raw: {
-                stage: 'initiated',
+            raw_response_json: {
+                stage: 'checkout',
                 request: {
                     amount: amountFixed,
                     currency: 'INR',
                     customerId,
-                    customerEmail: body.customerEmail || null,
-                    customerPhone: body.customerPhone || null,
-                    customerName: body.customerName || null,
-                    customerAddress: body.customerAddress || null,
-                    customerLocation: body.customerAddress || null,
-                    productName: body.productName || null,
+                    ...checkoutContext,
                     description,
                     productId: body.productId || null,
                     returnUrl
@@ -639,15 +389,7 @@ app.post('/api/payments/hdfc/create-order', async (req, res) => {
         });
 
         const result = await axios.post(url, form.toString(), {
-            headers: {
-                'Authorization': normalizedAuth,
-                'x-merchantid': merchantId,
-                'x-resellerid': resellerId,
-                'version': version,
-                'Content-Type': 'application/x-www-form-urlencoded',
-                // Mandatory header for affinity / stickiness
-                'x-routing-id': customerId
-            },
+            headers: buildHdfcHeaders(hdfcConfig, customerId),
             // Avoid inheriting broken local proxy settings when calling HDFC directly.
             proxy: false,
             timeout: 60000
@@ -658,43 +400,22 @@ app.post('/api/payments/hdfc/create-order', async (req, res) => {
         const paymentUrl = paymentLinks?.web;
 
         try {
-            await upsertPaymentOrder({
-                order_id: orderId,
-                sg_internal_id: data.id || data.order_id || '',
-                merchant_id: merchantId,
-                customer_id: customerId,
-                customer_email: body.customerEmail || '',
-                customer_phone: body.customerPhone || '',
-                customer_name: body.customerName || '',
-                customer_location: body.customerAddress || '',
-                product_name: body.productName || description || '',
-                status: pickFirstValue(data.status, 'created'),
-                status_id: data.status_id || null,
-                amount: amountFixed,
-                currency: 'INR',
-                return_url: returnUrl,
-                product_id: body.productId || '',
-                payment_method_type: pickFirstValue(data.payment_method_type),
-                payment_method: pickFirstValue(data.payment_method),
-                gateway_reference_id: paymentUrl,
-                raw: {
-                    stage: 'create-order',
-                    request: {
-                        amount: amountFixed,
-                        currency: 'INR',
-                        customerId,
-                        customerEmail: body.customerEmail || null,
-                        customerPhone: body.customerPhone || null,
-                        customerName: body.customerName || null,
-                        customerAddress: body.customerAddress || null,
-                        customerLocation: body.customerAddress || null,
-                        description,
-                        productId: body.productId || null,
-                        returnUrl
-                    },
-                    response: data
-                }
+            const createRecord = mapGatewayResponseToPaymentRecord(data, {
+                orderId,
+                merchantId,
+                checkout: checkoutContext,
+                checkoutAmount: amountFixed
             });
+            createRecord.gateway_reference_id =
+                paymentUrl || createRecord.gateway_reference_id;
+            createRecord.return_url = returnUrl;
+            createRecord.product_id = body.productId || createRecord.product_id;
+            createRecord.raw_response_json = {
+                ...createRecord.raw_response_json,
+                stage: 'create-order',
+                createOrderResponse: data
+            };
+            await upsertPaymentOrder(createRecord);
         } catch (saveError) {
             return res.status(500).json({
                 success: false,
@@ -737,12 +458,15 @@ app.post('/api/payments/hdfc/create-order', async (req, res) => {
         }
 
         const failedOrderId = orderId || pickFirstValue(req.body?.orderId, req.body?.order_id);
-        if (failedOrderId) {
+        const failedAmount = resolvePositiveAmount(req.body?.amount);
+        if (failedOrderId && failedAmount) {
             try {
                 await upsertPaymentOrder({
                     order_id: failedOrderId,
+                    gateway_status: 'FAILED',
                     status: 'failed',
-                    raw: {
+                    amount: failedAmount,
+                    raw_response_json: {
                         stage: 'create-order-error',
                         message: errMsg
                     }
@@ -764,39 +488,31 @@ async function handleHdfcReturn(req, res) {
         ...(req.body || {})
     };
 
-    try {
-        const orderId = pickFirstValue(payload.order_id, payload.orderId);
-        if (orderId) {
-            await upsertPaymentOrder({
+    const orderId = pickFirstValue(payload.order_id, payload.orderId);
+    let redirectPayload = { ...payload };
+
+    if (orderId) {
+        try {
+            const saved = await verifyAndPersistPaymentFromGateway(orderId, payload);
+            redirectPayload = {
+                ...payload,
                 order_id: orderId,
-                sg_internal_id: pickFirstValue(payload.sg_internal_id, payload.id),
-                status: pickFirstValue(
-                    payload.status,
-                    payload.order_status,
-                    payload.payment_status,
-                    payload.txn_status
-                ),
-                status_id: payload.status_id || payload.order_status_id || null,
-                amount: pickFirstValue(payload.amount, payload.effective_amount),
-                currency: pickFirstValue(payload.currency, payload.order_currency),
-                txn_id: pickFirstValue(payload.txn_id, payload.txnId),
-                txn_uuid: pickFirstValue(payload.txn_uuid, payload.txnUuid),
-                payment_method_type: pickFirstValue(payload.payment_method_type),
-                payment_method: pickFirstValue(payload.payment_method),
-                gateway_id: payload.gateway_id || null,
-                gateway_reference_id: pickFirstValue(payload.gateway_reference_id),
-                raw: {
-                    stage: 'return',
-                    payload
-                }
-            });
+                status: saved.status,
+                gateway_status: saved.gateway_status,
+                amount: saved.amount,
+                txn_id: saved.txn_id,
+                message: isPaymentSuccessful(saved.gateway_status)
+                    ? 'Payment successful'
+                    : pickFirstValue(payload.status_description, payload.message)
+            };
+        } catch (error) {
+            console.error('HDFC return verification failed:', error.message);
+            redirectPayload.message = error.message;
         }
-    } catch (error) {
-        console.error('HDFC return save failed:', error.message);
     }
 
     // 303 forces GET on the status page (avoids 405 on static payment-status.html).
-    return res.redirect(303, buildStatusPageUrl(req, payload));
+    return res.redirect(303, buildStatusPageUrl(req, redirectPayload));
 }
 
 app.get('/api/payments/hdfc/return', handleHdfcReturn);
@@ -817,18 +533,12 @@ app.post('/api/payments/hdfc/finalize', async (req, res) => {
             });
         }
 
-        const saved = await upsertPaymentOrder({
-            ...payload,
-            order_id: orderId,
-            raw: {
-                stage: 'finalize',
-                payload
-            }
-        });
+        const saved = await verifyAndPersistPaymentFromGateway(orderId, payload);
 
         return res.json({
             success: true,
-            payment: saved
+            payment: saved,
+            paymentSuccessful: isPaymentSuccessful(saved.gateway_status)
         });
     } catch (error) {
         return res.status(500).json({

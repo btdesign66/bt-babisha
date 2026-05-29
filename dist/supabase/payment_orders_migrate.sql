@@ -1,5 +1,5 @@
--- Run once in Supabase Dashboard → SQL Editor (project: babisha)
--- Adds customer / location columns and policies so payment_orders saves work from Vercel.
+-- Run in Supabase SQL Editor (project: babisha)
+-- Extends payment_orders for full HDFC/Juspay field persistence.
 
 alter table public.payment_orders
   add column if not exists customer_name text null;
@@ -10,11 +10,18 @@ alter table public.payment_orders
 alter table public.payment_orders
   add column if not exists product_name text null;
 
--- Optional: ensure raw is always present for new rows
 alter table public.payment_orders
-  alter column raw set default '{}'::jsonb;
+  add column if not exists gateway_status text null;
 
--- Allow server (service role / anon from API) to insert and update orders
+alter table public.payment_orders
+  add column if not exists raw_response_json jsonb null;
+
+-- Backfill raw_response_json from legacy raw column
+update public.payment_orders
+set raw_response_json = raw
+where raw_response_json is null
+  and raw is not null;
+
 alter table public.payment_orders enable row level security;
 
 drop policy if exists "payment_orders_service_role_all" on public.payment_orders;
@@ -33,5 +40,4 @@ create policy "payment_orders_anon_write"
   using (true)
   with check (true);
 
--- Refresh PostgREST schema cache after column changes
 notify pgrst, 'reload schema';

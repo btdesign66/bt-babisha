@@ -265,7 +265,11 @@
           return;
         }
 
-        applyStatus((data.payment && data.payment.status) || fallbackStatus, data.payment);
+        const gatewayStatus = data.payment && data.payment.gateway_status;
+        const dbStatus = (data.payment && data.payment.status) || fallbackStatus;
+        const finalStatus =
+          gatewayStatus && String(gatewayStatus).toUpperCase() === "CHARGED" ? "success" : dbStatus;
+        applyStatus(finalStatus, data.payment);
       } catch {
         applyStatus(fallbackStatus);
       }
