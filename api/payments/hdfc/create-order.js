@@ -1,9 +1,9 @@
 /**
- * Vercel serverless entry — all /api/* traffic (see vercel.json rewrites).
+ * POST /api/payments/hdfc/create-order
  */
 process.env.VERCEL = '1';
 process.env.VERCEL_ENV = process.env.VERCEL_ENV || 'production';
 
-const app = require('../server');
+const app = require('../../../server');
 
 module.exports = (req, res) => app(req, res);

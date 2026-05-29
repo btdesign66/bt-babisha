@@ -1,19 +1,7 @@
 {
   "version": 2,
-  "rewrites": [
-    {
-      "source": "/api/(.*)",
-      "destination": "/api"
-    }
-  ],
   "functions": {
-    "api/index.js": {
-      "maxDuration": 60
-    },
-    "api/payments/hdfc/return.js": {
-      "maxDuration": 60
-    },
-    "api/try-on.js": {
+    "api/**/*.js": {
       "maxDuration": 60
     }
   }
