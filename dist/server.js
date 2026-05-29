@@ -18,6 +18,14 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Vercel rewrites send /api/* to /api — restore full path for Express routes.
+app.use((req, res, next) => {
+    if (process.env.VERCEL && req.url && !req.url.startsWith('/api')) {
+        req.url = `/api${req.url.startsWith('/') ? req.url : `/${req.url}`}`;
+    }
+    next();
+});
+
 // Middleware
 app.use(cors({
     origin: process.env.VERCEL ? '*' : true, // Allow all origins on Vercel
