@@ -1,0 +1,8 @@
+{
+  "orderId": "BBSH7ELFB6J9PS066IGU",
+  "amount": "10.00",
+  "currency": "INR",
+  "customerId": "CUSTDEBUGPAY02",
+  "createdAt": "2026-03-26T21:16:23.616Z",
+  "paymentLinkWeb": "https://smartgateway.hdfcuat.bank.in/payment-page/order/ordeh_5f6101c6c53a4743a9a294958ce5527b"
+}

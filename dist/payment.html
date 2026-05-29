@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Secure Checkout - BABISHA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #fcf7ef;
+      --panel: #fffdf9;
+      --line: #eadfce;
+      --text: #221d18;
+      --muted: #71665c;
+      --brand: #0f6a4e;
+      --brand-dark: #0b4d39;
+      --accent: #d8ad47;
+      --soft: #f4ead8;
+      --shadow: 0 24px 60px rgba(82, 52, 18, 0.12);
+      --radius: 28px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Manrope", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(216, 173, 71, 0.24), transparent 28%),
+        linear-gradient(180deg, #fffdf9, var(--bg));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .checkout-card {
+      width: min(720px, 100%);
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .top-band {
+      padding: 14px 22px;
+      background: linear-gradient(90deg, var(--brand-dark), var(--brand));
+      color: #fff;
+      font-size: 0.92rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .content {
+      padding: 34px 28px 30px;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: var(--soft);
+      color: var(--brand-dark);
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 16px 0 10px;
+      font-family: "Cormorant Garamond", serif;
+      font-size: clamp(2.4rem, 5vw, 3.8rem);
+      line-height: 0.95;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 1rem;
+    }
+
+    .summary {
+      margin-top: 28px;
+      padding: 22px;
+      border-radius: 22px;
+      background: linear-gradient(135deg, #fffaf2, #ffffff);
+      border: 1px solid var(--line);
+    }
+
+    .summary-label {
+      color: var(--muted);
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .product-name {
+      margin: 10px 0 6px;
+      font-size: 1.22rem;
+      font-weight: 800;
+    }
+
+    .product-meta {
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .amount {
+      margin-top: 18px;
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      font-weight: 800;
+    }
+
+    .amount small {
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 0.78rem;
+    }
+
+    .amount strong {
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      color: var(--brand-dark);
+    }
+
+    .helper {
+      margin-top: 22px;
+      display: grid;
+      gap: 12px;
+      color: var(--muted);
+      font-size: 0.94rem;
+      line-height: 1.7;
+    }
+
+    .helper-item {
+      padding: 14px 16px;
+      border-radius: 18px;
+      background: #fff;
+      border: 1px solid var(--line);
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 28px;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 999px;
+      min-height: 56px;
+      padding: 0 24px;
+      font-size: 0.98rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform 0.18s ease, opacity 0.18s ease, box-shadow 0.18s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn:hover { transform: translateY(-2px); }
+
+    .btn-primary {
+      flex: 1 1 280px;
+      color: #fff;
+      background: linear-gradient(135deg, var(--brand), var(--brand-dark));
+      box-shadow: 0 18px 36px rgba(15, 106, 78, 0.22);
+    }
+
+    .btn-secondary {
+      flex: 0 0 auto;
+      color: var(--text);
+      background: #fff;
+      border: 1px solid var(--line);
+    }
+
+    .btn[disabled] {
+      opacity: 0.7;
+      cursor: wait;
+      transform: none;
+    }
+
+    .status {
+      display: none;
+      margin-top: 18px;
+      padding: 14px 16px;
+      border-radius: 16px;
+      font-weight: 700;
+      line-height: 1.6;
+    }
+
+    .status.active { display: block; }
+    .status.info { background: rgba(15, 106, 78, 0.1); color: var(--brand-dark); }
+    .status.error { background: rgba(176, 46, 28, 0.1); color: #9f2815; }
+
+    .footer-note {
+      margin-top: 20px;
+      color: var(--muted);
+      font-size: 0.82rem;
+      line-height: 1.7;
+    }
+
+    @media (max-width: 640px) {
+      .content { padding: 26px 18px 22px; }
+      .actions { flex-direction: column; }
+      .btn-primary, .btn-secondary { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <main class="checkout-card">
+    <div class="top-band">Secure payment powered by HDFC SmartGateway</div>
+
+    <div class="content">
+      <div class="eyebrow">Quick checkout</div>
+      <h1>Complete your purchase</h1>
+      <p class="subtitle">
+        Just review your order and continue. We'll take you to HDFC's secure payment page to finish the payment.
+      </p>
+
+      <section class="summary" aria-live="polite">
+        <div class="summary-label">Selected product</div>
+        <div id="productName" class="product-name">BABISHA Collection</div>
+        <div id="productMeta" class="product-meta">Your selected design will appear here.</div>
+
+        <div class="amount">
+          <small>Total amount</small>
+          <strong id="amountText">INR 0.00</strong>
+        </div>
+      </section>
+
+      <!-- Checkout details form -->
+      <form id="checkoutForm" class="checkout-form" style="margin-top: 24px; display: grid; gap: 16px; border: 1px solid var(--line); padding: 22px; border-radius: 22px; background: #fffdf9;">
+        <div class="summary-label" style="margin-bottom: 4px;">Customer & Delivery Details</div>
+        
+        <div class="form-group">
+          <label for="customerName" style="display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 6px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em;">Full Name *</label>
+          <input type="text" id="customerName" required placeholder="Enter your full name" style="width: 100%; min-height: 48px; padding: 10px 14px; border-radius: 12px; border: 1px solid var(--line); font-family: inherit; font-size: 0.95rem; background: #fff;" />
+        </div>
+        
+        <div class="form-group">
+          <label for="customerEmail" style="display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 6px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em;">Email Address *</label>
+          <input type="email" id="customerEmail" required placeholder="email@example.com" style="width: 100%; min-height: 48px; padding: 10px 14px; border-radius: 12px; border: 1px solid var(--line); font-family: inherit; font-size: 0.95rem; background: #fff;" />
+        </div>
+        
+        <div class="form-group">
+          <label for="customerPhone" style="display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 6px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em;">Phone Number *</label>
+          <input type="tel" id="customerPhone" required placeholder="e.g. 9876543210" style="width: 100%; min-height: 48px; padding: 10px 14px; border-radius: 12px; border: 1px solid var(--line); font-family: inherit; font-size: 0.95rem; background: #fff;" />
+        </div>
+        
+        <div class="form-group">
+          <label for="customerAddress" style="display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 6px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em;">Delivery Address *</label>
+          <textarea id="customerAddress" required placeholder="Street address, City, State, ZIP code" rows="3" style="width: 100%; padding: 10px 14px; border-radius: 12px; border: 1px solid var(--line); font-family: inherit; font-size: 0.95rem; background: #fff; resize: vertical;"></textarea>
+        </div>
+      </form>
+
+      <div class="helper">
+        <div class="helper-item">Please enter your shipping/delivery details above. All fields are mandatory to proceed.</div>
+        <div class="helper-item">After payment, you will come back here and see a clear success or failure page.</div>
+      </div>
+
+      <div class="actions">
+        <button id="payButton" class="btn btn-primary" type="button">Pay now securely</button>
+        <button id="backButton" class="btn btn-secondary" type="button">Back</button>
+      </div>
+
+      <div id="status" class="status info" aria-live="polite"></div>
+
+      <p class="footer-note">
+        For your convenience, this page keeps a stable customer ID in your browser so repeat payment attempts stay linked correctly.
+      </p>
+    </div>
+  </main>
+
+  <script>
+    const LS_KEY = "babishaCustomerId";
+    const productNameEl = document.getElementById("productName");
+    const productMetaEl = document.getElementById("productMeta");
+    const amountTextEl = document.getElementById("amountText");
+    const statusEl = document.getElementById("status");
+    const payButtonEl = document.getElementById("payButton");
+    const backButtonEl = document.getElementById("backButton");
+
+    function ensureCustomerId() {
+      let id = localStorage.getItem(LS_KEY);
+      if (!id) {
+        const bytes = crypto.getRandomValues(new Uint8Array(10));
+        let value = 0n;
+        for (const byte of bytes) value = (value << 8n) + BigInt(byte);
+        id = ("CUST" + value.toString(36).toUpperCase()).slice(0, 20);
+        localStorage.setItem(LS_KEY, id);
+      }
+      return id;
+    }
+
+    function showStatus(message, type = "info") {
+      statusEl.textContent = message;
+      statusEl.className = `status active ${type}`;
+    }
+
+    async function readJsonSafely(response) {
+      const text = await response.text();
+      try {
+        return text ? JSON.parse(text) : {};
+      } catch {
+        return {
+          success: false,
+          message: text || "The payment service returned an unexpected response."
+        };
+      }
+    }
+
+    function formatAmount(value) {
+      const amount = Number(value);
+      return Number.isFinite(amount) && amount > 0 ? `INR ${amount.toFixed(2)}` : "INR 0.00";
+    }
+
+    function getQueryData() {
+      const query = new URLSearchParams(window.location.search);
+      const amount = query.get("amount") || "";
+      const productName = query.get("productName") || "BABISHA Collection";
+      const productId = query.get("productId") || "";
+
+      productNameEl.textContent = productName;
+      productMetaEl.textContent = productId ? `Product ID: ${productId}` : "Ready for secure HDFC payment";
+      amountTextEl.textContent = formatAmount(amount);
+
+      return {
+        amount,
+        productName,
+        productId
+      };
+    }
+
+    function goBackToProduct() {
+      const productId = orderData.productId;
+
+      if (productId && productId !== "cart") {
+        window.location.href = `/product-detail.html?id=${encodeURIComponent(productId)}`;
+        return;
+      }
+
+      if (window.history.length > 1) {
+        window.history.back();
+        return;
+      }
+
+      window.location.href = "/products.html";
+    }
+
+    const orderData = getQueryData();
+
+    backButtonEl.addEventListener("click", goBackToProduct);
+
+    payButtonEl.addEventListener("click", async () => {
+      // Validate form
+      const checkoutForm = document.getElementById("checkoutForm");
+      if (!checkoutForm.reportValidity()) {
+        return;
+      }
+
+      const amount = Number(orderData.amount);
+      if (!Number.isFinite(amount) || amount <= 0) {
+        showStatus("This order is missing a valid amount. Please return to the product page and try again.", "error");
+        return;
+      }
+
+      const customerName = document.getElementById("customerName").value.trim();
+      const customerEmail = document.getElementById("customerEmail").value.trim();
+      const customerPhone = document.getElementById("customerPhone").value.trim();
+      const customerAddress = document.getElementById("customerAddress").value.trim();
+
+      payButtonEl.disabled = true;
+      showStatus("Creating your payment order...", "info");
+
+      try {
+        const response = await fetch("/api/payments/hdfc/create-order", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            amount: amount.toFixed(2),
+            customerId: ensureCustomerId(),
+            description: `BABISHA Order - ${orderData.productName}`,
+            productId: orderData.productId,
+            returnUrl: `${window.location.origin}/api/payments/hdfc/return`,
+            customerName,
+            customerEmail,
+            customerPhone,
+            customerAddress
+          })
+        });
+
+        const data = await readJsonSafely(response);
+        if (!response.ok || !data.success) {
+          let errMsg = "Unable to start the payment right now.";
+          if (data) {
+            if (data.message) {
+              errMsg = data.message;
+            } else if (data.error) {
+              errMsg = typeof data.error === 'string' ? data.error : (data.error.message || JSON.stringify(data.error));
+            }
+          }
+          showStatus(errMsg, "error");
+          payButtonEl.disabled = false;
+          return;
+        }
+
+        showStatus("Redirecting you to HDFC secure payment...", "info");
+        window.location.href = data.paymentUrl;
+      } catch (error) {
+        showStatus(error && error.message ? error.message : "Something went wrong while starting the payment.", "error");
+        payButtonEl.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>

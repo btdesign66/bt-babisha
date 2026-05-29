@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Payment Status - BABISHA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #fcf7ef;
+      --panel: #fffdf9;
+      --line: #eadfce;
+      --text: #221d18;
+      --muted: #71665c;
+      --success: #0f6a4e;
+      --success-soft: rgba(15, 106, 78, 0.1);
+      --fail: #a4331c;
+      --fail-soft: rgba(164, 51, 28, 0.1);
+      --pending: #8d6a10;
+      --pending-soft: rgba(141, 106, 16, 0.12);
+      --shadow: 0 24px 60px rgba(82, 52, 18, 0.12);
+      --radius: 28px;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: "Manrope", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(216, 173, 71, 0.22), transparent 28%),
+        linear-gradient(180deg, #fffefb, var(--bg));
+    }
+
+    .card {
+      width: min(720px, 100%);
+      padding: 34px 28px 28px;
+      border-radius: var(--radius);
+      background: var(--panel);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .badge.success { background: var(--success-soft); color: var(--success); }
+    .badge.failed { background: var(--fail-soft); color: var(--fail); }
+    .badge.pending { background: var(--pending-soft); color: var(--pending); }
+
+    h1 {
+      margin: 18px 0 10px;
+      font-family: "Cormorant Garamond", serif;
+      font-size: clamp(2.4rem, 5vw, 3.7rem);
+      line-height: 0.95;
+    }
+
+    .lead {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 26px;
+    }
+
+    .item {
+      padding: 18px;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .item small {
+      display: block;
+      color: var(--muted);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+
+    .item strong {
+      font-size: 1.02rem;
+      word-break: break-word;
+    }
+
+    .message {
+      margin-top: 18px;
+      padding: 16px 18px;
+      border-radius: 18px;
+      background: #fff;
+      border: 1px solid var(--line);
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 24px;
+    }
+
+    .btn {
+      min-height: 54px;
+      padding: 0 24px;
+      border-radius: 999px;
+      font-weight: 800;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      color: #fff;
+      background: linear-gradient(135deg, #0f6a4e, #0b4d39);
+    }
+
+    .btn-secondary {
+      color: var(--text);
+      background: #fff;
+      border: 1px solid var(--line);
+    }
+
+    @media (max-width: 640px) {
+      .card { padding: 28px 18px 22px; }
+      .grid { grid-template-columns: 1fr; }
+      .actions { flex-direction: column; }
+      .btn { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <div id="statusBadge" class="badge pending">Checking payment</div>
+    <h1 id="title">We're checking your payment</h1>
+    <p id="lead" class="lead">Please wait while we confirm your payment result and fetch the latest saved details.</p>
+
+    <section class="grid">
+      <div class="item">
+        <small>Order ID</small>
+        <strong id="orderIdText">Not available</strong>
+      </div>
+      <div class="item">
+        <small>Amount</small>
+        <strong id="amountText">Not available</strong>
+      </div>
+      <div class="item">
+        <small>Status</small>
+        <strong id="statusText">Pending</strong>
+      </div>
+      <div class="item">
+        <small>Customer ID</small>
+        <strong id="customerText">Not available</strong>
+      </div>
+    </section>
+
+    <div id="messageBox" class="message">If this page was opened from HDFC SmartGateway, the final payment details will appear here automatically.</div>
+
+    <div class="actions">
+      <a class="btn btn-primary" href="/index.html">Continue shopping</a>
+      <a class="btn btn-secondary" href="/products.html">View products</a>
+    </div>
+  </main>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const orderId = params.get("order_id") || "";
+    const fallbackStatus = (params.get("status") || "pending").toLowerCase();
+    const fallbackAmount = params.get("amount") || "";
+    const fallbackMessage = params.get("message") || "";
+
+    const statusBadgeEl = document.getElementById("statusBadge");
+    const titleEl = document.getElementById("title");
+    const leadEl = document.getElementById("lead");
+    const orderIdTextEl = document.getElementById("orderIdText");
+    const amountTextEl = document.getElementById("amountText");
+    const statusTextEl = document.getElementById("statusText");
+    const customerTextEl = document.getElementById("customerText");
+    const messageBoxEl = document.getElementById("messageBox");
+
+    function formatAmount(value) {
+      const amount = Number(value);
+      return Number.isFinite(amount) && amount > 0 ? `INR ${amount.toFixed(2)}` : "Not available";
+    }
+
+    async function readJsonSafely(response) {
+      const text = await response.text();
+      try {
+        return text ? JSON.parse(text) : {};
+      } catch {
+        return {
+          success: false,
+          message: text || "The payment service returned an unexpected response."
+        };
+      }
+    }
+
+    function applyStatus(status, payment = null) {
+      const normalized = ["success", "failed", "pending"].includes(status) ? status : "pending";
+      statusBadgeEl.className = `badge ${normalized}`;
+      statusTextEl.textContent = normalized.charAt(0).toUpperCase() + normalized.slice(1);
+
+      if (normalized === "success") {
+        statusBadgeEl.textContent = "Payment successful";
+        titleEl.textContent = "Payment completed";
+        leadEl.textContent = "Your payment was completed successfully and the order details have been recorded.";
+      } else if (normalized === "failed") {
+        statusBadgeEl.textContent = "Payment not successful";
+        titleEl.textContent = "Payment was not completed";
+        leadEl.textContent = "The payment did not go through. You can try again from the product page.";
+      } else {
+        statusBadgeEl.textContent = "Payment pending";
+        titleEl.textContent = "Payment is still processing";
+        leadEl.textContent = "We received your order return, but the final payment result is still pending.";
+      }
+
+      orderIdTextEl.textContent = payment && payment.order_id ? payment.order_id : (orderId || "Not available");
+      amountTextEl.textContent = payment && payment.amount ? formatAmount(payment.amount) : formatAmount(fallbackAmount);
+      customerTextEl.textContent = payment && payment.customer_id ? payment.customer_id : "Not available";
+      messageBoxEl.textContent =
+        fallbackMessage ||
+        (normalized === "success"
+          ? "Thank you. Your payment has been recorded successfully."
+          : normalized === "failed"
+          ? "No payment was recorded as successful for this attempt."
+          : "If you completed payment just now, refresh this page in a moment.");
+    }
+
+    async function loadPayment() {
+      if (!orderId) {
+        applyStatus(fallbackStatus);
+        return;
+      }
+
+      try {
+        const response = await fetch(`/api/payments/hdfc/order/${encodeURIComponent(orderId)}`);
+        const data = await readJsonSafely(response);
+        if (!response.ok || !data.success) {
+          applyStatus(fallbackStatus);
+          return;
+        }
+
+        applyStatus((data.payment && data.payment.status) || fallbackStatus, data.payment);
+      } catch {
+        applyStatus(fallbackStatus);
+      }
+    }
+
+    loadPayment();
+  </script>
+</body>
+</html>

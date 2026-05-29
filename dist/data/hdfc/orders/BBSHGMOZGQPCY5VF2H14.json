@@ -1,0 +1,8 @@
+{
+  "orderId": "BBSHGMOZGQPCY5VF2H14",
+  "amount": "1.00",
+  "currency": "INR",
+  "customerId": "CUSTTEST123",
+  "createdAt": "2026-03-26T20:45:29.688Z",
+  "paymentLinkWeb": "https://smartgateway.hdfcuat.bank.in/payment-page/order/ordeh_8127c5f0dc71403db064e1164e29dcb6"
+}
