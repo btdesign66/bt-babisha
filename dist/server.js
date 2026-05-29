@@ -676,11 +676,15 @@ async function handleHdfcReturn(req, res) {
         console.error('HDFC return save failed:', error.message);
     }
 
-    return res.redirect(buildStatusPageUrl(req, payload));
+    // 303 forces GET on the status page (avoids 405 on static payment-status.html).
+    return res.redirect(303, buildStatusPageUrl(req, payload));
 }
 
 app.get('/api/payments/hdfc/return', handleHdfcReturn);
 app.post('/api/payments/hdfc/return', handleHdfcReturn);
+
+// Fallback when a POST lands on the status page (browser resubmit / legacy redirect).
+app.post('/payment-status.html', handleHdfcReturn);
 
 app.post('/api/payments/hdfc/finalize', async (req, res) => {
     try {
